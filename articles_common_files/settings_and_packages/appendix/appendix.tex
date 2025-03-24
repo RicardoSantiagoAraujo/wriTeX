@@ -1,0 +1,111 @@
+
+
+
+
+
+\NewDocumentCommand{\myAppendix}
+{
+    % m
+}
+{   \ifthenelse{
+        \boolean{isIncludeAppendix}%
+        \AND%
+        \not\equal{\appendixList}{}% if appendix is empty, return false
+    }
+    {
+        \updateRibbons{\textbf{Appendix}}{}
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % APPENDIX
+        \appendix
+        % https://latex-tutorial.com/latex-appendix/
+        % \clearpage
+        \pagestyle{plain}
+        \pagenumbering{Roman}
+        % % counter for appendix items
+        % \cleardoublepage
+
+
+        \foreach \item [count=\n] in \appendixList {%
+            \cleardoublepage%
+            \refstepcounter{totalAppendixItemsAltogether}%
+            \expandafter\addAppendixItem\expandafter{\item}%
+        }
+    }
+    {}
+}
+
+
+\NewDocumentCommand{\addAppendixItem}
+{
+    m % appendix key
+}
+{%
+    % \detokenize{./elements/appendix/#1/content.tex}
+    \input{./elements/appendix/#1/content.tex}%
+}%
+
+\NewDocumentCommand{\myAppendixTitle}
+{
+    m % Title text
+    O{} % optional label for referencing
+}{%
+    \isPortfolio
+    {%
+        \titlespacing{\chapter}{0pt}{0pt}{10pt} % hacking way to bring content UP
+        \chapter[#1]{%
+            \color{myColorPrimary}%
+            \setTitleFont%
+            \linkAppendixConditionally{#1}%
+            }%
+    }
+    {%
+        \section[#1]{%
+            \color{myColorPrimary}%
+            \setTitleFont%
+            \linkAppendixConditionally{#1}
+        }%
+        \ifthenelse{\equal{#2}{}}
+        {}
+        {%
+            \label{\appendixLabel{#2}}%
+            %
+            \isDraftDebugger{\ Appendix key: \appendixLabel{#2}}{}%
+        }%
+    }%
+    \hypertarget{\autoAppendixTargetId}{\isDraftDebugger{\\Auto ref: \autoAppendixTargetId}{}}%
+}
+
+
+\NewDocumentCommand{\appendixLabel}
+{m}{%
+  appendix:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+
+\NewDocumentCommand{\myAppendixRef}{
+    m
+    O{Appendix}
+}{\mySecRef{appendix}{#1}[#2]}
+
+
+
+
+\ifthenelse{\boolean{isIncludeToC}}
+{ % if TOC included, link to it
+  \newcommand{\linkAppendixConditionally}[1]
+  {
+    \protect\hyperlink
+    {toc}% link to TOC
+    {#1}%
+  }
+}
+{ % if TOC not included, link to title instead
+  \newcommand{\linkAppendixConditionally}[1]
+  {%
+    #1%
+  }
+}
+
+% automatically generated target for hyperlink, to compliment the manual one
+\newcommand{\autoAppendixTargetId}{%
+    appendix:target:\thetotalAppendixItemsAltogether
+}

@@ -1,0 +1,95 @@
+%%%%%%
+% FILE TO TEST THE ARTICLE COVER IN ISOLATION FOR COMPILATION SPEED
+\documentclass[
+    % 12pt, % set in settings with fontsize package
+    % landscape % set with geometry package
+    % twoside % set with geometry package
+    % draft % "draft" compiles much faster than "final" /!\ do not use final in custom draftmode
+]{scrartcl}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHOSEN ARTICLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\chosenArticle}{article_template} % /!\ UPDATE HERE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% define relative paths to common files/settings from article to be used by \input command; multiple such paths can be added akin to \graphicspath
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{%
+    % existing paths have the advantage of being clickable
+    {./../../../articles/\chosenArticle/}
+}% append to already existing default paths, so as not to remove them
+\makeatother
+%
+%
+%
+% INITIAL INPUTS
+\input{./../../articles_common_files/document/initial_inputs.tex}
+%
+%
+%
+%
+% ARTICLE MAIN PARAMETERS
+\input{./\chosenArticle.tex}
+%
+%
+%
+%
+% SET BOOLEANS
+\setbool{isMinimal}{false} % overwrites most booleans below
+\setbool{isDraft}{false} % true or false
+\setbool{isPrintVersion}{false} % true or false
+\setbool{isDrawRibbons}{false} % true or false
+\setbool{isIncludeArticleCover}{true} % true or false
+%
+%
+%
+%
+% LOAD ALL SETTINGS FROM ARTICLE OR ...
+% \input{./../../articles_common_files/settings_and_packages/article_settings.tex}
+% ... LOAD ONLY NECESSARY SETTINGS FOR COVER'S TITLEPAGE ENVIRONMENT
+\input{./standalone_settings.tex}
+%GRID
+\usepackage[grid, gridunit=mm, gridcolor=blue!80, subgridcolor=blue!20]{eso-pic}
+% DIVING LINE: Adjust width/height of rectangle to make it vertical or horizontal as needed
+\newcommand{\rectWidth}{3mm}
+\newcommand{\rectHeight}{0.95\pageheight}
+
+\AtBeginShipout{\AtBeginShipoutUpperLeft{
+            \begin{tikzpicture}[remember picture,overlay]%
+                  \draw[black!50, thick, fill=black]
+                    (%
+                    [shift=({-\rectWidth/2,-\rectHeight/2})]%
+                    current page.center%
+                    )
+                    rectangle ++(\rectWidth, \rectHeight);
+                  %
+            \end{tikzpicture}
+}}
+%
+%
+%
+%
+% LOAD NECESSARY BIB FILES
+\loadBibIfExists{./../../biblatex_files/bibliography.bib}
+\loadBibIfExists{./../../biblatex_files/myArticles.bib}
+%
+%
+%
+%
+%SET CORRECT GRAPHICS PATH
+\graphicspath{%
+{./../../../articles/\chosenArticle/assets/}
+}
+%
+%
+%
+%
+\begin{document}
+    %%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % \addCover %%% titlepage environment and related functionalities
+    \myTitlePage %%% strictly the titlepage environment
+\end{document}

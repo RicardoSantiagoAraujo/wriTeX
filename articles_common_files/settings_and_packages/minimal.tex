@@ -1,0 +1,76 @@
+
+
+\newcommand{\setMinimalMode}
+{
+    \isMinimal
+    {
+
+        \ifthenelse{\equal{\jobname}{\detokenize{article_portfolio}}}
+        {
+            \includeonly{ %to run individuals fragments
+            % elements/portfolio_meta_data/portfolio_meta_data,
+            % elements/portfolio_title_page/portfolio_title_page,
+            % elements/preface/preface
+            }
+        }
+        {
+            \addonlyfiles{
+                % substance,
+                % glossary,
+                % abreviations,
+                body
+            }
+        }
+
+        % \setbool{isDraft}{true} % true or false
+        \setbool{isPrintVersion}{false} % true or false
+        \setbool{isDrawRibbons}{false} % true or false
+        \setbool{isIncludeMeta}{false} % true or false
+        \setbool{isIncludeArticleCover}{false} % true or false
+        \setbool{isIncludeToC}{false} % true or false
+        \setbool{isIncludeLoF}{false} % true or false
+        \setbool{isIncludeLoT}{false} % true or false
+        \setbool{isIncludeLoTB}{false} % true or false
+        \setbool{isIncludeBiblio}{false} % true or false
+        \setbool{isIncludeGlossary}{false} % true or false
+        \setbool{isIncludeAbreviations}{false} % true or false
+        \setbool{isPrintUnusedGlossary}{false} % true or false
+        \setbool{isPrintUnusedAbreviations}{false} % true or false
+        \setbool{isHighlightGlossaryAndAbreviations}{false}  % true or false
+        \setbool{isIncludeMissingBibEntries}{false} % true or false
+        \setbool{isIncludeFootnotes}{false} % true or false
+        \setbool{isIncludeCitations}{false} % true or false
+        \setbool{isIncludeCitationsInFootnotes}{false} % true or false
+        \setbool{isIncludeTextBoxes}{false} % true or false
+        \setbool{isMoveTextBoxesToEndOfArticle}{false}  % true or false
+        \setbool{isConstrainFloats}{false}  % true or false
+        \setbool{isIncludeArticleCoverImgInBody}{false}  % true or false
+        \setbool{isCreditsInArticleBody}{false}  % true or false
+        \setbool{isSplitInTwoColumns}{false} % true or false
+        \setbool{isLandscapeMode}{false} % true or false
+        \setbool{isIncludeAppendix}{false} % true or false
+
+        %%%% PORTOFOLIO SPECIFIC:
+        \setbool{isIncludePerArticleToC}{false} % true or false
+        \setbool{isIncludePerArticleLoF}{false} % true or false
+        \setbool{isIncludePerArticleLoT}{false} % true or false
+        \setbool{isIncludePerArticleSubstance}{false} % true or false
+        \setbool{isSplitBibliographyByChapter}{false}  % true or false
+
+        %%%% OTHER SETTINGS:
+        \pagecolor{black}% bg color
+        \color{white}% text color
+    }
+    {}
+}
+
+\AfterPreamble{
+    \setMinimalMode
+}
+
+%%% ===== MACRO TO RUN CONTENTS ONLY IN DRAFT VERSION
+\newcommand{\isMinimal}[2]{%
+    \ifthenelse{\boolean{isMinimal}}%
+    {#1}%
+    {#2}%
+}

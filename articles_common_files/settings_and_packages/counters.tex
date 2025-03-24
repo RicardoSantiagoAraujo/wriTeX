@@ -1,0 +1,207 @@
+
+%%% COUNT TOTAL ARTICLES
+\newtotcounter{totalArticlesAltogether}
+% \setcounter{totalArticlesAltogether}{0}
+%%% COUNT TOTAL CITATIONS
+\newtotcounter{totalCitationsAltogether}
+%%% COUNT TOTAL GLOSSARY ENTRIES
+\newtotcounter{totalGlossaryEntriesAltogether}
+%%% COUNT TOTAL ABREVIATIONS ENTRIES
+\newtotcounter{totalAbreviationsAltogether}
+%%% COUNT TOTAL ARTICLE SECTIONS ENTRIES
+\newtotcounter{totalArticleSectionsAltogether}
+%%% COUNT TOTAL ARTICLE SUBSECTIONS ENTRIES
+\newtotcounter{totalArticleSubsectionsAltogether}
+%%% COUNT TOTAL ARTICLE SUBSUBSECTIONS ENTRIES
+\newtotcounter{totalArticleSubsubsectionsAltogether}
+%%% COUNT TOTAL FIGURES ENTRIES (FIGURES + WRAPFIGURES: only figures that are counted)
+\newtotcounter{totalFiguresAltogether}
+%%% COUNT TOTAL FIGURE ENVIRONMENTS ENTRIES
+\newtotcounter{totalFigureEnvsAltogether}
+%%% COUNT TOTAL WRAPFIGURE ENVIRONMENTS ENTRIES
+\newtotcounter{totalWrapfigureEnvsAltogether}
+%%% COUNT TOTAL SUBFIGURES ENTRIES
+\newtotcounter{totalSubfiguresAltogether}
+%%% COUNT TOTAL GRAPHICS ENTRIES (input images)
+\newtotcounter{totalGraphicsAltogether}
+%%% COUNT TOTAL TIKZ ENTRIES
+\newtotcounter{totalTikZPicturesAltogether}
+%%% COUNT TOTAL TABLES ENTRIES
+\newtotcounter{totalTablesAltogether}
+%%% COUNT TOTAL TEXTBOXES ENTRIES
+\newtotcounter{totalTextboxesAltogether}
+%%% COUNT TOTAL FOOTNOTES ENTRIES
+\newtotcounter{totalFootnotesAltogether}
+%%% COUNT TOTAL APPENDIX ENTRIES
+\newtotcounter{totalAppendixItemsAltogether}
+
+%%%%%%%%%%%% PORTFOLIO ONLY COUNTERS
+%%% COUNT TOTAL PORTFOLIO PARTS
+\newtotcounter{totalPortfolioPartsAltogether}
+
+
+
+
+%%%%%% CREATING COUNTERS
+\AfterPreamble{
+    \isPortfolio{}{ %%% if individual article
+        \newcommand{\articleList}{\myarticleKeyCore}
+    }
+    %%% GENERATE KEYS
+    \foreach \article in \articleList {
+        %%% GENERAL COUNTERS
+        \stepcounter{totalArticlesAltogether}
+        %%% ARTICLE SPECIFIC COUNTERS
+        \expanded{\noexpand\newtotcounter{lastPageInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSectionsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSubsectionsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSubsubsectionsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalCitationsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalFiguresInArticle:\article}}% (FIGURES + WRAPFIGURES: only figures that are counted)
+        \expanded{\noexpand\newtotcounter{totalFigureEnvsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalWrapfigureEnvsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSubfiguresInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalGraphicsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalTikZPicturesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalTablesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalTextboxesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalGlossaryEntriesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalAbreviationsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalFootnotesInArticle:\article}}%
+        % \expanded{\noexpand\newtotcounter{totalAppendixItemsInArticle:\article}}% USELESS FOR NOW
+    }
+}
+
+%%% command to convert a number to an roman character
+\newcommand*\makeAlph[1]{\symbol{\numexpr64+#1}}% 96 for lowercase alpha, 64 for uppercase
+
+\NewDocumentCommand{\myListLabelStyle}
+    {
+        m
+        O{myColorSecondary}
+    }
+    {%
+        \textcolor{#2}%
+        {%
+            \textbf{%
+                #1%
+            }%
+        }%
+    }%
+
+\newcommand{\myTotalCount}[1]{%
+    % \textcolor{green}{\total{#1}}% TEST
+    \ifthenelse{\totvalue{#1}=0}{%
+    %%% IF VALUE IS 0
+        \myListLabelStyle{%
+            \total{#1}%
+        }%
+        [myColorPrimary!50]%
+    }%
+    {%%%% IF VALUE IS NOT 0
+        \myListLabelStyle{%
+            \total{#1}%
+        }%
+    }%
+}%
+
+\usepackage{zref-totpages}
+\usepackage{lastpage}
+
+\newcommand{\countersList}{
+    \subsection*{Counters}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%% FIRST COLUMN
+    \begin{minipage}[t]{0.40\textwidth} % Adjust width as needed
+        \begin{myListMeta}[
+            % leftmargin=120pt,
+            labelsep=0pt
+            ]
+            \item[\myTotalCount{totalFiguresInArticle:\myarticleKeyCore}]\ Figure(s).% simple, wrapped or with subfigures (each group of subfigures counts as 1 here)
+            %
+            \item[\myTotalCount{totalFigureEnvsInArticle:\myarticleKeyCore}]\ Figure Environment(s).% Figure environments
+            %
+            \item[\myTotalCount{totalWrapfigureEnvsInArticle:\myarticleKeyCore}]\ Wrapfigure Environment(s).% Wrapfigure environments
+            %
+            \item[\myTotalCount{totalSubfiguresInArticle:\myarticleKeyCore}]\ Subfigure(s).% subfigures inside figures
+            %
+            \item[\myTotalCount{totalGraphicsInArticle:\myarticleKeyCore}]\ Graphic input(s).% through \myFigGraphics macro
+            %
+            \item[\myTotalCount{totalTikZPicturesInArticle:\myarticleKeyCore}]\ TiKz picture(s).% throught \myFigTikZ macro
+            %
+            \item[\myTotalCount{totalTablesInArticle:\myarticleKeyCore}]\ Table(s).
+            %
+            \item[\myTotalCount{totalTextboxesInArticle:\myarticleKeyCore}]\ Textbox(es).
+            %
+        \end{myListMeta}
+    \end{minipage}
+    % \hfill % This adds space between the minipages
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%% SECOND COLUMN
+    \begin{minipage}[t]{0.23\textwidth}
+        \begin{myListMeta}[
+            leftmargin=0pt,
+            labelsep=0pt
+            ]
+            % \item[\myTotalCount{myGlossCounterAlt}]\ Glossary Entri(es).
+            %
+            \item[\myTotalCount{totalGlossaryEntriesInArticle:\myarticleKeyCore}]\ Glossary Entry calls.
+            %
+            \isPortfolio{}{\item[\myTotalCount{totalGlossaryEntriesAltogether}]\ Glossary Entri(es) (unique).}
+            %
+            \item[\myTotalCount{totalAbreviationsInArticle:\myarticleKeyCore}]\ Abreviation calls.
+            %
+            \isPortfolio{}{\item[\myTotalCount{totalAbreviationsAltogether}]\ Abreviation(s) (unique).}
+            %
+            \item[\myTotalCount{totalCitationsInArticle:\myarticleKeyCore}]\ Citation(s) (repeats included).
+            %
+            \item[\myTotalCount{totalFootnotesInArticle:\myarticleKeyCore}]\ Non-citation Footnote(s).
+            %
+        \end{myListMeta}
+    \end{minipage}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%% THIRD COLUMN
+    \begin{minipage}[t]{0.33\textwidth}
+        \begin{myListMeta}[
+            leftmargin=0pt,
+            labelsep=0pt
+            ]
+            \isPortfolio{}{\item[\myListLabelStyle{\ztotpages}]\ total page(s) (body + extras).}
+            %
+            \item[\myTotalCount{lastPageInArticle:\myarticleKeyCore}]\ is the last page in the article.
+            %
+            \item[%
+            \myListLabelStyle{%
+            \totalPagesInArticleBody
+            }]\ total pages in article.
+            %
+            \item[\myTotalCount{totalSectionsInArticle:\myarticleKeyCore}]\ Article Section(s).
+            %
+            \item[\myTotalCount{totalSubsectionsInArticle:\myarticleKeyCore}]\ Article Subsection(s).
+            %
+            \item[\myTotalCount{totalSubsubsectionsInArticle:\myarticleKeyCore}]\ Article Subsubsection(s).
+            %
+            \isPortfolio{}{\item[\myTotalCount{totalAppendixItemsAltogether}]\ Appendix Entri(es).}
+            %
+        \end{myListMeta}
+    \end{minipage}
+}
+
+\usepackage{refcount}
+\newcommand{\pagedifference}[2]{%
+  \number\numexpr#1+1-#2\relax%
+}
+
+\newcommand{\totalPagesInArticleBody}{
+    \pagedifference%
+    {\totvalue{lastPageInArticle:\myarticleKeyCore}}% Last page in article
+    {\getpagerefnumber{\myarticleKey:article_header}}% title page in article
+}
+
+\newcommand{\subtactOne}[1]
+{
+    \the\numexpr#1-1\relax
+}
+
+% Absolute current page number, regardless of numbering
+\newcommand\abspagenumber{\inteval{\ReadonlyShipoutCounter+1}}

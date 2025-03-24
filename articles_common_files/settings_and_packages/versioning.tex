@@ -1,0 +1,219 @@
+
+\usepackage{hologo}
+\usepackage{ifluatex}
+\usepackage{ifxetex}
+\usepackage{ifvtex}
+
+%%%%%%%%% VERSIONS
+%  THESE VALUES ARE LIKELY TO BE OVERWITTEN DOWNSTREAM
+
+\usepackage{etoolbox} %necessary for booleans
+%%% Rules:
+% Everything cammelcase!
+\newcommand{\createAndSetBoolean}[2]{
+  % #1: boolean name
+  % #2: set to true or false
+  \newbool{#1}\setbool{#1}{#2}
+}
+
+\newcommand{\myLanguage}{en}
+% Language options: en, fr
+
+% Whether PDF should be in draft or final style
+\createAndSetBoolean{isDraft}{false} % true or false
+% Whether to go into minimal, high speed mode
+\createAndSetBoolean{isMinimal}{true} % true or false
+% Whether figures should be included or skipped
+\createAndSetBoolean{isIncludeFigures}{true} % true or false
+% Whether
+\createAndSetBoolean{isPrintVersion}{false} % true or false
+\createAndSetBoolean{isDrawRibbons}{false}  % true or false
+\createAndSetBoolean{isIncludeMeta}{true} % true or false
+\createAndSetBoolean{isIncludeArticleCover}{true} % true or false
+\createAndSetBoolean{isIncludeToC}{true}  % true or false
+\createAndSetBoolean{isIncludeLoF}{true}  % true or false
+\createAndSetBoolean{isIncludeLoT}{true}  % true or false
+\createAndSetBoolean{isIncludeLoTB}{true}  % true or false
+\createAndSetBoolean{isIncludeBiblio}{true}  % true or false
+\createAndSetBoolean{isIncludeGlossary}{true}  % true or false
+\createAndSetBoolean{isIncludeAbreviations}{true}  % true or false
+\createAndSetBoolean{isPrintUnusedGlossary}{true}  % true or false
+\createAndSetBoolean{isPrintUnusedAbreviations}{true}  % true or false
+\createAndSetBoolean{isHighlightGlossaryAndAbreviations}{true}  % true or false
+\createAndSetBoolean{isIncludeMissingBibEntries}{true}  % true or false
+\createAndSetBoolean{hidecontentswitch}{true}  % true or false
+\createAndSetBoolean{revealhiddenswitch}{false}  % true or false
+% Whether footnotes should be included or ignored
+\createAndSetBoolean{isIncludeFootnotes}{true}  % true or false
+% Whether citations should be included or ignored
+\createAndSetBoolean{isIncludeCitations}{true}  % true or false
+% Whether citations should be printed in footnotes
+\createAndSetBoolean{isIncludeCitationsInFootnotes}{true}  % true or false
+% Whether textboxes should be printed or ignored
+\createAndSetBoolean{isIncludeTextBoxes}{true}  % true or false
+% Whether textboxes should be printed only at the end of article
+\createAndSetBoolean{isMoveTextBoxesToEndOfArticle}{false}  % true or false
+% Whether to constrain floats to respective sections
+\createAndSetBoolean{isConstrainFloats}{true}  % true or false
+% Whether lists items should be inline
+\createAndSetBoolean{isCollapseLists}{true}  % true or false
+% Whether to include cover image in the article body
+\createAndSetBoolean{isIncludeArticleCoverImgInBody}{false}  % true or false
+% Whether to include cover image in the article body
+\createAndSetBoolean{isCreditsInArticleBody}{true}  % true or false
+% Whether to include cover image in the article body
+\createAndSetBoolean{isSplitInTwoColumns}{false}  % true or false
+% Whether to make whole document in landscape mode or not
+\createAndSetBoolean{isLandscapeMode}{false}  % true or false
+% Whether to include appendix
+\createAndSetBoolean{isIncludeAppendix}{false}  % true or false
+
+
+%%%% PORTOFOLIO SPECIFIC:
+% Whether to add a higher level of organisation as parts to group articles
+\createAndSetBoolean{isDivideArticlesIntoParts}{true}  % true or false
+% Whether each article should have its own sub TOC/LOT/LOT
+\createAndSetBoolean{isIncludePerArticleToC}{true}  % true or false
+\createAndSetBoolean{isIncludePerArticleLoF}{true}  % true or false
+\createAndSetBoolean{isIncludePerArticleLoT}{true}  % true or false
+% Whether each article shows its substance in portfolio
+\createAndSetBoolean{isIncludePerArticleSubstance}{true}  % true or false
+% Whether the bibliography is split between chapters or grouped at end
+\createAndSetBoolean{isSplitBibliographyByChapter}{false}  % true or false
+
+
+
+
+
+
+\usepackage{xstring} % Needed for string manipulation
+
+\newcommand{\addonlyfiles}[1]{%
+  \def\onlyfiles{#1}%
+}
+
+
+% Create new command: \addContent
+\NewDocumentCommand\addContent{
+  +m % Arg 1 (Mandatory): Section
+  +O{} % Arg 2 (Optional): Language
+  }{
+
+    \ifthenelse{\equal{#2}{}}%
+      { % IF
+        \def\fileAddress{elements/#1/#1.tex}%
+      }%
+      { % ELSE
+        \def\fileAddress{elements/#1/#1\_#2.tex}%
+      }%
+    % \textcolor{green}{\fileAddress}
+
+
+    % Update ribbons
+    \updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Section : \textbf{#1}}{#2}
+
+    \IfSubStr{\onlyfiles}{#1}{ %%% only if it is part of \addonlyfiles list
+      \InputIfFileExists{\fileAddress}
+        {%
+           % then
+          % Add code here (it is run before file)
+        }%
+        {%
+    %     % else
+    %     % ...
+        }%
+    }
+
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%% SWITCH MODULE
+% https://tex.stackexchange.com/questions/87656/turning-parts-of-text-on-and-off
+
+% new environment for switchable areas
+\NewDocumentEnvironment{hidecontent}{O{999}}%
+% WARNING: if no argument is provided, content must NOT start with an empty paragraph. If argument is provided, it seems ok, but generally it is better to avoid the empty paragraph.
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\comment}%
+  \ifbool{revealhiddenswitch}{\color{hideEnvColor}%
+  }%
+  \else%
+  \fi%
+  }%
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\endcomment}%
+  \else%
+  \fi%
+  }%
+
+% without color option (basic)
+\NewDocumentEnvironment{hidecontentbasic}{O{999}}%
+% WARNING: if no argument is provided, content must NOT start with an empty paragraph. If argument is provided, it seems ok, but generally it is better to avoid the empty paragraph.
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\comment}%
+  \else%
+  \fi%
+  }%
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\endcomment}%
+  \else%
+  \fi%
+  }%
+
+%that's it ! now I need to use
+% \begin{hidecontent}
+% \end{hidecontent}
+
+
+% with color option
+\newcommand{\hide}[2][999]{%
+    \ifnum\version<#1%
+     \ifbool{hidecontentswitch}{}{%
+      \ifbool{revealhiddenswitch}{%
+      \ignorespaces\textcolor{hideColor}{%
+          #2}}{%
+          \ignorespaces#2}%
+     }%
+     \else%
+     #2%
+    \fi%
+}%
+
+% without color option (basic)
+\newcommand{\hidebasic}[2][999]{%
+    \ifnum\version<#1%
+     \ifbool{hidecontentswitch}{}{%
+      \ignorespaces#2%
+     }%
+    \else%
+     #2%
+    \fi%
+}%
+
+%%%% Shorthand to check if portfolio (yes) or article (no) document
+\newcommand{\isPortfolio}[2]{%
+  \ifthenelse{\equal{\jobname}{\detokenize{article_portfolio}}}
+  {#1}
+  {#2}
+}%
+
+%%%% Shorthand to check if article (yes) or portfolio (no) document
+\newcommand{\isArticle}[2]{%
+  \ifthenelse{\equal{\jobname}{\detokenize{document}}}
+  {#1}
+  {#2}
+}%
+
+%%%% Shorthand to check if print version
+\newcommand{\isPrint}[2]{%
+  \ifthenelse{\boolean{isPrintVersion}}%
+  {#1}%
+  {#2}%
+}

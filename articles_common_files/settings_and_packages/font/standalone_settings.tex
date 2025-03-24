@@ -1,0 +1,126 @@
+% lua function to transform a string into a command
+\begin{luacode}
+    function fontCommand(word)
+        return "\\"..word
+    end
+\end{luacode}
+% Define a wrapper command in LaTeX
+\newcommand{\fontCmd}[1]{%
+    \directlua{tex.print(fontCommand("#1"))}%
+}
+
+
+\begin{luacode}
+    ---------------------------------------------------------------------------
+    -- variables to hold included/excluded font families
+    fontFamiliesExcluded={}
+    fontFamiliesIncluded={}
+    ---------------------------------------------------------------------------
+    -- functions to print length of included/excluded lists
+    function fontFamiliesExcludedLength()
+        tex.print(#fontFamiliesExcluded)
+    end
+    function fontFamiliesIncludedLength()
+        tex.print(#fontFamiliesIncluded)
+    end
+    ---------------------------------------------------------------------------
+    -- functions to add into included/excluded lists
+    function addToExcluded(s)
+        if s ~= "" then -- if not empty
+            fontFamiliesExcluded[#fontFamiliesExcluded + 1] = s
+        end
+    end
+    function addToIncluded(s)
+        if s ~= "" then -- if not empty
+            fontFamiliesIncluded[#fontFamiliesIncluded + 1] = s
+        end
+    end
+
+    ---------------------------------------------------------------------------
+    -- function to loop over a list and add commas in between
+    function loopOverList(l)
+        list={}
+        -- Print the list contents
+        for i, item in pairs(l) do
+            -- if the current item is empty
+            if item == "" then
+                break
+            end
+            -- if the current item is the last element
+            if i ~= #l then
+                list[#list + 1] = item .. ","
+            else
+                list[#list + 1] = item
+            end
+        end
+        return list
+    end
+
+    ---------------------------------------------------------------------------
+    -- functions to print included/excluded lists
+    function printFamiliesIncluded()
+        local list=loopOverList(fontFamiliesIncluded)
+        if #list == 0 then
+            tex.print("none")
+        else
+            tex.print(list)
+        end
+    end
+
+    function printFamiliesExcluded()
+        local list=loopOverList(fontFamiliesExcluded)
+        if #list == 0 then
+            tex.print("none")
+        else
+            tex.print(list)
+        end
+    end
+
+\end{luacode}
+
+% lua function wrappers
+\NewDocumentCommand{\addToIncluded}
+{m%
+}{%
+    \directlua{addToIncluded("#1")}%
+}
+
+\NewDocumentCommand{\addToExcluded}
+{m%
+}{%
+    \directlua{addToExcluded("#1")}%
+}
+
+%%%% Filter font families based on whether they are available on the computer or not
+\newcommand{\filterFontFamilies}{%
+    \foreach \fam [count=\n] in \FontFamilies {%
+        \expandafter\IfFontExistsTF\expandafter{\fam}
+        {\addToIncluded{\fam}}
+        {\addToExcluded{\fam}}
+    }%
+}
+
+%%% Function to apply a passed string as a style for the following text
+\NewDocumentCommand{\applyProperty}
+{
+    m% parameter to be applied
+}
+{%
+    % check if if passed parameter is a font. Since the font family has already been filtered, if it is a font, it must exist. If it does not exists, it must be a font size or style
+    \IfFontExistsTF{#1}%
+    {% if it is a font, set it
+        \setmainfont{#1}%
+    }%
+    {%% if it is not a font, apply it
+        \fontCmd{#1}%
+    }%
+}%
+
+% function to style labels
+\newcommand{\myLabel}[1]{\textcolor{black!75}{#1}}%%% styling labels
+
+% function to add horizontal line separators between outer loop turns
+\newcommand{\outerSeparator}{%
+    \noindent\rule{\textwidth}{.4pt}\\[\dimexpr-\baselineskip+1mm+2pt]
+    \rule{\textwidth}{2pt}
+}

@@ -1,0 +1,66 @@
+\usepackage{luacode} % for 'luacode' environment and '\luastring' macro
+
+% Lua code to record the start time
+\begin{luacode*}
+    startTime = os.clock()
+    endTime = nil
+    elapsedTime = nil
+\end{luacode*}
+
+
+%%% Create variables that will be stored in aux file
+\providecommand{\myCompileDuration}{0}%
+\providecommand{\elapsedInt}{0}%
+\providecommand{\elapsedFrac}{0}%
+
+%%% Macro to write to auxiliary file
+\makeatletter
+\newcommand{\writeToAux}[2]{%
+%%% \immediate\write\@auxout: Writes immediately to the .aux file.
+%%% \string: Ensures that \ characters are written verbatim to the .aux file.
+%%% \gdef: Makes the definition global, so it will work in subsequent runs.
+% \immediate%
+\protected@write\@auxout{}{\gdef\string#1{#2}}}
+\makeatother
+
+%%% Calculate elapsed time at the end of the document
+\AtEndDocument{
+    \luaexec{
+        %-- beware of special characters! need to escape them%
+        %-- beware of paragraphs !!!
+        %-- Comment can cause issues, always add "--" and keep in separate lines!
+        endTime = os.clock()
+        %-- Calculate time difference
+        elapsedTimeSeconds=endTime-startTime
+        elapsedTimeMilliseconds=(elapsedTimeSeconds\%1)*10
+        %-- any higher multiplication (100, 1000) and it fails for unknown reason
+        %-- integer part
+        elapsedInt=math.floor(elapsedTimeSeconds)
+        %-- fractional part
+        elapsedFrac=math.floor(elapsedTimeMilliseconds)
+        %-- Format string
+        elapsedIntFormatted=tostring(elapsedInt)
+        elapsedFracFormatted=tostring(elapsedFrac)
+        %-- Define the elapsed time in a TeX macro
+        %-- tex.print("\\gdef\\myCompileDurationTemp{" .. string.format("\%.2f seconds", elapsedTimeSeconds) .. "}")
+        %-- Write to the AUX file directly
+        f=io.open("auxiliary_files/\jobname.aux","a")
+        f:write("\\gdef\\elapsedInt{"..elapsedIntFormatted.."}")
+        f:write("\\gdef\\elapsedFrac{"..elapsedFracFormatted.."}")
+    }
+    %
+    \isDraftDebugger{%
+        \luaexec{
+        % -- Print the values for debugging at document ned
+        tex.print("Start Time: " .. string.format("\%.2f", startTime))
+        tex.print(" --- ")
+        tex.print("End Time: " .. string.format("\%.2f", endTime))
+        tex.print(" --- ")
+        tex.print("Elapsed Time: " .. string.format("\%.2f", elapsedTimeSeconds))
+        }%
+    }{}
+    % STORE RESULT FOR SUBSEQUENT RUNS
+    % \writeToAux{\myCompileDuration}{myCompileDurationTemp}
+    % \elapsedInt
+    % \elapsedFrac
+}

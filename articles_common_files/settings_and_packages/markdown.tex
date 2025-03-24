@@ -1,0 +1,29 @@
+% To use markdown in a LATEX document
+\usepackage[
+  fancyLists=true
+]{markdown}
+
+\newcommand{\myInputREADME}{%
+  \begin{tcolorbox}[
+      breakable,
+      title={README contents},
+      width={0.975\pagewidth},
+      center,
+      % show bounding box % to show where box is placed
+    ]
+      \isPortfolio{%
+        \markdownInput{../README.md}%
+      }%
+      {%
+        \markdownInput{../../README.md}%
+      }%
+  \end{tcolorbox}
+}
+
+% \AfterPreamble{
+%   %%%% NOT WORKING !!!!
+%   % directory where the auxiliary latex file will be created
+%   \markdownOptionOutputDir{hello}
+%   % filename
+%   \markdownOptionInputTempFileName{jjjj}
+% }

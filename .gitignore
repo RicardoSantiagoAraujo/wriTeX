@@ -306,3 +306,40 @@ TSWLatexianTemp*
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
+
+
+**.DS_Store
+
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.pdfsync
+*.run.xml
+*.idx
+*.ilg
+*.ind
+*.ilg
+_markdown_document/
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore backup files
+*~
+*.bak
+
+
+# Ignore build directory, if you're using one
+auxiliary_files/
+*/auxiliary_files/

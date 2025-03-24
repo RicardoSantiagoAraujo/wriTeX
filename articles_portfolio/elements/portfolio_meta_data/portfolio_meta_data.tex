@@ -1,0 +1,273 @@
+\updateRibbons{\textbf{Portfolio meta-info}}{}
+\metaInfoSettings{
+    \section*{\textcolor{myGrayMed}{ARTICLE PORTFOLIO METADATA}}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% ABOUT
+    \subsection*{About}
+    \begin{myListMeta}[
+        % leftmargin=0pt,
+        % labelsep=0pt
+        ]
+        %
+        \item[\myListLabelStyle{Ownership:}] Owner name
+        %
+        \item[\myListLabelStyle{Language:}] \myLanguage\ (\myLanguageLong)
+        %
+        \item[\myListLabelStyle{Compilation date:}] \today
+        %
+        \item[\myListLabelStyle{Compilation time:}] \DTMcurrenttime
+        %
+        \item[\myListLabelStyle{Compilation duration:}] \elapsedInt.\elapsedFrac\ seconds (previous single run)
+        %
+        \item[\myListLabelStyle{Lua\TeX\ version:}] \myLuatexMessage
+        %
+        \item[\myListLabelStyle{Geometry:}] \myGeometrySettingsInfo
+        %
+    \end{myListMeta}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% PORTFOLIO OPTIONS
+    \subsection*{Portfolio Options}
+
+    \newcommand{\portfolioOptionsItem}[1]{%
+    % \isPortfolio{}{%
+        \item[\myListLabelStyle{#1}]\ \ifthenelse{\boolean{#1}}{\textcolor{myColorSuccess}{true}}{\textcolor{myColorDanger}{false}}%
+    % }%
+}%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%% FIRST COLUMN
+    \begin{minipage}[t]{0.40\textwidth} % Adjust width as needed
+        \begin{myListMeta}[
+            leftmargin=100pt,
+            labelsep=0pt
+            ]
+            %%% START WITH EMPTY ITEM
+            \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
+            %
+            \item[\myListLabelStyle{Language}]\ \myLanguageLong (\myLanguage)
+            \item[] % empty gap
+            \item[---] \textbf{Portfolio only:}
+            \portfolioOptionsItem{isIncludePerArticleToC}
+            %
+            \portfolioOptionsItem{isIncludePerArticleLoF}
+            %
+            \portfolioOptionsItem{isIncludePerArticleLoT}
+            %
+            \portfolioOptionsItem{isIncludePerArticleSubstance}
+            %
+            \portfolioOptionsItem{isSplitBibliographyByChapter}
+            %
+            \item[] % empty gap
+            \item[---] \textbf{General:}
+            %
+            \portfolioOptionsItem{isMinimal}
+            %
+            \portfolioOptionsItem{isDraft}
+            %
+            \portfolioOptionsItem{isPrintVersion}
+            %
+            \portfolioOptionsItem{isLandscapeMode}
+            %
+            \portfolioOptionsItem{isSplitInTwoColumns}
+            %
+        \end{myListMeta}
+    \end{minipage}
+    % \hfill % This adds space between the minipages
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%% SECOND COLUMN
+    \begin{minipage}[t]{0.30\textwidth}
+        \begin{myListMeta}[
+            leftmargin=40pt,
+            labelsep=0pt
+            ]
+            %%% START WITH EMPTY ITEM
+            \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
+            %
+            \portfolioOptionsItem{isDrawRibbons}
+            %
+            \portfolioOptionsItem{isIncludeMeta}
+            %
+            \portfolioOptionsItem{isIncludeArticleCover}
+            %
+            \portfolioOptionsItem{isIncludeToC}
+            %
+            \portfolioOptionsItem{isIncludeLoF}
+            %
+            \portfolioOptionsItem{isIncludeLoT}
+            %
+            \portfolioOptionsItem{isIncludeLoTB}
+            %
+            \portfolioOptionsItem{isIncludeBiblio}
+            %
+            \portfolioOptionsItem{isIncludeGlossary}
+            %
+            \portfolioOptionsItem{isIncludeAbreviations}
+            %
+            \portfolioOptionsItem{isPrintUnusedGlossary}
+            %
+            \portfolioOptionsItem{isPrintUnusedAbreviations}
+            %
+            \portfolioOptionsItem{isHighlightGlossaryAndAbreviations}
+            %
+        \end{myListMeta}
+    \end{minipage}
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%% THIRD COLUMN
+    \begin{minipage}[t]{0.30\textwidth}
+        \begin{myListMeta}[
+            leftmargin=40pt,
+            labelsep=0pt
+            ]
+            %%% START WITH EMPTY ITEM
+            \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
+            %
+            \portfolioOptionsItem{isIncludeMissingBibEntries}
+            %
+            \portfolioOptionsItem{isIncludeFootnotes}
+            %
+            \portfolioOptionsItem{isIncludeCitations}
+            %
+            \portfolioOptionsItem{isIncludeCitationsInFootnotes}
+            %
+            \portfolioOptionsItem{isIncludeTextBoxes}
+            %
+            \portfolioOptionsItem{isMoveTextBoxesToEndOfArticle}
+            %
+            \portfolioOptionsItem{isConstrainFloats}
+            %
+            \portfolioOptionsItem{isIncludeArticleCoverImgInBody}
+            %
+            \portfolioOptionsItem{isCreditsInArticleBody}
+            %
+            \portfolioOptionsItem{hidecontentswitch}
+            %
+            \portfolioOptionsItem{revealhiddenswitch}
+            %
+            \item[\myListLabelStyle{Contents version}]\ \version
+        \end{myListMeta}
+    \end{minipage}
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% ARTICLES INCLUDED
+    \subsection*{Articles included}
+    % \expandafter\detokenize\expandafter{\articleList}\\ % all in line
+    \begin{myListMeta}
+        %%% START WITH EMPTY ITEM
+        \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
+        \newcounter{localPartCount}
+        \newcounter{localArtCount}
+        \foreach \article [count=\n] in \articleList {
+            \ifthenelse{\equal{\article}{}}%%% make sure value is not empty
+            {}% if empty, ignore
+            {% if not empty
+                \checkIsPart{\article}
+                {%is part
+                    \stepcounter{localPartCount}
+                    \item[{\myListLabelStyle{\textbullet\ PART\ \thelocalPartCount}[myColorPrimary]}]%
+                    \textcolor{myColorPrimary}
+                    {%
+                        \hyperlink{part:\thelocalPartCount}
+                        {%
+                            \parsePartString{\article}%
+                        }%
+                        \hrule%
+                    }%
+                }
+                {% is article
+                    \stepcounter{localArtCount}
+                    \renewcommand{\myarticleKeyCore}{\article}
+                    \item[\myListLabelStyle{Chapter\ \thelocalArtCount}] \hyperlink{myarticle:\article:\myLanguage:articleHeader}{
+                        \expandafter\detokenize\expandafter{\article}\ :%
+                        \expandafter\myCiteEntry\expandafter{myarticle:\article:\myLanguage}{title}
+                    }
+                }
+            }
+        }
+    \end{myListMeta}%
+    \ifthenelse{\equal{\articleList}{}}{\textcolor{myColorDanger}{No components included}}{}%
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% PORTFOLIO INCLUDED COMPONENTS
+    \subsection*{Components included}
+
+    \begin{myListMeta}
+        \foreach \path in \includeFilePaths {
+            \item \expandafter\detokenize\expandafter{\path}%
+        }
+    \end{myListMeta}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% PORTFOLIO APPENDIX ITEMS
+    \subsection*{Appendix entries %
+    \ifthenelse{\boolean{isIncludeAppendix}}{}{\textsuperscript{\textcolor{myColorDanger}{\tiny APPENDIX EXCLUDED}}}%
+    }
+    \begin{myListMeta}
+        \foreach \entries [count=\n] in \appendixList {
+            \item[\myListLabelStyle{\makeAlph{\n}}] %
+            \hyperlink{appendix:target:\n}{\expandafter\detokenize\expandafter{\entries}}%
+        }
+    \end{myListMeta}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% PORTFOLIO COUNTERS
+    \subsection*{Portfolio counters}
+    \begin{minipage}[t]{1\textwidth}
+        \begin{myListMeta}[
+            % leftmargin=0pt,
+            % labelsep=0pt
+            ]
+            \item[\myTotalCount{totalPortfolioPartsAltogether}]\ Part(s).
+            %
+            \item[\myTotalCount{totalArticlesAltogether}]\ Articles(s).
+            %
+            \item[\myListLabelStyle{\ztotpages}]\ Total Page(s).
+            %
+            \item[\myTotalCount{totalCitationsAltogether}]\ Citation(s).
+            %
+            \item[\myTotalCount{totalGlossaryEntriesAltogether}]\ Glossary Entrie(s).
+            %
+            \item[\myTotalCount{totalAbreviationsAltogether}]\ Abreviation(s).
+            %
+            \item[\myTotalCount{totalArticleSectionsAltogether}]\ Section(s).
+            %
+            \item[\myTotalCount{totalArticleSubsectionsAltogether}]\ Subsection(s).
+            %
+            \item[\myTotalCount{totalArticleSubsubsectionsAltogether}]\ Subsubsection(s).
+            %
+            \item[\myTotalCount{totalFiguresAltogether}]\ Counted Figure(s).% Fig or Wrapfig envs.
+            %
+            \item[\myTotalCount{totalFigureEnvsAltogether}]\ Figure Environment(s).
+            %
+            \item[\myTotalCount{totalWrapfigureEnvsAltogether}]\ Wrapfigure Environment(s).
+            %
+            \item[\myTotalCount{totalSubfiguresAltogether}]\ Subfigure(s).
+            %
+            \item[\myTotalCount{totalGraphicsAltogether}]\ Gaphic input(s).
+            %
+            \item[\myTotalCount{totalTikZPicturesAltogether}]\ TikZ picture(s).
+            %
+            \item[\myTotalCount{totalTablesAltogether}]\ Table(s).
+            %
+            \item[\myTotalCount{totalTextboxesAltogether}]\ Textbox(es).
+            %
+            \item[\myTotalCount{totalFootnotesAltogether}]\ Footnote(s).
+            %
+            \item[\myTotalCount{totalAppendixItemsAltogether}]\ Appendix item(s).
+            %
+        \end{myListMeta}
+    \end{minipage}
+}

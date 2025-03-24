@@ -1,0 +1,10 @@
+\RequirePackage{l3benchmark}
+\ExplSyntaxOn
+\AfterEndDocument { \benchmark_toc: }
+\use:n
+  {
+    \ExplSyntaxOff
+    % PRINT COMPILE DURATION TO LOG (look for "(l3benchmark) + TOC" in .log file)
+    %%% print correspond to one TeX run only
+    \benchmark_tic:
+  }

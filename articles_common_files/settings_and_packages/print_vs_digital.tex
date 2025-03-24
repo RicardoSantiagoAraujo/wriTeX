@@ -1,0 +1,44 @@
+\ifthenelse{\boolean{isPrintVersion}}%
+{% IF YES
+    % PRINTABLE VERSION
+    \setboolean{@twoside}{true}
+    \ifthenelse{\equal{\@documentclass}{book}}{\setboolean{@openright}{true}}{} %%% only applies to book class
+    \loadgeometry{print}
+    \isPortfolio
+    {%
+        \tocloftpagestyle{plain}%
+        \pagestyle{plain}%
+    }
+    {%
+        \tocloftpagestyle{stylePrint-NoPage}%
+        \pagestyle{stylePrint-NoPage}
+    }
+}
+{% ELSE
+    %DIGITAL VERSION
+    \setboolean{@twoside}{false} %% should it be two side still, so that fancy footer placements work ???
+    \ifthenelse{\equal{\@documentclass}{book}}{\setboolean{@openright}{false}}{} %%% only applies to book class
+    \loadgeometry{digital}
+    \pagestyle{styleDigital-NoPage}
+    \isPortfolio
+    {%
+        \tocloftpagestyle{plain}%
+        \pagestyle{plain}%
+    }
+    {%
+        \tocloftpagestyle{styleDigital-NoPage}%
+        \pagestyle{styleDigital-NoPage}
+    }
+}
+
+
+
+\newcommand{\pageStyleBody}{%
+    \isPrint%
+    {
+        \pagestyle{stylePrint}
+    }
+    {
+        \pagestyle{styleDigital}
+    }%
+}

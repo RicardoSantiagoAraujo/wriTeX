@@ -1,0 +1,274 @@
+%%% Article cover page
+
+
+%%%%%%% DESIGN OF TITLE PAGE
+\newcommand{\myTitlePage}{%
+    \begin{titlepage}
+        \atBeginTitlePage% Important set important functionalities
+        \pagecolor{myGrayLight}
+        \centering
+        % \myVfills{2}
+        %
+        \begin{myTitlesBox}
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%% TITLE
+            {%
+                \color{myColorSecondary}% Color
+                \setTitleFont% Font family
+                \HUGE% Font size
+                \bfseries% Bold
+                \scshape% Small caps
+                \lsstyle% letter spacing
+                % \itshape% Italics
+                \myCiteEntry{\myarticleKey}{title}%
+            }%
+            % \tcblower%%% adds separator in colorbox between upper and lower half
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%% SUBTITLE
+            {%
+                \color{myGrayDark}\large \myCiteEntry{\myarticleKey}{subtitle}
+                [\\\vspace{0.35cm}]
+                [\vspace{0.35cm}]
+            }%
+        \end{myTitlesBox}
+        %
+        \titlePageItem
+        {0}% space units before
+        [\horizontalDeco{Written by:}]% Prenote
+        {author}
+        [\\]% Postnote
+        {0}% space units above
+        %
+        \titlePageItem
+        {0}% space units before
+        [\horizontalDeco{Illustrated by:}]% Prenote
+        {illustrator}
+        [\\]% Postnote
+        {0}% space units above
+        %
+        \titlePageItem
+        {0}% space units before
+        [\horizontalDeco{Reviewed by:}]% Prenote
+        {reviewer}
+        [\\]% Postnote
+        {0}% space units above
+        %
+        \titlePageItem
+        {0}% space units before
+        [\horizontalDeco{Translated by:}]% Prenote
+        {translator}
+        [\\]% Postnote
+        {0}% space units above
+        %
+        % Institution
+        % {\normalsize Institution Name}
+        % \myVfills{1}
+        %
+        % Optional: cover image
+        \addCoverImg{\myMainImg}
+        \myVfills{1}
+        % Optional: logo
+        % \includegraphics[width=0.2\textwidth]{icons/placeholder.png}
+        %
+        % Date
+        {\color{myGrayDark}\normalsize \today}
+        \myVfills{1}
+        %
+    \end{titlepage}
+}
+
+
+
+\newcounter{titlepagenumber}% Store current page to recover it after titlepage (which would reset it)
+
+\newcommand{\addCover}{%
+    \ifthenelse{\boolean{isIncludeArticleCover}}%
+    {%
+        \updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Cover}{COVER}
+        \setcounter{titlepagenumber}{\value{page}}% recover page number
+        % Create the cover page
+        \begin{samepage}
+            \myTitlePage%
+        \end{samepage}
+        % revert bg color
+        \isDraft{%
+            \pagecolor{draftBgColor}%
+        }%
+        {%
+            \pagecolor{bgColor}%
+        }%
+    }
+    {%
+    % else clause
+    }%
+}
+
+\NewDocumentCommand{\addCoverImg}
+{
+    m% image filename
+    O{0.5\textwidth}% image size
+}{%
+    \isDraftDebugger{Cover image:\ #1\\}{}%
+    \ifthenelse{\equal{#1}{}}%
+    {}%
+    {%
+    \begin{tcolorbox}
+        [
+        center,
+        colframe=myColorPrimary,
+        % colback=orange!50,
+        boxsep=0px,
+        left=0pt,right=0pt,top=0pt,bottom=0pt,
+        boxrule=3px,
+        arc=0px,
+        outer arc=0px,
+        hbox
+        ]
+         \includegraphics[width=#2]{#1}%\\%
+    \end{tcolorbox}%
+    }%
+}
+
+
+
+
+\newcommand{\atBeginTitlePage}
+% if i use atBeginEnv{titlepage}, i get an undesired page break
+{%
+    \setcounter{page}{\thetitlepagenumber}%
+    %%% reference to cover
+    \isPortfolio{}{\hypertarget{start}{}}% generic reference to cover, used by ribbon link
+    \newcommand{\articleCoverRef}{\myarticleKeyCore:cover}%
+    \isPortfolio{}{\hypertarget{\articleCoverRef}{}} % reference to this specific cover
+    \isDraftDebugger{specific reference: \articleCoverRef; generic reference: start}{}%
+    \phantomsection % ensures linking with hyperref to exact page
+    \hypertarget{\myarticleKeyCore:cover}{}%
+    \label{\myarticleKeyCore:cover} % Add label here
+    % ADD TO TOC WITHOUT NUMBER PAGE
+    \isPortfolio
+    {%
+        \addcontentsline{toc}{section}{%
+            \noindent%
+            \protect\hyperref[\myarticleKeyCore:cover]{\textbf{\TEXTcover}}%
+        }%
+    }
+    {%
+        \addtocontents{toc}{%
+            \protect\myContentsTextFont% change font
+            \noindent%
+            \hyperref[\myarticleKeyCore:cover]{\textbf{\TEXTcover}}%
+            \par% this paragraph can cause issues, use \par, not \\
+        }%
+    }%
+}
+
+
+% Macro add vertical space in proportion
+\NewDocumentCommand{\myVfills}
+{%
+    m% how many
+}
+{%
+    % \par%
+    \ifthenelse{#1>0}%
+    {%
+        \foreach \n in {1,...,#1}{%
+            \vfill%
+            \isDraftDebugger%
+            {%
+                \textcolor{myColorWarning}{\tiny\n}%
+                \vfill%
+            }{}%
+        }%
+    }%
+    {%
+        \isDraftDebugger
+        {\textcolor{myColorDanger}{\tiny DO NOT ADD SPACE}}%
+        {}%
+    }% if 0, do add anything
+}
+
+
+\NewDocumentCommand{\titlePageItem}
+{%
+    m% space added at the beginning
+    O{}% Optional prenote
+    m% cite key to desired field
+    O{}% Optional postnote
+    m% space added at the end
+}
+{%
+    {%
+        % Styling entry
+        \normalsize\color{myGrayDark}%
+        %
+        \myCiteEntry{\myarticleKey}{#3}%
+        %%% Prenote
+        [{%
+            \myVfills{#1}% SPACE
+            \normalsize\color{myGrayMed}% STYLE
+            #2% CONTENT
+        }]%
+        %%% Postnote
+        [{%
+            \normalsize\color{myGrayMed}% STYLE
+            #4% CONTENT
+            \myVfills{#5}% SPACE
+        }]%%%adding space if present
+    }%
+}
+
+\newtcolorbox{myTitlesBox}
+{
+    % draft,% to see measurements
+    enhanced,
+    center,
+    halign=center,
+    % halign lower=center,
+    valign upper=center,
+    % valign lower=center,
+    % lower separated=false,% make separation invisible
+    width={1\pagewidth},
+    % text width=0.8\linewidth,
+    height=5cm,
+    boxsep=5mm,
+    boxrule=0.1mm,
+    leftrule=0.25mm,
+    rightrule=0.25mm,
+    arc is angular,% box shape
+    arc=1mm,
+    outer arc=0mm,
+    colback=myColorPrimary!3!white,colframe=myColorPrimary!95!black,
+    % TITLE OF TEXTBOX
+    title={Mediation Article},
+    fonttitle=\Large,
+    coltitle=white,
+    % colbacktitle=red,
+    toptitle=3mm, bottomtitle=3mm,
+    halign title=flush center,
+    attach boxed title to top center={
+        xshift=0cm,
+        yshift= -3.5mm, % What do I put here? I'd like to have something like:
+%       yshift= -0.5\titleboxheight
+    }
+}
+
+
+\NewDocumentCommand{\horizontalDeco}
+{m}{%
+    \tikzset{
+    myline/.style={
+        line width=0.1ex,
+        line cap=round,
+        myColorPrimary
+    }
+    }
+    \noindent\tikz{%
+        %%% CONTENT
+        \path (0,0) -- node[inner xsep=1em] (content) {#1} ++ (\linewidth,0);
+        % LEFT LINE
+        \draw[myline]  (0,0) -- (content);
+        % RIGHT LINE
+        \draw[myline]  (content) -- (\linewidth,0);
+    }%
+}

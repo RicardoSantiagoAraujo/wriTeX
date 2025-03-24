@@ -1,0 +1,167 @@
+\ifthenelse{\boolean{isSplitInTwoColumns}}
+{
+  \newcommand{\textboxXmargin}{5pt}
+  \newcommand{\textboxwidth}{0.98\linewidth}
+}
+{
+  \newcommand{\textboxXmargin}{35pt}
+  \newcommand{\textboxwidth}{0.95\linewidth}
+}
+
+% Define default box style
+\tcbset{
+  myTcbBaseStyle/.style={
+    center, % enlarges bounding box on both sides to fill he line completely
+    colback=myGrayLight!50, % Background color
+    colframe=myGrayMed, % Outline color
+    coltitle=myGrayLight, % Title background color
+    sharp corners=south, % Square bottom corners
+    rounded corners=north, % Rounded top corners
+    boxrule=1pt, % Outline thickness
+    top=15pt, % Inner top margin
+    bottom=20pt, % Inner bottom margin
+    left=\textboxXmargin, % Inner left margin
+    right=\textboxXmargin, % Inner right margin
+    arc=5pt, % Corner rounding radius
+    fonttitle=\bfseries, % Title font
+    width=\textboxwidth, % Box width
+    before skip=20pt, % Vertical space before the box
+    after skip=20pt, % Vertical space after the box
+    title after break, % Keep title on broken pages
+    breakable, % Allow breaking across pages
+    enhanced, % Enable advanced TikZ features
+    titlerule=0mm, % Optional title line
+    % title={\strut}, % Dummy title; replace with actual text
+  },
+}
+
+\newtcolorbox[]{myTextBoxBase}[2][]{%
+myTcbBaseStyle,
+% float, % allow to float ("nofloat" also possible)
+% floatplacement=tbp, % default positioning: "{t}op", "{b}ottom", "{p}age" or "{h}ere"
+drop fuzzy shadow southeast=myGrayDark,
+title after break={#2 -- cont.}, % repeat title after each page break
+title={#2},
+#1% optional arguments
+}
+
+%%% List of Textboxes
+\newcommand{\listtextboxname}{My list of Textboxes}
+\newlistof{textbox}{loTB}{\listtextboxname}
+
+%%% Textboxes command
+\newcommand\myTBLinker{textbox:\the\value{totalTextboxesInArticle:\myarticleKeyCore}}% key to identify individual textboxes
+\NewDocumentCommand{\myTextBox}
+{
+  O{}%optional arguments
+  m% title
+  m% content
+}
+{%
+\ifthenelse{\boolean{isIncludeTextBoxes}}{%
+  \ifthenelse{\boolean{isMoveTextBoxesToEndOfArticle}}
+  {%%% Move textbox to end
+    \moveTextboxToEnd{%
+      \textboxFrame{#2}{#3}
+      [nofloat]
+
+      %%% List of Textboxes entry:
+      \addLineToToTB{#2}
+    }
+  }
+  {%%% ELSE add textbox as a float
+      \textboxFrame{#2}{#3}
+      [% /!\ NO SPACES HERE
+        float, % allow to float ("nofloat" also possible)
+        floatplacement=tbp, % default positioning: "{t}op", "{b}ottom", "{p}age" or "{h}ere"
+        #1%
+      ]%
+    %%% List of Textboxes entry:
+    \addLineToToTB{#2}
+  }
+}{}
+}
+
+\newcommand{\addLineToToTB}[1]
+{%
+  \isPortfolio{%
+    %%%% PORTFOLIO
+    \addcontentsline{loTB}{textbox}
+    {%
+      \protect\myContentsTextFont% change font
+      \protect%
+      \hypertarget{\myTBLinker}%
+      {\indent\protect\numberline{%
+        \thechapter.% Add chapter nb
+        \the\value{totalTextboxesInArticle:\myarticleKeyCore}}%
+        \ \ \ #1}%
+    }
+  }
+  {%
+    %%%% SINGLE ARTICLE
+    \addcontentsline{loTB}{textbox}
+    {%
+      \protect\myContentsTextFont% change font
+      \protect%
+      \hypertarget{\myTBLinker}%
+      {\indent\protect\numberline{%
+        \the\value{totalTextboxesInArticle:\myarticleKeyCore}}%
+        \ \ \ #1}%
+    }
+  }%
+  \par%
+}
+
+\newcommand{\textboxTitle}[1]{%
+  \textcolor{myGrayDark}{\TEXTtextbox\ \the\value{totalTextboxesInArticle:\myarticleKeyCore}:} \detokenize{#1}%
+}
+
+\NewDocumentCommand{\textboxFrame}
+{
+  m % textbox title
+  m % textbox content
+  O{} % optional arguments
+}
+{
+  \stepcounter{totalTextboxesAltogether}%
+  \refstepcounter{totalTextboxesInArticle:\myarticleKeyCore}%
+  \begin{myTextBoxBase}[#3]
+    {% TEXTBOX TITLE
+        {\phantomsection%
+        \ifthenelse{\boolean{isIncludeLoTB}}
+        {% as hyperlink
+          \hyperlink{\myTBLinker}{%
+            \textboxTitle{#1}%
+          }%
+        }%
+        {% as simple text
+          \textboxTitle{#1}%
+        }%
+        }
+    }%
+    \label{\myTBLinker}% increment counter and ref it
+    \isDraftDebugger{Ref key: \myTBLinker\\}{}%% Print reference key in draft mode
+    % TEXTBOX CONTENTS
+    % \onehalfspacing
+    #2
+  \end{myTextBoxBase}
+}
+
+
+\NewDocumentCommand{\myTextboxRef}
+{
+    m % reference key
+    O{\TEXTtextbox} % reference prefix
+}{%
+  \begingroup%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{myColorWarning}%
+    \texttt{(textbox:#1)}%print ref for debugging
+  }
+  {%
+    \color{myGrayMed}%
+  }
+  %Print ref
+  #2\ \ref{textbox:#1}%
+  \endgroup%
+}

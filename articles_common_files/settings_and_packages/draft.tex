@@ -1,0 +1,105 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% ===== MACRO TO RUN CONTENTS ONLY IN DRAFT VERSION
+\newcommand{\isDraft}[2]{%
+    \ifthenelse{\boolean{isDraft}}%
+    {#1}%
+    {#2}%
+}
+\newcommand{\draftVersionOnly}[1]{%
+    %If document mode is draft...
+    \isDraft{%
+        #1%
+    }
+    {}
+}
+
+\usepackage{draftwatermark}
+\DraftwatermarkOptions{stamp=false} % watermark off
+
+\newcommand{\myWatermark}{
+    \DraftwatermarkOptions{stamp=true} % watermark on
+    \isPortfolio{ % IF PORTFOLIO
+        \SetWatermarkText{PORTFOLIO DRAFT} % use text as watermark
+    }{ % IF SINGLE ARTICLE
+        \SetWatermarkText{ARTICLE DRAFT} % use text as watermark
+    }
+    % \SetWatermarkText{\tikz{\node[opacity=0.2]{\includegraphics{example-image-a}};}} % to use image instead
+    \SetWatermarkScale{0.5}
+    \SetWatermarkColor[gray]{0.9}
+    % \SetWatermarkColor[rgb]{0,1,0}
+    \SetWatermarkLightness{0.05}
+    \SetWatermarkAngle{45}
+}
+
+% Change settings in draft mode
+\draftVersionOnly{%
+    \color{draftTextColor}% text color
+    \pagecolor{draftBgColor}% bg color
+    \setDraftFont % font
+    \onehalfspacing % or
+    \doublespacing %
+    %%%% Watermark draft
+    \myWatermark
+    %%% TWO OPTIONS TO HIGHLIGHT LABELS:showkeys and showlabels
+    % \usepackage[
+    %     % notref,
+    %     notcite% to stop printing citation keys
+    % ]{showkeys}
+    \usepackage[
+        % inner, % print keys inside text margins. Other options: outer [default]
+        inline % marginal [default]—put notes in the margin
+        ]
+    {showlabels}% already part of showkeys
+    \renewcommand{\showlabelfont}{\slshape\color{myColorSuccess}\tiny}
+
+    %%%% Show structural frame
+    \isMinimal
+    {}
+    {%
+        \usepackage{showframe}
+        \renewcommand*\ShowFrameColor{\color{myColorSecondary}}
+        \renewcommand*\ShowFrameLinethickness{1pt}
+        \usepackage{layout} %%% TO GET LAYOUT INFOMATION
+        \AtEndDocument{\newpage\updateRibbons{LAYOUT}{}\layout}
+    }%
+}{}
+
+
+
+
+\NewDocumentCommand{\isDraftDebugger}
+{
+    m
+    m
+    O{myColorWarning}
+}{%
+    \textcolor{#3}{%
+        %
+            {%
+            \isDraft%
+            {\texttt{\scriptsize#1}#2}%
+            {#2}%
+            }%
+    }%
+}
+
+
+\NewDocumentCommand{\myBreakMessage}
+{
+    O{myColorWarning}% #1 decoration color
+    O{myColorSuccess}% #2 text color
+    m% #3 mandatory message
+}
+{%
+    {%
+    \noindent\centering%
+    \textcolor{#1}%
+    {%
+    \noindent\dotfill\\%
+    \setstretch{0.3}%
+    \noindent\dotfill \textcolor{#2}{#3} \dotfill\\%
+    \noindent\dotfill\\%
+    }%
+    }%
+}

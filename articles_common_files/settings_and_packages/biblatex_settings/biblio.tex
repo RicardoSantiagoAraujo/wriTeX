@@ -1,0 +1,330 @@
+%%%%% BIBLIOGRAPHY
+%% Troubleshooting: check README
+\usepackage{csquotes}
+
+\ifthenelse{\boolean{isIncludeCitationsInFootnotes}}
+{%
+    \newcommand{\myCiteStyle}{authoryear}%
+    \newcommand{\myBibStyle}{authoryear}%
+}
+{%
+    \newcommand{\myCiteStyle}{numeric}%
+    \newcommand{\myBibStyle}{numeric}%
+}
+
+
+
+\usepackage[
+    %sorting=none,
+    sorting=nty, %name, title, year
+    %%% CITATION STYLES: "style applies to both citations in text and display in printed bibliography, citestyle and bibstyles splits
+    % Style option examples: numeric, authoryear, authortitle, verbose
+    % style=authoryear,
+    citestyle=\myCiteStyle,
+    bibstyle=\myBibStyle,
+    backend=biber,
+    datamodel=mydatamodels,
+    doi=false,
+    isbn=false,
+    url=false,
+    eprint=false
+    % maxcitenames=2
+    % maxbibnames=1,
+    % minbibnames=3
+]{biblatex} %Imports biblatex package
+%Import the bibliography file(s)
+%%%% bibliographic sources
+\newcommand{\loadBibIfExists}[1]%%% load bib file only if it exists
+{\IfFileExists{#1}
+    {\addbibresource{#1}}%
+    {}%
+}
+\isPortfolio
+{
+    \loadBibIfExists{../articles_common_files/biblatex_files/bibliography.bib}% FOR PORTFOLIO
+}
+{
+    \isArticle{%%% make sure it really is an article, and not e.g. a standalone file
+        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography.bib}% FOR SINGLE ARTICLES
+    }{}
+}
+
+
+\DeclareBibliographyCategory{myMediationArticles}
+\addtocategory{myMediationArticles}{\myarticleKey}
+
+
+%%% Include all biblatex items in bibliography, even if not cited in the text
+% \nocite{*}
+
+%%% MY OWN TYPE AND RESPECTIVE FIELDS
+\input{../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}
+
+
+\AtDataInput{\stepcounter{%
+    totalCitationsAltogether%
+    }} % Increment with each citation
+% AtDataInput{} is triggered at the instant of each citation, whereas AtEveryBibitem{} counts only after Bib printing
+
+
+
+
+% Command to add bibliography section
+\newcommand{\addBibliography}{
+    \isPortfolio{%
+    \newcommand{\myCitationCounter}{1} %%% Print in ANY case since 1<>0
+    }
+    {
+    \newcommand{\myCitationCounter}{%
+        \totvalue%
+        {totalCitationsInArticle:\myarticleKeyCore}%
+        }
+    }
+
+    \ifthenelse{\boolean{isIncludeBiblio} \and \myCitationCounter>0}{
+        \newpage
+        \begin{SplitColumnsInTwo}%[true]
+        \updateRibbons{\textbf{\TEXTbibliography}}{}
+        \mySectionTitle{\TEXTbibliography}
+        % This document contains \total{totalCitationsInArticle:\myarticleKeyCore}\ citation(s).
+        \printbibliography[
+            heading=none, % "bibintoc" adds the title to the table of contents. "none" to exclude.
+            % title={My bibliography title} % Add title above bibliography
+            % type=report,
+            notcategory=myMediationArticles% Exclude my articles
+            ]
+        \end{SplitColumnsInTwo}
+    }{}
+}
+
+
+
+
+\newcommand{\myCite}[1]{%
+    \ifthenelse{\boolean{isIncludeCitations}}{% whether or not to include citations in article
+    \stepcounter{%
+    totalCitationsInArticle:\myarticleKeyCore% COUNTS REPEATS!
+    }%
+        \ifthenelse{\boolean{isIncludeCitationsInFootnotes}}{% whether to show citations in footnotes or not
+            \footcite{#1}%
+        }{%
+            \cite{#1}%
+        }%
+    }{}
+}
+
+
+
+% raise inline text of different size to be aligned vertically
+\newcommand*\raiseup[2]{%
+        \begingroup%
+        \setbox0\hbox{#1\strut #2}%
+        \leavevmode%
+        % Change formula to adjust height
+        \raise\dimexpr (\ht\strutbox - \ht0)/3 \box0%
+        \endgroup%
+}
+
+% Change missing reference message for Biblatex
+\usepackage{xpatch}
+\newcommand{\myUnknownRefSymbol}{????}
+\makeatletter%
+\def\abx@missing@entry#1{%
+\raiseup{\tiny}{%
+    \textcolor{myColorDanger}{%
+        \abx@missing{[\myUnknownRefSymbol\ #1 \myUnknownRefSymbol]}%
+    }%
+    }%
+}
+\makeatother%
+
+
+%%% Custom cite commands
+
+% command to apply to prenotes and custom inputs
+\newcommand{\genericPrenote}[1]
+{\textcolor{myGrayMed}{#1\addcolon\space}}
+% custom field format
+\DeclareFieldFormat{myLabelFormat}{\genericPrenote{\titlecap{#1}}}
+%
+% field format for prenotes
+\DeclareFieldFormat{prenote}
+{\genericPrenote{#1}}
+%
+% custom empty entry format
+\DeclareFieldFormat{myEntrymptyEntry}{\textcolor{red}{#1}}
+%
+% field format for DOI specifically (auto applies)
+\DeclareFieldFormat{doi}{%
+%   \mkbibacro{DOI} % prints label by default
+  \ifhyperref
+    {\href{https://doi.org/#1}{\nolinkurl{#1}}}
+    {\nolinkurl{#1}}}
+%
+% field format for URL specifically (auto applies)
+\DeclareFieldFormat{url}{%
+% \mkbibacro{URL} % prints label by default
+\url{#1}}
+%
+% field format for ISSN specifically (auto applies)
+\DeclareFieldFormat{issn}{%
+% \mkbibacro{ISSN} % prints label by default
+#1}
+% Define separator between citation and postnote
+\renewcommand{\postnotedelim}{\space}
+
+% \usepackage{natbib}
+% \setcitestyle{comma}
+
+% Macro to check if an entry is empty, and print something if TRUE or FALSE
+\newcommand{\checkIfNoEntryFound}[2]{%
+    \iffieldundef{\myEntry}% IS IT A FIELD ?
+    {%
+        \ifnameundef{\myEntry}% IS IT A NAME ?
+        {%
+            \iflistundef{\myEntry}% IS IT A LIST ?
+            {#1}%
+            {#2}%
+        }%
+        {#2}%
+    }%
+    {#2}%
+}%
+\newcommand{\checkIfNoEntryFoundConditional}[2]{%
+    \ifthenelse{\boolean{isIncludeMissingBibEntries}}
+    {%
+    % \textcolor{myColorSuccess}{TRUE}
+    #2%
+    }%
+    {%
+        \checkIfNoEntryFound{#1}{#2}
+    }%
+}%
+
+
+\DeclareCiteCommand{\myCiteCommand}%
+    {% PRENOTE
+    % \textcolor{orange}{\myEntry}
+    \checkIfNoEntryFound{%
+            % \textcolor{red}{Missing entry!}
+        }{%
+            \renewcommand{\genericPrenote}[1]{#1}% to remove formatting from prenote
+            \usebibmacro{prenote}%
+        }%
+    }
+    {
+        \iffieldundef{\myEntry}% IS IT A FIELD ?
+        {%
+            \ifnameundef{\myEntry}% IS IT A NAME ?
+            {%
+                \iflistundef{\myEntry}% IS IT A LIST ?
+                {%
+                    % \ifthenelse{\boolean{isIncludeMissingBibEntries}}{%
+                    \isDraftDebugger{
+                        \printtext[myEmptyEntry]
+                        {\na}
+                        }{}%
+                        % If it is none of the below
+                    % }{}%
+                }%
+                {%
+                    \printlist{\myEntry}% if it is a biblatex list
+                }%
+            }%
+            {%
+                \printnames{\myEntry}% if it is a biblatex name
+            }%
+        }%
+        {%
+            \printfield{\myEntry}% if it is a biblatex field
+        }%
+    }
+    {}
+    {% POSTNOTE
+    \checkIfNoEntryFound{%
+            % Missing entry!
+        }{%
+            \usebibmacro{postnote}%
+        }%
+    }
+
+\DeclareCiteCommand{\myCiteWithLabelCommand}%
+    {%
+        \checkIfNoEntryFoundConditional{%
+            % Missing entry!
+        }{%
+            \item[%
+                \iffieldundef{prenote}%
+                {%
+                    \printtext[myLabelFormat]{\myEntry:}%
+                    % \setunit{\prenotedelim}
+                }%
+                {%
+                    \usebibmacro{prenote}%
+                }%
+            ]
+        }%
+    }%
+    {%
+        \iffieldundef{\myEntry}% IS IT A FIELD ?
+        {%
+            \ifnameundef{\myEntry}% IS IT A NAME ?
+            {%
+                \iflistundef{\myEntry}% IS IT A LIST ?
+                {%
+                    \ifthenelse{\boolean{isIncludeMissingBibEntries}}{%
+                        \isDraftDebugger{
+                            \printtext[myEmptyEntry]{\na}%
+                            }{}%
+                    }{}%
+                }%
+                {%
+                    \printlist{\myEntry}% if it is a biblatex list
+                }%
+            }%
+            {%
+                \printnames{\myEntry}% if it is a biblatex name
+            }%
+        }%
+        {%
+            \printfield{\myEntry}% if it is a biblatex field
+        }%
+    }%
+    {%
+        \multicitedelim%
+    }%
+    {%
+        \checkIfNoEntryFoundConditional{%
+            % Missing entry!
+        }{%
+            \usebibmacro{postnote}%
+        }%
+    }%
+
+
+% placeholder command to hold entry label
+\newcommand{\myEntry}{}
+% entrypoint commands for the citation that picks on the above cite command to generalize it
+\NewDocumentCommand{\myCiteEntryWithLabel}
+{
+    m% #1 citation key
+    m% #2 citation entry key
+    O{}% #3 prenote
+    O{}% #4 postnote
+}{%
+    \renewcommand{\myEntry}{#2}%
+    \myCiteWithLabelCommand[#3][#4]{#1}%
+}%
+
+% entrypoint command for the citation that picks on the above cite command to generalize it
+\NewDocumentCommand{\myCiteEntry}
+{
+    m% #1 citation key
+    m% #2 citation entry key
+    O{}% #3 prenote
+    O{}% #4 postnote
+}{%
+    \renewcommand{\myEntry}{#2}%
+    % \textcolor{red}{#2}
+    \myCiteCommand[#3][#4]{#1}%
+}%

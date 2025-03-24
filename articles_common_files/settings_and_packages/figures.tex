@@ -1,0 +1,310 @@
+\usepackage{wrapfig}
+\usepackage{subfloat} % for subfigures
+\setcounter{lofdepth}{2} % we want subfigures in the list of figures
+
+\usepackage{caption}
+\usepackage[list=true,listformat=simple]{subcaption} % for subfigure captions
+\captionsetup[figure]{font=scriptsize,labelfont=scriptsize}
+\captionsetup[figure]{labelformat=empty} % remove label numbering from figure captions
+\renewcommand{\figurename}{Fig.} % change label from Figure to Fig. (in text references)
+\renewcommand{\subfigurename}{Subfig.} % change label from Subfigure to Subfig. (in text references)
+\subcaptionsetup[figure]{labelformat=empty} % remove label numbering from figure subcaptions
+
+\newcommand{\stepGeneralFigureCounter}{%%% Use this macro as the general counter to increment the counter whenever a figure is added
+  \stepcounter{totalFiguresInArticle:\myarticleKeyCore}%
+  \stepcounter{totalFiguresAltogether}%
+}
+
+\newcommand{\refcounterWithoutIncrementing}[1]
+{%%% Macro to set a counter  as label reference without incrementing it
+  \addtocounter{#1}{-1}\refstepcounter{#1}% subtract 1 then add 1
+}
+
+\makeatletter
+\newcommand\myFigCaption{% my caption style, linking to the TOF
+  \@dblarg\@myFigCaption}
+  \newcommand\myFigCaptionLinker{image:\myarticleKeyCore:\the\value{totalFiguresInArticle:\myarticleKeyCore}}% key to identify individual figures
+\def\@myFigCaption[#1]#2{%
+  \caption[\protect\hypertarget{\myFigCaptionLinker}{#1}]%
+      {%
+        \ifthenelse{\boolean{isIncludeLoF}}
+        {% as hyperlink
+          \hyperlink{\myFigCaptionLinker}{#2}
+        }%
+        {% as simple text
+          #2%
+        }%
+      }%
+    }
+\makeatother
+%%%%
+
+\NewDocumentCommand{\figLabel}
+{%
+  m % #1 label id
+}{%
+  fig:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+
+
+\NewDocumentCommand{\myFigRef}
+{
+    m % reference key
+    O{Figure} % reference prefix
+}{%
+  \begingroup%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{myColorWarning}%
+    {\texttt{(\figLabel{#1})}}%
+  }%
+  {%
+    \color{myGrayMed}%
+  }
+  #2\ \ref{\figLabel{#1}}%
+  \endgroup%
+}
+
+
+%%%% THE GENERAL FIGURE ENVIRONMENT WHERE INDIVIDUAL FIGURES WILL BE PLACED
+\NewDocumentEnvironment{myFigEnv}
+{
+  O{}% #1: h(ere approx.), b(ottom), t(op), p(age alone), H(ERE PRECISELY). Leaving it empty lets latex choose
+  O{width=0.475\linewidth} % #2: default figure size
+  m % #3: figure caption.
+  m % #4: figure caption extra.
+  O{} % #5: optional argument to add a custom label for the figure environment
+}
+{%%% START ENVIRONMENT
+  \begin{figure}[#1]%
+    \stepGeneralFigureCounter
+    \stepcounter{totalFigureEnvsInArticle:\myarticleKeyCore}%
+    \stepcounter{totalFigureEnvsAltogether}%
+    \centering%
+    \isDraftDebugger{\myBreakMessage{START FIGURE ENVIRONMENT}}{}%
+}
+{%%%% END ENVIRONMENT
+    %%% Caption:
+    \captionsetup{#2}% Caption settings
+    \myFigCaption[#3]{%
+    \textcolor{myGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\myarticleKeyCore}:\ }}% Figure number label
+    \textbf{#3.} #4% Figure caption
+    }%
+    \isDraftDebugger{\myBreakMessage{END FIGURE ENVIRONMENT}}{}%
+    \label{fig:env:#5} %optional label for environment
+  \end{figure}
+}
+
+%%%% THE GENERAL WRAPFIGURE ENVIRONMENT WHERE INDIVIDUAL WRAP FIGURES WILL BE PLACED
+\NewDocumentEnvironment{myWrapFigEnv}
+{
+  O{10}% #1: How many lines to wrap
+  O{R}% #2: r(ight), l(eft), i(nside edge), o(utside edge). If uppercase, figure is a float. Lowercase means exactly here.
+  O{0.33\textwidth} % #3: default wrapfigure width. Here "width=" cannot be included in contrast to myFigEnv
+  m % #4: figure caption.
+  m % #5: figure caption extra.
+  O{} % #6: optional argument to add a custom label for the figure environment
+}
+{%%% START ENVIRONMENT
+  \wrapfigure[#1]{#2}{#3}%%% Start wrapfigure
+    \stepGeneralFigureCounter%
+    \stepcounter{totalWrapfigureEnvsInArticle:\myarticleKeyCore}%
+    \stepcounter{totalWrapfigureEnvsAltogether}%
+    \centering%
+    \isDraftDebugger{%
+    % START WRAPFIGURE ENVIRONMENT\\%
+    %
+    \tiny wrap #1 lines;\ %
+    \tiny position: #2;\ %
+    \tiny width:\detokenize{#3}\\%
+    }{}%
+}
+{%%%% END ENVIRONMENT
+    %%% Caption:
+    \myFigCaption[#4]{%
+    \textcolor{myGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\myarticleKeyCore}:\ }}% Figure number label
+    \textbf{#4.} #5% Figure caption
+    }%
+    % \isDraftDebugger{END WRAPFIGURE ENVIRONMENT\\}{}%
+    \label{fig:env:#6} %optional label for environment
+  \endwrapfigure%%% End wrapfigure
+}
+
+
+\renewcommand\thesubfigure{\alph{subfigure}}% customize type of subfigure (e.g. arabic, alpha) counter display
+%%%% COMMAND FOR SUBFIGURES (using subfloat, which is more up to date than subfigure)
+\NewDocumentCommand{\mySubfig}
+{%
+  O{width=1\linewidth}% automatically adjusts to width of figure
+  m % #2: figure caption.
+  m % #3: figure caption extra.
+  m% #4: contents of subfloat.
+  O{}% #5: Optional label (cannot set it through the contents for unkown reason)
+}%
+{%
+  \stepcounter{totalSubfiguresInArticle:\myarticleKeyCore}%
+  \stepcounter{totalSubfiguresAltogether}%
+  \captionsetup[subfigure]{#1}%
+  \subfloat%
+  [\ifstrempty{#2}{\isDraftDebugger{Captionless subfigure}{}}{#2}]%%% LOT ENTRY (if empty, pass an empty space so that is is still included in LOT)
+  [%%% CAPTION OF SUBFLOAT
+    \textcolor{myGrayMed}{\textbf{%
+      Subfigure\ % custom text before counter
+      \the\numexpr\value{totalFiguresInArticle:\myarticleKeyCore}+0\relax% Figure number label (if needed, add 1 so it matches correctly before the actual Figure counter is incremented)
+      \thesubfigure% subfigure counter
+    \ifstrempty{#2}{}{:\ }% add colon if caption is not empty
+    }}%
+    \ifstrempty{#2}{}{% check if provided caption is empty
+      \textbf{#2.} #3% Figure caption
+      }%
+  ]%
+  {%%%   CONTENT OF SUBFLOAT
+    #4%
+    \label{fig:#5}% label, which cannot be set through the contents placed in the environment, for an unkown reason
+  }%
+}%
+
+
+
+%%%% MACRO TO INCLUDE A RASTER IMAGE
+\NewDocumentCommand{\myFigGraphics}
+{
+  O{width=1\linewidth} % #1: default figure size attribute. Can be overwritten
+  O{%
+    {./}%
+    {./assets/figures/}%lone article
+    {../articles/\myarticleKeyCore/assets/figures/}%portfolio
+    {./../articles_common_files/assets/}% Portfolio
+    {./../../articles_common_files/assets/}% Article
+  } % #2: default filepath(s). Can be overwritten
+  m % #3: file name
+  O{jpg} % #4: default extension. Can be overwritten
+}
+{%
+    \stepcounter{totalGraphicsInArticle:\myarticleKeyCore}%
+    \stepcounter{totalGraphicsAltogether}%
+    \refcounterWithoutIncrementing{totalFiguresAltogether}
+    %%% Figure path: is it really needed ?
+    \graphicspath{#2}%
+    %%% Figure as TiKz to add overlays:
+      \begin{tikzpicture}%
+        % Image
+        \node[
+          anchor=center,
+          % minimum width=5cm,
+          % minimum height=5cm,
+          %%% Add border frame around pictures
+          % draw=myColorPrimary, % border color
+          % line width=2mm, % border width
+          %%% Different ways to add shadows
+          % drop shadow={opacity=1, shadow scale=1, shadow xshift=.7ex, shadow yshift=-.7ex, fill=red, path fading={circle with fuzzy edge 15 percent}},
+          % blur shadow={shadow blur steps=5, shadow scale=1.2, shadow xshift=0.1em,shadow yshift=#1}
+          ] at (0,0) {%
+          %ADD FIGURE
+          % \detokenize{#2#3.#4}
+          \includegraphics[#1]{#3.#4}%
+          %
+          };
+        % Rectangle
+        % \node [draw, thick, shape=rectangle, minimum width=1\linewidth, minimum height=1cm, anchor=center, fill=myColorPrimary, fill opacity=0.9] at (0,0) {rectangular overlay};
+        % Data over image
+        \isDraftDebugger{
+          % Figure label
+          \node[fill=black!90, fill opacity=0.75, anchor=south]
+          at (current bounding box.south)
+          {Ref key: \figLabel{#3}};
+          % Image extension
+          \node[fill=black!90, fill opacity=0.75, anchor=north east]
+          at (current bounding box.north east)
+          {.\detokenize{#4 }};
+          % %Image width
+          \node[fill=black!90, fill opacity=0.75, anchor=north west]
+          at (current bounding box.north west)
+          {\detokenize{#1}};
+        }{}%
+      \end{tikzpicture}%
+      %%% Label:
+      \label{\figLabel{#3}}% fig:filename
+      % Figure label: \figLabel{#3}
+      % Figure counter: \the\value{totalFiguresInArticle:\myarticleKeyCore}
+}
+
+%%%% MACRO TO INCLUDE A TIKZ IMAGE
+\NewDocumentCommand{\myFigTikz}
+{
+  O{scale=1} % #1: default figure scale attribute (fraction). Can be overwritten, probably necessary to adjust manually on a per img basis.
+  O{%
+  {./}%
+  {./assets/figures/}%lone article
+  {../articles/\myarticleKeyCore/assets/figures/}%portfolio
+  {./../articles_common_files/assets/}% Portfolio
+  {./../../articles_common_files/assets/}% Article
+  } % #2: default filepath(s). Can be overwritten
+  m % #3: file name
+}
+{%
+    \stepcounter{totalTikZPicturesInArticle:\myarticleKeyCore}%
+    \stepcounter{totalTikZPicturesAltogether}%
+    \refcounterWithoutIncrementing{totalFiguresAltogether}
+    %%% Figure path:
+    \graphicspath{#2}
+    %%% TiKz settings
+    \tikzset{
+      background grid/.style={
+          % thick,
+          thin,
+          draw=myGrayLight,
+          step=.5cm
+        },
+      background rectangle/.style={
+          % rounded corners,
+          % double, % for double border
+          ultra thick,
+          draw=myGrayDark,
+          fill=white,
+          % top color=blue,
+          % bottom color= pink
+        }
+    }
+    %%% Figure as TiKz:
+    \isMinimal
+    {%%% Load stored PDF to be faster
+      \isPortfolio
+      {%
+        \includegraphics[#1]{../articles/\myarticleKeyCore/assets/tikz/#3/auxiliary_files/standalone.pdf}%
+      }
+      {%
+        \includegraphics[#1]{assets/tikz/#3/auxiliary_files/standalone.pdf}%
+      }
+    }
+    {%%% Fresh compilation of Tikz
+    \isDraft
+    {%
+      \begin{tikzpicture}
+        [#1,% passed as optional argument
+        show background rectangle,
+        show background grid
+        ]
+    }
+    {%
+      \begin{tikzpicture}
+        [#1,% passed as optional argument
+        ]
+    }
+
+        \isPortfolio
+        {% Relative address for portfolio
+          \input{../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
+        }{% Relative address for article
+          \input{assets/tikz/#3/content.tex}%
+        }%
+        % Place a node at the center using current bounding box
+        \isDraftDebugger{%
+          \node[fill=black!90, fill opacity=0.75, anchor=north] at (current bounding box.south) {fig key: \normalsize\detokenize{#3}};%
+        }{};
+      \end{tikzpicture}
+    }
+    %%% Label:
+    \label{\figLabel{#3}}% fig:filename
+    % Figure label: \figLabel{#3}
+    % Figure counter: \the\value{totalFiguresInArticle:\myarticleKeyCore}
+}

@@ -1,0 +1,76 @@
+\usepackage[inline]{enumitem} % to customize lists
+
+% Command to create a hidden item that takes no space in a list
+\def\hiddenitem{%
+    \item[]%
+    \vskip-\baselineskip%
+    \vskip-\parsep%
+    \vskip-\itemsep%
+}
+
+% EXPANDED LIST WITH LINE BREAKS BETWEEN ITEMS
+\newlist{myListMeta}{enumerate}{1}
+\setlist[myListMeta]{
+    label={},
+    align=right, % label alignment
+    % labelwidth=0.25cm,
+    topsep=0pt, % reduce space above list
+    itemsep=0pt, % Sets the space between items
+    parsep=0pt, % Sets the space between paragraphs within the items
+    leftmargin=100pt, % * or 0pt
+    labelsep=10pt, % Space between the bullet and the item text
+}
+
+% COLLAPSED LIST WITH INLINE ITEMS
+\newlist{myListMetaCollapsed}{enumerate*}{1}
+\setlist[myListMetaCollapsed]{
+% label=(\textbf{\arabic*})
+}
+
+
+
+\newenvironment{customlist} % Define the new environment
+  {
+    \ifthenelse{\boolean{isCollapseLists}}% Check if the argument is "enumerate"
+    {\begin{myListMetaCollapsed}}% If yes, start
+    {\begin{myListMeta}}%
+    }%
+  {%
+  \ifthenelse{\boolean{isCollapseLists}}% Check if the argument is "enumerate"
+  {\end{myListMetaCollapsed}}% If yes, end
+  {\end{myListMeta}}%
+  }%
+
+
+% LIST STYLES USED INSIDE ARTICLE
+% \newlist{<list name>}{<bases>}{<max depth>}
+\newlist{myListEnumerate}{enumerate}{1}
+\newlist{myListItemize}{itemize}{1}
+% Define a shared macro for list settings
+\def\myListAlign{right}
+\def\myListTopsep{0pt} % space above list
+\def\myListItemsep{8pt} % space between items
+\def\myListParsep{0pt} % space between paragraphs within the items
+\def\myListLeftmargin{10pt} % space on the left. * or 0pt
+\def\myListLabelsep{10pt} % space between the bullet and the item text
+%
+\setlist[myListEnumerate]{
+    label=({\arabic*}),
+    align=\myListAlign, % label alignment
+    % labelwidth=0.25cm,
+    topsep=\myListTopsep, % space above list
+    itemsep=\myListItemsep, % space between items
+    parsep=\myListParsep, % space between paragraphs within the items
+    leftmargin=\myListLeftmargin, % space on the left. * or 0pt
+    labelsep=\myListLabelsep, % space between the bullet and the item text
+}
+\setlist[myListItemize]{
+    label={--},
+    align=\myListAlign, % label alignment
+    % labelwidth=0.25cm,
+    topsep=\myListTopsep, % space above list
+    itemsep=\myListItemsep, % space between items
+    parsep=\myListParsep, % space between paragraphs within the items
+    leftmargin=\myListLeftmargin, % space on the left. * or 0pt
+    labelsep=\myListLabelsep, % space between the bullet and the item text
+}

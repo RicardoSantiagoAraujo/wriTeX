@@ -1,0 +1,76 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% SIMPLIFIED SETTINGS WITH ONLY THE INPUTS NEEDED FOR THE COVER IMAGE.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{xifthen}
+\usepackage{lipsum} % Lorem Ipsum
+
+\input{./../../articles_common_files/settings_and_packages/minimal.tex}
+\input{./../../articles_common_files/settings_and_packages/languages.tex}
+\input{./../../articles_common_files/settings_and_packages/lists.tex}
+\input{./../../articles_common_files/settings_and_packages/color.tex}
+
+
+\input{./../../articles_common_files/settings_and_packages/font/font.tex}
+
+\input{./../../articles_common_files/settings_and_packages/geometry_and_dimensions.tex}
+
+\input{./../../articles_common_files/settings_and_packages/header_and_footer.tex} %NEEDED
+
+
+
+\usepackage{titlecaps} % capitalize words
+
+\usepackage{lineno} % to add line numbering for submission
+
+\usepackage{import} % to handle nested imports
+
+\usepackage{xparse}
+
+\usepackage{totcount} % to store counts between runs
+
+
+
+
+\usepackage{dashrule} % for dashed hrules (hdashrule)
+\newcommand*{\mydashrule}{
+\smallskip
+{\color{gray}\hdashrule{\linewidth}{1pt}{1pt}}
+\medskip
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+
+\usepackage{verbatim} %\begin{comment} and end to comment out long sections
+\usepackage{amsmath} % for text in math mode.
+\usepackage[nointegrals]{wasysym} % diameter symbol. Nointegrals is t avoid incompatibility with amsmath
+\usepackage{microtype} %improves justification
+\usepackage{xspace} % to add  space if necessary - seems to cause more trouble than help
+
+
+
+\input{./../../articles_common_files/settings_and_packages/biblatex_settings/biblio.tex}
+
+\input{./../../articles_common_files/settings_and_packages/tikz/tikz.tex}
+
+\input{./../../articles_common_files/settings_and_packages/draft.tex}
+
+
+
+\input{./../../articles_common_files/settings_and_packages/article_cover/article_cover.tex} %NEEDED
+\input{./../../articles_common_files/settings_and_packages/lists_of_content.tex} %NEEDED
+
+\input{./../../articles_common_files/settings_and_packages/print_vs_digital.tex} %NEEDED
+
+
+
+
+\input{./../../articles_common_files/settings_and_packages/counters.tex} %NEEDED
+
+
+%%%% LOAD HYPERREF
+\input{./../../articles_common_files/settings_and_packages/hyperref.tex} %NEEDED
+%%%% LOAD AFTER HYPERREF
+\input{./../../articles_common_files/settings_and_packages/page_ribbons.tex} %NEEDED

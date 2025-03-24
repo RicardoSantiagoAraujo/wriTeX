@@ -1,0 +1,196 @@
+
+\usepackage{titletoc} % to create partial tables of contents.
+
+\newcommand{\myContentsTextFont}{\setTitleFont}
+
+%Add dots for Sections in TOC
+\usepackage{tocloft}
+\renewcommand{\cftsecdotsep}{\cftdotsep}
+\setcounter{secnumdepth}{0} % to remove numbering from all (sub)sections while keeping it in the ToC
+\renewcommand{\cftsecindent}{0em}
+\renewcommand{\cftsecnumwidth}{2.4em}
+\renewcommand{\cftsubsecindent}{2.4em} %subsec indent
+\renewcommand{\cftsubsecnumwidth}{3.0em}
+\renewcommand{\cftsubsubsecindent}{4.7em}
+\renewcommand{\cftsubsubsecnumwidth}{4.7cm}
+% TOC text style
+\renewcommand{\cftpartfont}{\LARGE\bfseries\color{black}\myContentsTextFont}
+\isPortfolio{\renewcommand{\cftchapfont}{\large\color{black}\myContentsTextFont\bfseries}}{}
+\renewcommand{\cftsecfont}{\color{black}\myContentsTextFont}
+\renewcommand{\cftsubsecfont}{\color{myGrayDark}\myContentsTextFont}
+\renewcommand{\cftsubsubsecfont}{\color{myGrayDark!95}\myContentsTextFont}
+\renewcommand{\cftparafont}{\color{myGrayDark!90}\myContentsTextFont}
+\renewcommand{\cftsubparafont}{\color{myGrayDark!85}\myContentsTextFont}
+% TOC numbering style
+% \renewcommand{\cftpartpagefont}{\setMainFont}
+\isPortfolio{\renewcommand{\cftchappagefont}{\setMainFont}}{}
+\renewcommand{\cftsecpagefont}{\setMainFont}
+\renewcommand{\cftsubsecpagefont}{\setMainFont}
+\renewcommand{\cftsubsubsecpagefont}{\setMainFont}
+\renewcommand{\cftparapagefont}{\setMainFont}
+\renewcommand{\cftsubparapagefont}{\setMainFont}
+% LOF text style
+\renewcommand{\cftfigfont}{\color{black}\myContentsTextFont}
+% LOF numbering style
+\renewcommand{\cftfigpagefont}{\setMainFont}
+% LOT text style
+\renewcommand{\cfttabfont}{\color{black}\myContentsTextFont}
+% LOT numbering style
+\renewcommand{\cfttabpagefont}{\setMainFont}
+% LOTB text style
+% \renewcommand{\cfttextboxfont}{\color{red}\myContentsTextFont}% not working as expected, changes done direcly in addcontentsline command
+% LOTB numbering style
+% \renewcommand{\cfttextboxpagefont}{\setMainFont}% not working as expected, changes done direcly in addcontentsline command
+
+
+\setlength{\cftfigindent}{0pt}  % remove indentation from figures in lof
+\setlength{\cfttabindent}{0pt}  % remove indentation from tables in lot
+%%% Write something below list titles
+\newcommand{\listFirstLine}{%
+% \hfill\null\\%
+\null\hfill\textmd{%
+    \color{myGrayMed}{Page}%
+    }%
+}
+%%% TOC
+\renewcommand\cftaftertoctitle{\listFirstLine}
+%%% LOF
+\renewcommand\cftafterloftitle{\listFirstLine}
+%%% LOT
+\renewcommand\cftafterlottitle{\listFirstLine}
+%%% LOTB: list of textboxes; use alternative solution
+\AfterPreamble{%
+    %how to use:  \cftaddtitleline{hfilei}{hkindi}{htitlei}{hpagei}
+    \cftaddtitleline{loTB}{textbox*}{%
+    \listFirstLine%
+    \\% add extra space to compensate
+    }{}%
+}
+
+
+
+%Page style for TOC
+% \tocloftpagestyle{empty} % MAY BE OVERWRITTEN
+
+
+\newcommand{\addToCLoFLoT}{
+    \newpage
+    \isPortfolio{}{\begin{SplitColumnsInTwo}}% do not apply to portfolio
+        \updateRibbons{\textbf{TOC LOF LOT}}{}
+        \hypertarget{contents}{}
+        % \section*{Contents}
+        \addToC%
+        \addLoF%
+        \addLoT%
+        \addLoTextBoxes%
+    \isPortfolio{}{\end{SplitColumnsInTwo}}
+    %%%
+}
+
+
+
+
+\newcommand{\addToC}{
+    \ifthenelse{\boolean{isIncludeToC}}{
+        %%% TABLE OF CONTENTS (TOC)
+        \hypertarget{toc}{}
+        \renewcommand{\contentsname}{\vspace*{-40pt}} % remove title of ToC
+        \section*{\listTitleStyle\TEXTtoc}
+        % change TOC depth
+        \setcounter{tocdepth}{5}
+        \begingroup % start a TeX group
+            % these apply to all, they more targeted  changes are done elsewhere with the \cft commands
+            % \myContentsTextFont
+            % \color{myGrayDark}% or whatever color you wish to use
+            \tableofcontents%
+        \endgroup   % end of TeX group
+    }{}
+}
+
+
+
+\newcommand{\addLoF}{
+    \isPortfolio{%
+        \newcommand{\myFigCounter}{1} %%% Print in ANY case since 1<>0
+    }
+    {
+        \newcommand{\myFigCounter}{%
+            \totvalue{totalFiguresInArticle:\myarticleKeyCore}}
+    }
+    \ifthenelse{\myFigCounter=0}{ %%% Include only if there are figures
+        % No figures to display.
+    }{
+        \ifthenelse{\boolean{isIncludeLoF}}{
+            %%% LIST OF FIGURES (LoF)
+            \hypertarget{lof}{}
+            \setcounter{lofdepth}{2} % we want subfigures in the list of figures
+
+            \renewcommand{\listfigurename}{\vspace*{-40pt}} % remove title of LoF
+            \section*{\listTitleStyle\TEXTlof}
+            % change TOC depth
+            % \setcounter{tocdepth}{2}
+            \listoffigures
+            % Total number of figures in this document: \total{myFigCounter}
+        }{}
+    }
+
+}
+
+
+
+\newcommand{\addLoT}{
+    \isPortfolio{%
+        \newcommand{\myTabCounter}{1} %%% Print in ANY case since 1<>0
+    }
+    {
+        \newcommand{\myTabCounter}{%
+            \totvalue{totalTablesInArticle:\myarticleKeyCore}}
+    }
+    \ifthenelse{\myTabCounter=0}{ %%% Include only if there are tables
+        % No tables to display.
+    }{
+    \ifthenelse{\boolean{isIncludeLoT}}{
+        %%% LIST OF TABLES (LoT)
+        \hypertarget{lot}{}
+        \setcounter{lotdepth}{1}
+        \renewcommand{\listtablename}{\vspace*{-40pt}} % remove title of LoT
+        \section*{\listTitleStyle\TEXTlot}
+        \listoftables
+        % Total number of figures in this document: \total{totalTablesInArticle:\myarticleKeyCore}
+    }{}
+    }
+}
+
+
+\newcommand{\addLoTextBoxes}{
+    \isPortfolio{%
+        \newcommand{\myTextboxCounter}{1} %%% Print in ANY case since 1<>0
+    }
+    {
+        \newcommand{\myTextboxCounter}{%
+            \totvalue{totalTextboxesInArticle:\myarticleKeyCore}}
+    }
+    \ifthenelse{\myTextboxCounter=0}{ %%% Include only if there are textboxes
+        % No tables to display.
+    }{
+    \ifthenelse{\boolean{isIncludeLoTB}}{
+        %%% custom LIST OF Textboxes (LoTextBoxes)
+        \hypertarget{loTB}{}
+        % \setcounter{secnumdepth}{0}
+        \renewcommand{\listtextboxname}{\vspace*{-40pt}} % remove title of LoT
+        \section*{\listTitleStyle\TEXTlotb}
+        \begingroup % start a TeX group
+        % these apply to all elements so targeted adjustments should be done elsewhere
+            %\myContentsTextFont
+            % \color{red}% or whatever color you wish to use
+            \listoftextbox%
+        \endgroup   % end of TeX group
+        % Total number of figures in this document: \total{totalTablesInArticle:\myarticleKeyCore}
+    }{}
+    }
+}
+
+% styling toc/lof/loc/lotb titles
+\newcommand{\listTitleStyle}{%
+    \color{myColorPrimary}\myContentsTextFont
+}

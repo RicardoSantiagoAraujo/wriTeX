@@ -1,0 +1,57 @@
+
+% make sure to update language in document as well
+% ENGLISH (EN)
+\ifthenelse{\equal{\myLanguage}{en}}{
+  \usepackage[english]{babel}
+  \usepackage[en-GB]{datetime2}
+  \newcommand{\myLanguageLong}{english}
+  %
+  %
+  %
+  \newcommand{\TEXTcover}{Cover}
+  \newcommand{\TEXTtoc}{Table of Contents}
+  \newcommand{\TEXTlof}{List of Figures}
+  \newcommand{\TEXTlot}{List of Tables}
+  \newcommand{\TEXTpToc}{Partial Table of Contents}
+  \newcommand{\TEXTpLof}{Partial List of Figures}
+  \newcommand{\TEXTpLot}{Partial List of Tables}
+  \newcommand{\TEXTlotb}{List of Textboxes}
+  \newcommand{\TEXTmainSource}{Main source}
+  \newcommand{\TEXTtextbox}{Textbox}
+  \newcommand{\TEXTbibliography}{Bibliography}
+  \newcommand{\TEXTchapter}{Article}
+  \newcommand{\TEXTacknowledgements}{Acknowledgements}
+  \newcommand{\TEXTpreface}{Preface}
+  \newcommand{\TEXTpostface}{Postface}
+  \newcommand{\TEXTquotation}{Quotation}
+  \newcommand{\TEXTby}{by}
+}{}%
+
+% FRENCH (FR)
+\ifthenelse{\equal{\myLanguage}{fr}}{
+  \usepackage[french]{babel}
+  \usepackage[french]{datetime2}
+  \newcommand{\myLanguageLong}{french}
+  %
+  %
+  %
+  \newcommand{\TEXTcover}{Couverture}
+  \newcommand{\TEXTtoc}{Table des Matières}
+  \newcommand{\TEXTlof}{Liste des Figures}
+  \newcommand{\TEXTlot}{Liste des Tableaux}
+  \newcommand{\TEXTpToc}{Table Partielle des Matières}
+  \newcommand{\TEXTpLof}{Liste Partielle des Figures}
+  \newcommand{\TEXTpLot}{Liste Partielle des Tableaux}
+  \newcommand{\TEXTlotb}{Liste des Notes}
+  \newcommand{\TEXTmainSource}{Source principale}
+  \newcommand{\TEXTtextbox}{Encadré}
+  \newcommand{\TEXTbibliography}{Bibliographie}
+  \newcommand{\TEXTchapter}{Article}
+  \newcommand{\TEXTacknowledgements}{Remerciements}
+  \newcommand{\TEXTpreface}{Avant-propos}
+  \newcommand{\TEXTpostface}{Postface}
+  \newcommand{\TEXTquotation}{Quotation}
+  \newcommand{\TEXTby}{par}
+}{}%
+
+% \DTMlangsetup{ord=raise,showdayofmonth=false}

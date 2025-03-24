@@ -1,0 +1,399 @@
+\includeonly{%
+  \includeFilePaths%
+}
+
+% \pagestyle{headings}
+\input{portfolio_only_files/portfolio_variables.tex}
+\renewcommand{\myLanguage}{\myLanguagePortfolio}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% MACRO TO ADD ARTICLES TO PORTFOLIO
+\newcommand{\addArticlesToPortfolio}
+{
+  \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{empty}}{}{} %% Patch up default Chapter page style to remove any footer/header
+  % Iterate over the list
+  \foreach \article in \articleList {
+    \ifthenelse{\equal{\article}{}}% check if empty
+    {}% if empty, do nothing
+    {%
+      % \expandafter\detokenize\expandafter{\article}\par %print list contents for debugging
+      \checkIsPart{\article}
+      {%%% PART
+        \ifthenelse{\boolean{isDivideArticlesIntoParts}}
+        {% if yes, add parts
+          \pagecolor{myColorPrimary!10}
+          \updateRibbons{\textbf{Part \thepart: \parsePartString{\article}}}{}
+          \myPortfolioPart{\parsePartString{\article}}%
+          \pagecolor{bgColor}
+        } % if not, do nothing
+        {}%
+      }
+      {%%% ARTICLE
+        \addSingleArticle{\article}%
+      }%
+      % \hrule
+    }%
+  }%
+}
+
+\begin{luacode}
+  --------- FUNCTION TO CHECK IF STRING INCLUDE "PART"
+  function checkIsPart(s)
+    --- Check if string starts with "PART:", lower or uppercase
+    if s:find ( "^[Pp][Aa][Rr][Tt]:" ) then
+      -- s = s:gsub  ( "^.-[%s:]+(.*)" , "PART")
+      s="true"
+    -- elseif CONDITION then RESULT
+    else
+    s="false"
+    end
+    tex.sprint (s)
+  end
+\end{luacode}
+
+\NewDocumentCommand{\checkIsPart}
+{%
+  m% input string that is to be checked
+  m% behavior if input corresponds to a PART
+  m% behavior if input corresponds to a CHAPTER
+}{%
+  \ifthenelse{\boolean{\directlua{checkIsPart("#1")}}}%
+  {#2}
+  {#3}%
+}
+
+
+\begin{luacode}
+  --------- FUNCTION TO EXCLUDE "PART" SUBSTRING
+  function parsePartString(s)
+    s = s:gsub  ( "^[Pp][Aa][Rr][Tt]:" , "")
+    tex.sprint (s)
+  end
+\end{luacode}
+\NewDocumentCommand{\parsePartString}
+{%
+  m% input string that is to be parsed
+}{%
+  \directlua{parsePartString("#1")}%
+}
+
+
+\newcommand{\addSingleArticle}[1]{
+  %%% RECOVER MAIN VARIABLES
+  \input{../articles/#1/#1}
+  % Overwrite language setting to use portfolio language
+  \renewcommand{\myLanguage}{\myLanguagePortfolio}
+  % Add article key to my mediation category
+  \addtocategory{myMediationArticles}{\myarticleKey}
+  \updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Introduction}{INTRODUCTION \ribbonSpacer PORTFOLIO \ribbonSpacer \myLanguage}
+  \renewcommand{\chaptername}{\TEXTchapter}% Rename "Chapter" heading
+  %%% Separators for LOF, LOT and LOTB to distinguish articles better
+  \addSeparatorsToListsOfContents
+  %
+  \myPortfolioArticleChapter{\myCiteEntry{\myarticleKey}{title}}
+  %
+  %
+  %%% Creating a partial TOC/LOF/LOT for the chapter
+  %%% Partial TOC
+  \ifthenelse{\boolean{isIncludePerArticleToC}}
+  {
+    \startcontents[chapters]
+    % \printcontents[⟨name⟩]{⟨prefix⟩}{⟨start-level⟩}[⟨toc-depth⟩]{⟨toc-code⟩}
+    \printcontents[chapters]{}{2}{
+    \setcounter{tocdepth}{2}
+    \subsection*{\listTitleStyle\TEXTpToc}
+    }
+  }{}
+  %%% Partial LOF
+  \ifthenelse{\boolean{isIncludePerArticleLoF}}
+  {
+    \ifthenelse{\totvalue{totalFiguresInArticle:\myarticleKeyCore}=0}{}
+    {
+      \startlist{lof}
+      \printlist{lof}{}{\subsection*{\listTitleStyle\TEXTpLof}}
+    }
+  }{}
+  %%% Partial LOT
+  \ifthenelse{\boolean{isIncludePerArticleLoT}}
+  {
+    \ifthenelse{\totvalue{totalTablesInArticle:\myarticleKeyCore}=0}{}
+    {
+      \startlist{lot}
+      \printlist{lot}{}{\subsection*{\listTitleStyle\TEXTpLot}}
+    }
+  }
+  {}
+
+  \cleardoublepage
+
+  %----------------------------------------------------------------------------
+  %%%%%%%%%%%%
+  %%%%%%%%% META-INFO
+
+  \addMetadata
+
+    %----------------------------------------------------------------------------
+  %%%%%%%%%%%%
+  %%%%%%%%% SUBSTANCE
+  \addSubstanceToPortfolio{%
+    \input{../articles/\article/elements/substance/substance.tex}%
+  }%
+
+
+  %----------------------------------------------------------------------------
+  %%%%%%%%%%%%
+  %%%%%%%%% ARTICLE COVER
+  \addCover
+  %----------------------------------------------------------------------------
+  %%%%%%%%%%%%
+  %%%%%%%%% ARTICLE  BODY
+  \begin{refsegment} %%% To be able to print bib by segment
+    \begin{bodyEnvironment}%
+        \updateRibbons
+        {
+          Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer%
+          Article Content%
+        }
+        {
+          ARTICLE CONTENT \ribbonSpacer PORTFOLIO \ribbonSpacer \myLanguage
+        }
+      \subimport{../articles/\myarticleKeyCore/elements/body}{body_\myLanguage.tex}
+    \end{bodyEnvironment}%
+    %
+    %%%%%%%%% ARTICLE  BIBLIOGRAPHY
+    \ifthenelse{\boolean{isSplitBibliographyByChapter}}
+    {%
+        \updateRibbons
+        {Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Bibliography}
+        {BIBLIOGRAPHY \ribbonSpacer PORTFOLIO \ribbonSpacer \myLanguage}
+        \printbibliography[%
+        heading=subbibliography,%
+        notcategory=myMediationArticles,%
+        segment=\therefsegment % print only prev segment's bibliographu
+        ]%
+    }
+    {%
+      \isDraftDebugger{%
+      ARTICLE BIBLIOGRAPHY GOES HERE IF \textcolor{myColorSuccess}{isSplitBibliographyByChapter = True}%
+      }{}%
+    }%
+  \end{refsegment}%%% To be able to print bib by segment
+  %
+  %
+  %
+  \ifthenelse{\boolean{isIncludePerArticleToC}}
+  {% Stop printing (connect to \startcontents above)
+    \stopcontents[chapters]%
+  }{}%
+  %%
+  %%
+  \ifthenelse{\boolean{isIncludePerArticleLoF}}
+  {% Stop printing (connect to \startlist above)
+    \ifthenelse{\totvalue{totalFiguresInArticle:\myarticleKeyCore}=0}{}
+    {
+      \stoplist{lof}%
+    }
+  }{}%
+  %%
+  %%
+  \ifthenelse{\boolean{isIncludePerArticleLoT}}
+  {% Stop printing (connect to \startlist above)
+    \ifthenelse{\totvalue{totalTablesInArticle:\myarticleKeyCore}=0}{}
+    {%
+      \stoplist{lot}% not working for some reason, but not needed ?
+    }%
+  }{}%
+}%
+
+
+\newcommand{\addGlossaryAndAbreviationsToPortfolio}
+{%
+  % Iterate over the list
+  \foreach \article in \articleList {
+    \ifthenelse{\equal{\article}{}}% check if empty
+    {}% if empty, do nothing
+    {%
+      % \article\par %print list contents for debugging
+      % \input{elements/articles/\article.tex}%
+      \checkIsPart{\article}
+      {}
+      {%
+      \input{../articles/\article/elements/glossary/glossary.tex}%
+      \input{../articles/\article/elements/abreviations/abreviations.tex}%
+      }%
+    }%
+  }%
+}
+
+%%% Separators for LOF, LOT and LOTB to distinguish articles better
+\newcommand{\listSeparator}
+{%
+\protect%
+  \parbox
+  [b]% content alignment: (c)enter; (t)op; (b)ottom.
+  [1cm]
+  {1\linewidth}
+  {%
+    \textcolor{myGrayLight}{%
+      \small%
+      \myCiteEntry{\myarticleKey}{title}%
+      \hrulefill%
+      % \addvspace{3pt}% words with addcontents, but not with addcontentsline or cfaddcontentline
+      % \endgraf%replacement to \par to avoid error
+    }%
+  }%
+}
+\newcommand{\addSeparatorsToListsOfContents}{%
+    \phantomsection%
+    \cftaddtitleline{lof}{figure}{\listSeparator}{}%
+    \cftaddtitleline{loTB}{textbox}{\listSeparator}{}%
+    \cftaddtitleline{lot}{table}{\listSeparator}{}%
+}
+
+
+
+
+\newcommand{\portfolioPartRef}{%
+part:\the\value{totalPortfolioPartsAltogether}%
+}
+\newcommand{\portfolioChapterRef}{%
+chapter:\the\value{totalArticlesAltogether}%
+}
+
+\ifthenelse{\boolean{isIncludeToC}}
+{ % if TOC included, link to it
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \newcommand{\linkPartConditionally}[1]
+  {
+    \protect\hyperlink
+    {\portfolioPartRef}
+    {#1}
+    \isDraftDebugger{\\ Part key: \portfolioPartRef}{}
+  }
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \newcommand{\linkChapterConditionally}[1]
+  {
+    \protect\hyperlink
+    {\portfolioChapterRef}
+    {#1}
+    \isDraftDebugger{\ Chapter key: \portfolioChapterRef}{}
+  }
+}
+{ % if TOC not included, link to title instead
+  \newcommand{\linkPartConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Part key: LINK IS INACTIVE}{}
+  }
+  \newcommand{\linkChapterConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Chapter key: LINK IS INACTIVE}{}
+  }
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% PART
+% \titleformat{\part}[display]
+% {\huge\color{myColorPrimary}} % style number display
+% {\parttname\ \thepart}
+% {20pt}
+% {\huge}
+\titleformat{\part}
+[display]
+{% style number display
+  \centering\setTitleFont\color{myColorPrimary}\HUGE\bfseries%
+}%
+{% content of number display
+  % \titlerule[5pt]\vspace{3pt}\titlerule[2pt]\vspace{3pt}% decorative ruler
+  \MakeUppercase{\partname} \thepart%
+}
+{0pt}% vertical gap
+{}% style text display
+
+
+
+%
+\NewDocumentCommand{\partLabel}
+{m}{%
+  part:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+\NewDocumentCommand{\myPortfolioPart}
+{
+  m %
+  O{} % optional alternative label for ease of referencing
+}
+{%
+  \refstepcounter{totalPortfolioPartsAltogether} % increase counter
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\portfolioPartRef}%
+    {}% text to add to TOC (leave empty)
+    }
+  \part[#1]{\linkPartConditionally{%
+    \HUGE%
+    \setTitleFont%
+    \color{myColorPrimary}%
+    % \scshape%
+    \bfseries%
+    \lsstyle%
+    \MakeUppercase{#1}}}%
+  \ifthenelse{\equal{#2}{}}{}{\label{\partLabel{#2}}}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% ARTICLE AS CHAPTER
+\titleformat{\chapter}[display]
+{\setTitleFont\bfseries\huge\color{myColorPrimary}}% style pre-text
+{\chaptertitlename\ \thechapter}% pre text content
+{10pt}% vertical gap
+{\Huge}% style text
+
+\NewDocumentCommand{\chapterLabel}
+{m}{%
+  chapter:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+\NewDocumentCommand{\myPortfolioArticleChapter}
+{
+  m %
+  O{} % optional alternative label for ease of referencing
+}
+{%
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\portfolioChapterRef}%
+    {}% text to add to TOC (leave empty)
+    }
+  \chapter[#1]{%
+    \linkChapterConditionally{%
+      \setTitleFont%
+      \color{myColorPrimary}%
+      #1}%
+    }%
+  \ifthenelse{\equal{#2}{}}{}{\label{\chapterLabel{#2}}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% NON-ARTICLE CHAPTER
+\NewDocumentCommand{\myPortfolioChapter}
+{%
+  m%
+}%
+{%
+  \updateRibbons{\textbf{#1}}{}%
+  \chapter*{%
+    \hyperlink{toc}{%
+    \setTitleFont%
+    \color{myColorPrimary}%
+    #1%
+    }%
+  }%
+  \chaptermark{#1}%
+  \hidebasic[999]{\addcontentsline{toc}{chapter}{#1}}% to include  in TOC, without numbering it
+}%

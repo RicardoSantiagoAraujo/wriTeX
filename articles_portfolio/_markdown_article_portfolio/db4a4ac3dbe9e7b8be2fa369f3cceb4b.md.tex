@@ -1,0 +1,93 @@
+\markdownRendererDocumentBegin
+\markdownRendererSectionBegin
+\markdownRendererHeadingOne{artTeX: A LuaLaTeX articles template and Portfolio}\markdownRendererInterblockSeparator
+{}A highly versatile and customisable LuaLaTeX template for writing modular articles and compiling them into a single portfolio.\markdownRendererInterblockSeparator
+{}\markdownRendererSectionBegin
+\markdownRendererSectionBegin
+\markdownRendererHeadingThree{Requirements}\markdownRendererInterblockSeparator
+{}\markdownRendererSectionBegin
+\markdownRendererHeadingFour{On Windows}\markdownRendererInterblockSeparator
+{}\markdownRendererSectionBegin
+\markdownRendererHeadingFive{Recommended Set-up with Visual Studio Code:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem Install the LaTeX distribution \markdownRendererLink{Miktex}{https://miktex.org/download}{https://miktex.org/download}{}\markdownRendererUlItemEnd 
+\markdownRendererUlItem Install the Pearl distribution \markdownRendererLink{Strawberry}{https://strawberryperl.com/}{https://strawberryperl.com/}{}\markdownRendererUlItemEnd 
+\markdownRendererUlItem Install the Latex Workshop extension\markdownRendererUlItemEnd 
+\markdownRendererUlItem Ideally, set the compilation output path in \markdownRendererStrongEmphasis{settings.json} to\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererCodeSpan{
+"latex-workshop.latex.outDir": "\markdownRendererPercentSign{}DIR\markdownRendererPercentSign{}/auxiliary\markdownRendererUnderscore{}files"
+}\markdownRendererInterblockSeparator
+{}and add "-outdir=\markdownRendererPercentSign{}OUTDIR\markdownRendererPercentSign{}" as an argument in "latex-workshop.latex.recipes".\markdownRendererInterblockSeparator
+{}\markdownRendererBlockQuoteBegin
+You may need to restart Visual Studio Code or your machine.
+\markdownRendererBlockQuoteEnd \markdownRendererInterblockSeparator
+{}
+\markdownRendererSectionEnd 
+\markdownRendererSectionEnd 
+\markdownRendererSectionEnd \markdownRendererSectionBegin
+\markdownRendererHeadingThree{Universal tips for body:}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem Reduce sentences!!!\markdownRendererUlItemEnd 
+\markdownRendererUlItem pyramid structure: from the particular to the general!!!\markdownRendererUlItemEnd 
+\markdownRendererUlItem Subdivide into smaller titled sections: bonus point of section title is lifted from the text\markdownRendererUlItemEnd 
+\markdownRendererUlItem Some suspence is OK, but the chapeau should include the who/what/where/when directly. Leave the suspence for the why/how\markdownRendererUlItemEnd 
+\markdownRendererUlItem Avoid the passive voice... it is more difficult to read\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}
+\markdownRendererSectionEnd \markdownRendererSectionBegin
+\markdownRendererHeadingThree{Troubleshooting compilation}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem Use lualatex to install\markdownRendererUlItemEnd 
+\markdownRendererUlItem Ensure required fonts are installed on the computer (even if there is a fallback system in place)\markdownRendererUlItemEnd 
+\markdownRendererUlItem Some packages might need to be installed, so ensure you have an internet connection\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}
+\markdownRendererSectionEnd \markdownRendererSectionBegin
+\markdownRendererHeadingThree{command for word count:}\markdownRendererInterblockSeparator
+{}\markdownRendererCodeSpan{
+perl texcount.pl articles/\markdownRendererLeftBrace{}article\markdownRendererUnderscore{}name\markdownRendererRightBrace{}/elements/body.tex
+}\markdownRendererInterblockSeparator
+{}
+\markdownRendererSectionEnd \markdownRendererSectionBegin
+\markdownRendererHeadingThree{command for letter count (does not include spaces):}\markdownRendererInterblockSeparator
+{}\markdownRendererCodeSpan{
+perl texcount.pl -char articles/\markdownRendererLeftBrace{}article\markdownRendererUnderscore{}name\markdownRendererRightBrace{}/elements/body.tex
+}\markdownRendererInterblockSeparator
+{}
+\markdownRendererSectionEnd \markdownRendererSectionBegin
+\markdownRendererHeadingThree{pandoc: command to convert to docx (MUST run in this file's root):}\markdownRendererInterblockSeparator
+{}\markdownRendererCodeSpan{
+pandoc -s --bibliography ../../articles\markdownRendererUnderscore{}common\markdownRendererUnderscore{}files/bibliography.bib --citeproc --csl ../../articles\markdownRendererUnderscore{}common\markdownRendererUnderscore{}files/\markdownRendererLeftBrace{}your\markdownRendererUnderscore{}bib\markdownRendererUnderscore{}style\markdownRendererRightBrace{}.csl --biblatex *.tex -M reference-section-title=References -o main.docx
+}\markdownRendererInterblockSeparator
+{}
+\markdownRendererSectionEnd \markdownRendererSectionBegin
+\markdownRendererHeadingThree{Bibliography}\markdownRendererInterblockSeparator
+{}\markdownRendererSectionBegin
+\markdownRendererHeadingFour{Tips}\markdownRendererInterblockSeparator
+{}\markdownRendererUlBeginTight
+\markdownRendererUlItem With newer versions of biblatex (≥2.0) and biber (≥0.9.8) you can define your entries as normal and use the "IDS" field for extra citations keys:\markdownRendererUlItemEnd 
+\markdownRendererUlEndTight \markdownRendererInterblockSeparator
+{}\markdownRendererCodeSpan{
+@BOOK\markdownRendererLeftBrace{}key,
+  IDS = \markdownRendererLeftBrace{}key2, key3, ..., keyn\markdownRendererRightBrace{},
+  .
+  .
+\markdownRendererRightBrace{}
+}\markdownRendererInterblockSeparator
+{}
+\markdownRendererSectionEnd \markdownRendererSectionBegin
+\markdownRendererHeadingFour{Clearing Biber cache:}\markdownRendererInterblockSeparator
+{}https://tex.stackexchange.com/questions/140814/biblatex-biber-fails-with-a-strange-error-about-missing-recode-data-xml-file\markdownRendererInterblockSeparator
+{}If citations are coming out empty ([citation\markdownRendererUnderscore{}code]), you might need to clear the biber cache: Biber creates binaries in a cache folder, and sometimes that can get corrupted. In order to solve the problem, you need to manually delete the cache folders. You can find the location of the cache folder by looking at the .blg file, or by using the command. \markdownRendererCodeSpan{
+biber --cache
+} On Linux and Mac, this can be combined to delete the offending folder in one command: \markdownRendererCodeSpan{
+rm -rf `biber --cache`
+}\markdownRendererInterblockSeparator
+{}Additionally, try this (if you get an error, "cd" into folder location of the "auxiliary\markdownRendererUnderscore{}files" folder): \markdownRendererCodeSpan{
+biber path/to/latex/output/files/without/extension
+}
+\markdownRendererSectionEnd 
+\markdownRendererSectionEnd 
+\markdownRendererSectionEnd 
+\markdownRendererSectionEnd \markdownRendererDocumentEnd

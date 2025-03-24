@@ -1,0 +1,74 @@
+
+
+% general settings (articles and portfolio):
+\input{../articles_common_files/settings_and_packages/article_settings.tex}
+
+% specific settings (portfolio only):
+\input{portfolio_only_files/portfolio_settings.tex}
+
+
+\addGlossaryAndAbreviationsToPortfolio
+
+
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+\updateRibbons{\textbf{FRONT MATTER}}{}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PORTFOLIO METADATA
+\include{elements/portfolio_meta_data/portfolio_meta_data}
+% TITLEPAGE
+\include{elements/portfolio_title_page/portfolio_title_page}
+% INFO-PAGE
+\include{elements/info_page/info_page}
+% ACKNOWLEDGMENTS
+\include{elements/acknowledgements/acknowledgements}
+% DEDICATION
+\include{elements/dedication/dedication}
+% PREFACE
+\include{elements/preface/preface}
+% QUOTATION
+\include{elements/quotation/quotation}
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% TOC LOF LOT
+\addToCLoFLoT
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% GLOSSARY
+\addGlossaryPORTFOLIO
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% ABREVIATIONS
+\addAbreviationsPORTFOLIO
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% ARTICLES
+\mainmatter
+\updateRibbons{\textbf{MAIN MATTER}}{}
+%
+\addArticlesToPortfolio
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%
+%%%%%%%%% BIBLIOGRAPHY
+\addBibliography
+%
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% POSTFACE
+% \include{elements/postface/postface}
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% APPENDIX
+\myAppendix
+%
+\end{document}

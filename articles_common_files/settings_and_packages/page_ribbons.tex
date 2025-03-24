@@ -1,0 +1,70 @@
+
+%\usepackage{atbegshi} % add custom frame to article pages
+\newcommand{\ribbonTextLeft}{Ribbon text (Left)}
+\newcommand{\ribbonTextRight}{Ribbon text (Right)}
+\newcommand{\ribbonShiftToCenter}{0.5} % cm
+\newcommand{\ribbonWidth}{0.75} % cm
+\definecolor{ribbonBgColorStart}{gray}{0.7}
+\definecolor{ribbonBgColorEnd}{gray}{0.5}
+\definecolor{ribbonTextColor}{gray}{0.1}
+
+\newcommand{\updateRibbons}[2]{
+      \renewcommand{\ribbonTextLeft}{#1}
+      \renewcommand{\ribbonTextRight}{#2}
+}
+
+\newcommand{\ribbonSpacer}{\hspace{5cm}}
+
+\usetikzlibrary{shapes.arrows,positioning}
+
+\tikzset{
+    myarrow/.style={
+        draw=myGrayDark,
+        fill=myGrayLight,
+        single arrow,
+        rotate=90,
+        minimum height=10mm,
+        anchor=center
+    }
+}
+
+
+\AtBeginShipout{\AtBeginShipoutUpperLeft{
+      \ifthenelse{\boolean{isDrawRibbons}}{
+            %%% WARNING: HYPERLINKS DO NOT WORK IN ROTATED TEXT)
+            \begin{tikzpicture}[remember picture,overlay]%
+                  %%% LEFTSIDE
+                  \fill[%black!5
+                        % for gradient instead:
+                        left color=ribbonBgColorStart,
+                        right color=ribbonBgColorEnd,
+                        shading = axis,
+                        shading angle = 90
+                        ]
+                        ($(current page.north west)+(\ribbonShiftToCenter,0)$)rectangle ++(\ribbonWidth,-\paperheight);
+                  \node[rectangle,rotate=90] (leftNode) at ($(current page.west)+(\ribbonShiftToCenter+\ribbonWidth/2, 0)$)
+                  {\small\textcolor{ribbonTextColor}{\ribbonTextLeft}};
+                  %
+                  %
+                  %%% RIGHTSIDE
+                  \fill[%black!5
+                        % for gradient instead:
+                        left color=ribbonBgColorStart,
+                        right color=ribbonBgColorEnd,
+                        shading = axis,
+                        shading angle = -90
+                        ]
+                        ($(current page.north east)-(\ribbonShiftToCenter,0)$) rectangle ++(-\ribbonWidth,-\paperheight);
+                  \node[rectangle,rotate=90] (rightNode) at ($(current page.east)-(\ribbonShiftToCenter+\ribbonWidth/2, 0)$)
+                  {\normalfont\textcolor{ribbonTextColor}{\ribbonTextRight}};
+                  %%%% LINK TO portfolio cover
+                  \node (leftLink) at ($(leftNode)+(0, 0.45\pageheight)$)
+                  {\hyperlink{start}{\textbf{\textcolor{myColorSecondary}{start}}}};
+                  \node[myarrow] at ([yshift=5mm]leftLink.north) {};
+                  %%%% LINK TO TOC
+                  \node (rightLink) at ($(rightNode)+(0, 0.45\pageheight)$)
+                  {\hyperlink{toc}{\textbf{\textcolor{myColorSecondary}{TOC}}}};
+                  \node[myarrow] at ([yshift=5mm]rightLink.north) {};
+            \end{tikzpicture}%
+      }{}
+}}

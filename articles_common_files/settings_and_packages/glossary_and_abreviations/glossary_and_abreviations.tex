@@ -1,0 +1,358 @@
+
+\usepackage[
+  acronym,
+  section, % to avoid page break if placed after chapter heading
+  nopostdot=true, % add/remove "." after each definition
+  nogroupskip=false, % add/remove skip after each group
+  nonumberlist % add/remove references to appearances by page number
+]{glossaries}%import glossary as well as acronym features
+
+% Change glossary/acronym nsame font
+\renewcommand{\glsnamefont}[1]{\textsf{\textcolor{myColorPrimary}{#1}}}
+% Change glossary/acronym page number style (if "nonumberlist" is off)
+%\renewcommand{\glossaryentrynumbers}[1]{\textcolor{myColorPrimary}{#1}}
+% Change glossary/acronym alphabetic navigation line style
+\renewcommand*{\glslistnavigationitem}[1]
+{\item \textcolor{myColorPrimary}{\textbf{#1}}}
+% Change glossary/acronym alphabetic letter grouping style
+\renewcommand*{\glslistgroupheaderfmt}[1]
+{\textcolor{myColorPrimary}{\textbf{#1}}}
+
+\makenoidxglossaries
+
+%%% GLOSSARY STYLE
+\newcommand{\glossaryStyle}{}
+\ifthenelse{\boolean{isPrintVersion}}
+{
+  \renewcommand{\glossaryStyle}{listgroup}
+}
+{
+  \renewcommand{\glossaryStyle}{listhypergroup}
+}
+\setglossarystyle{\glossaryStyle}
+%%% Style options:
+% list. Writes the defined term in boldface font
+% altlist. Inserts newline after the term and indents the description.
+% listgroup. Group the terms based on the first letter.
+% listhypergroup. Adds hyperlinks at the top of the index.
+
+
+\NewDocumentCommand{\glossaryItem}
+{
+  O{en} % LANGUAGE
+  m % KEY
+  O{} % NAME
+  m % DESCRIPTION
+  O{} % ABBREVIATION
+}
+{
+    \ifthenelse{\equal{\myLanguage}{#1}}{
+        \stepcounter{totalGlossaryEntriesAltogether} % increment counter
+
+        %%% CREATE NEW GLOSSARY ENTRY
+        % If #3 is empty, use #2 as name
+        \ifthenelse{\equal{#3}{}}
+        {% IF THEN
+          \newglossaryentry{#2}
+          {
+              name={#2}, % Reuse entry
+              description={\myGlossaryDescription{#2}{#4}{#5}}
+          }
+        }
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        {% ELSE
+          \newglossaryentry{#2}
+          {
+              name={#3},
+              description={\myGlossaryDescription{#2}{#4}{#5}}
+          }
+        }
+    }{}
+}
+
+\NewDocumentCommand{\myGlossaryDescription}{
+  m % glossary key
+  m % Description
+  m % Abreviation key
+}{%
+\isDraftDebugger{[KEY: \detokenize{#1}\ ]}{}
+#2 \includeAbrevInGlossary{#3}%
+}
+
+\NewDocumentCommand{\includeAbrevInGlossary}
+{
+  m % abbreviation key
+}{%
+  \ifthenelse{\equal{#1}{}}% check if empty
+  {\isDraftDebugger{no abbreviation}{}}
+  {Abbreviated as \acrshort{#1}.}
+}
+
+
+
+\NewDocumentCommand{\abreviationsItem}
+{
+  O{en} % LANGUAGE
+  m % KEY
+  O{} % NAME
+  m % MEANING
+}
+{
+    \ifthenelse{\equal{\myLanguage}{#1}}{
+        \stepcounter{totalAbreviationsAltogether} % increment counter
+        %%% CREATE NEW GLOSSARY ENTRY
+        % If #3 is empty, use #2 as name
+        \ifthenelse{\equal{#3}{}}
+        {% IF THEN
+        \newacronym{#2}{#2}{\isDraftDebugger{[abrev. key: #2]}{}[red]#4}
+        }
+        {% ELSE
+        \newacronym{#2}{#3}{\isDraftDebugger{[abrev. key: #2]}{}[red]#4}
+        }
+    }{}
+}
+
+% FORMAT GLOSSARY/ABBREVIATION LINK IN TEXT
+\ifthenelse{\boolean{isDraft}}
+{ % DRAFT MODE
+  \renewcommand*{\glstextformat}[1]%
+  {%
+    \texttt{%
+    \colorbox{myColorSuccess}%
+    {%
+      \textcolor{myColorWarning}{#1}%
+    }%
+    }%
+    }%
+}
+{ % NORMAL MODE
+  \renewcommand*{\glstextformat}[1]
+  {%
+  \ifthenelse{
+    \boolean{isHighlightGlossaryAndAbreviations}
+    % \AND
+    % \(
+    % \boolean{isIncludeGlossary}
+    % \OR
+    % \boolean{isIncludeAbreviations}
+    % \)
+    %
+    }%
+  {%
+    \textbf{%
+      \textcolor{myGrayDark}
+      {%
+        #1%
+      }%
+      }%
+    }%
+  }{}%
+}
+
+
+
+
+
+\newcommand{\addAbreviations}{
+
+  \ifthenelse{
+    \boolean{isIncludeAbreviations}
+    \AND
+      \(
+      \boolean{isPrintUnusedAbreviations}
+      \OR
+      \totvalue{totalAbreviationsInArticle:\myarticleKeyCore}>0
+      \)
+    \AND
+    \totvalue{totalAbreviationsAltogether}>0
+    }{
+    \newpage
+    \begin{SplitColumnsInTwo}%[true]
+      \updateRibbons{\textbf{Abreviations}}{}
+      {
+        \singlespacing
+        \mySectionTitle{Abreviations and Acronyms}
+        % Print Abreviations
+        \printnoidxglossary[
+          type=\acronymtype,
+          title={},
+          % toctitle=List of terms
+          ]
+        % Add even unused entries
+        \ifthenelse{\boolean{isPrintUnusedAbreviations}}{
+          \glsaddallunused[\acronymtype]
+        }{}
+      }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+
+
+\newcommand{\addGlossary}{
+  \ifthenelse{
+    \boolean{isIncludeGlossary}
+    \AND
+      \(
+      \boolean{isPrintUnusedGlossary}
+      \OR
+      \totvalue{totalGlossaryEntriesInArticle:\myarticleKeyCore}>0
+      \)
+    \AND
+    \totvalue{totalGlossaryEntriesAltogether}>0
+  }{
+    \newpage
+    \begin{SplitColumnsInTwo}%[true]
+      \updateRibbons{\textbf{Glossary}}{}
+      {
+        \singlespacing
+        \mySectionTitle{Glossary}
+        % Print glossary
+        \printnoidxglossary[
+          type=main,
+          title={},
+          %  toctitle=List of terms
+          ]
+          % Add even unused entries
+          \ifthenelse{\boolean{isPrintUnusedGlossary}}{
+            \glsaddallunused[main]
+          }{}
+      }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+
+
+\newcommand{\addAbreviationsPORTFOLIO}{
+  \ifthenelse{\boolean{isIncludeAbreviations} \and 1>0}{
+    % \newpage
+    \cleardoublepage
+    \begin{SplitColumnsInTwo}
+    \myPortfolioChapter{Abreviations}
+    {
+      \phantomsection
+      \singlespacing
+      %%%
+      % Print Abreviations
+      \renewcommand*{\glsclearpage}{} % change default break behavior before glossary
+      \printnoidxglossary[
+        type=\acronymtype,
+        % style=listgroup,
+        title={}
+        % toctitle={}% Dont comment out
+      ]
+      % Add even unused entries
+      \ifthenelse{\boolean{isPrintUnusedAbreviations}}{
+        \glsaddallunused[\acronymtype,]
+      }{}
+    }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+
+\newcommand{\addGlossaryPORTFOLIO}{
+  \ifthenelse{\boolean{isIncludeGlossary} \and 1>0}{
+    % \newpage
+    \cleardoublepage
+    \begin{SplitColumnsInTwo}
+    \myPortfolioChapter{Glossary}
+    {%
+      \phantomsection
+      \singlespacing
+      %%%
+      % Print glossary
+      \renewcommand*{\glsclearpage}{} % change default break behavior before glossary
+      \printnoidxglossary[
+        type=main,
+        % style=listgroup,
+        title={}
+        % toctitle={}% Dont comment out
+      ]
+      % Add even unused entries
+      \ifthenelse{\boolean{isPrintUnusedGlossary}}{
+        \glsaddallunused[main]
+      }{}
+    }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+\NewDocumentCommand{\myGLS}%
+{%
+  m% glossary key
+  O{}% optional text to be used instead of name from glossary
+}{%
+  {%
+    \ifthenelse{{\equal{\myarticleKeyCore}{}}}% check if key is still empty
+    {}% if so, do nothing, since it means the article has not yet started
+    {% else, step counter
+      \stepcounter{totalGlossaryEntriesInArticle:\myarticleKeyCore}%
+    }%
+    \ifthenelse{\boolean{isIncludeGlossary}}%
+    {%
+      %GLOSSARY INCLUDED
+      \isDraftDebugger{[gloss. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls{#1}}% if no optional text was provided
+          {\glslink{#1}{#2}}% if optional text was provided
+      }%
+    }%
+    {%
+      %GLOSSARY NOT INCLUDED
+      \isDraftDebugger{[gloss. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls*{#1}}% if no optional text was provided
+          {\glslink*{#1}{#2}}% if optional text was provided
+      }%
+    }%
+  }%
+}
+
+\NewDocumentCommand{\myAbrev}%
+{%
+  m% abreviation key
+  O{}% optional text to be used instead of name from abreviation
+}{%
+  {%
+    \ifthenelse{{\equal{\myarticleKeyCore}{}}}% check if key is still empty
+    {}% if so, do nothing, since it means the article has not yet started
+    {% else, step  counter
+      \stepcounter{totalAbreviationsInArticle:\myarticleKeyCore}%
+    }%
+    \ifthenelse{\boolean{isIncludeAbreviations}}%
+    {%
+      %GLOSSARY INCLUDED
+      \isDraftDebugger{[abrev. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls{#1}}% if no optional text was provided
+          {\glslink{#1}{#2}}% if optional text was provided
+      }%
+    }%
+    {%
+      %GLOSSARY NOT INCLUDED
+      \isDraftDebugger{[abrev. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls*{#1}}% if no optional text was provided
+          {\glslink*{#1}{#2}}% if optional text was provided
+      }%
+    }%
+  }%
+}

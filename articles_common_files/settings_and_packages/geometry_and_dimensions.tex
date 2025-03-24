@@ -1,0 +1,77 @@
+
+%%%% Page measurements and spacing
+
+\usepackage{geometry}
+
+\ifthenelse{\boolean{isLandscapeMode}}
+{%
+  \geometry{landscape=true}%
+}
+{%
+  \geometry{landscape=false}%
+}
+
+\newcommand{\myWidthDigital}{150mm}
+\newcommand{\myTopDigital}{25mm}
+\newcommand{\myBottomDigital}{25mm}
+\newcommand{\myLeftDigital}{25mm}
+\newcommand{\myRightDigital}{25mm}
+\newcommand{\myBindingOffsetDigital}{0mm}
+
+\newcommand{\myWidthPrint}{150mm}
+\newcommand{\myTopPrint}{25mm}
+\newcommand{\myBottomPrint}{25mm}
+\newcommand{\myLeftPrint}{25mm}
+\newcommand{\myRightPrint}{25mm}
+\newcommand{\myBindingOffsetPrint}{8mm}
+% DIMENSIONS FOR DIGITAL VERSION
+\geometry{
+  a4paper,
+  width=\myWidthDigital,
+  top=\myTopDigital,
+  bottom=\myBottomDigital,
+  left=\myLeftDigital,
+  right=\myRightDigital,
+  bindingoffset=\myBindingOffsetDigital,
+  twoside % must be true for other features
+}
+\savegeometry{digital}
+
+
+% DIMENSIONS FOR PRINTED VERSION
+\newgeometry{
+  a4paper,
+  width=\myWidthPrint,
+  top=\myTopPrint,
+  bottom=\myBottomPrint,
+  left=\myLeftPrint,
+  right=\myRightPrint,
+  bindingoffset=\myBindingOffsetPrint,
+  twoside % must be true for other features
+}
+\savegeometry{print}
+
+
+\newcommand{\myGeometrySettingsInfo}{%
+text width:\isPrint{\myWidthPrint}{\myWidthDigital};
+top margin:\isPrint{\myTopPrint}{\myTopDigital};
+bottom margin:\isPrint{\myBottomPrint}{\myBottomDigital};
+left margin:
+\isPrint{\myLeftPrint}{\myLeftDigital};
+right margin:
+\isPrint{\myRightPrint}{\myRightDigital};
+binding offset:
+\isPrint{\myBindingOffsetPrint}{\myBindingOffsetDigital}
+}
+
+\usepackage{setspace} % to change spacing between lines
+% \onehalfspacing % or
+%\singlespacing % or
+\doublespacing %
+\parskip=1em % spacing between paragraphs (0pt plus 1pt default)
+\parindent=15pt % indent at start of each paragraph (15 default)
+%%%%
+
+
+
+\usepackage{scrextend} %%% Add margins to blocks of text

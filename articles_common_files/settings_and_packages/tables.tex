@@ -1,0 +1,71 @@
+\captionsetup[table]{font=scriptsize,labelfont=scriptsize}
+\captionsetup[table]{labelformat=empty} % remove label numbering from figure captions
+\renewcommand{\tablename}{Tab.} % change label from Figure to Fig.
+\subcaptionsetup[table]{labelformat=empty} % remove label numbering from figure subcaptions
+
+
+\makeatletter
+\newcommand\myTabCaption{% my caption style, linking to the TOF
+  \stepcounter{totalTablesInArticle:\myarticleKeyCore}% increment counter and ref it%
+  \stepcounter{totalTablesAltogether}%
+  \@dblarg\@myTabCaption}
+  \newcommand\myTabCaptionLinker{table:\myarticleKeyCore:\the\value{totalTablesInArticle:\myarticleKeyCore}}% key to identify individual tables
+\def\@myTabCaption[#1]#2{%
+  \caption[\protect\hypertarget{\myTabCaptionLinker}{#1}]%
+    {
+      \ifthenelse{\boolean{isIncludeLoT}}
+      {% as hyperlink
+        \hyperlink{\myTabCaptionLinker}{#2}
+      }%
+      {% as simple text
+        #2
+      }%
+    }
+    }
+\makeatother
+%%%%
+
+
+\newcommand{\tabLabel}[1]{%
+  tab:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+
+% My Table Environment
+\NewDocumentEnvironment{articleTableEnv}
+{
+m % #1: Table caption
+m % #2: table caption extra
+O{} % #3: table key
+}
+{
+    \begin{table}
+        \centering
+        %%% Caption:
+        \myTabCaption[#1]{%
+            \textcolor{myGrayMed}{\textbf{Table\ \the\value{totalTablesInArticle:\myarticleKeyCore}:\ }}% Table number label
+            \textbf{#1.} #2% Table caption
+            \isDraftDebugger{\\ Ref key: \tabLabel{#3}}{}%% Print reference key in draft mode
+        }
+        %%% Label (must be inside table env, after caption):
+        \label{\tabLabel{#3}} % tab:filename
+}
+{
+    \end{table}
+}
+
+\NewDocumentCommand{\myTabRef}
+{
+    m % reference key
+    O{Table} % reference prefix
+}{%
+  \begingroup%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{myColorWarning}%
+    {\texttt{(\tabLabel{#1})}}%
+  }%
+  {%
+    \color{myGrayMed}%
+  }
+  #2\ \ref{\tabLabel{#1}}%
+  \endgroup%
+}

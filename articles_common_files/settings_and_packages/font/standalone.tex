@@ -1,0 +1,316 @@
+%%%%%%
+% FILE TO TEST THE FONTS IN ISOLATION FOR COMPILATION SPEED
+\documentclass[
+    % 12pt, % set in settings with fontsize package
+    % landscape % set with geometry package
+    % twoside % set with geometry package
+    % draft % "draft" compiles much faster than "final" /!\ do not use final in custom draftmode
+]{scrartcl}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHOSEN ARTICLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\chosenArticle}{article_template} % /!\ UPDATE HERE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% define relative paths to common files/settings from article to be used by \input command; multiple such paths can be added akin to \graphicspath
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{%
+    % existing paths have the advantage of being clickable
+    {./../../../articles/\chosenArticle/}
+}% append to already existing default paths, so as not to remove them
+\makeatother
+%
+%
+%
+% INITIAL INPUTS
+\input{./../../articles_common_files/document/initial_inputs.tex}
+%
+%
+%
+%
+% ARTICLE MAIN PARAMETERS
+\input{./\chosenArticle.tex}
+%
+%
+%
+%
+% SET BOOLEANS
+\setbool{isMinimal}{false} % overwrites most booleans below
+\setbool{isDraft}{false} % true or false
+\setbool{isPrintVersion}{false} % true or false
+%
+%
+%
+%
+% LOAD ALL SETTINGS FROM ARTICLE
+\input{./../../articles_common_files/settings_and_packages/article_settings.tex}
+%
+%
+%
+%
+% LOAD EXTRA SETTINGS
+\input{./standalone_settings.tex}
+%
+%
+%
+%
+% LOAD NECESSARY BIB FILES
+\loadBibIfExists{./../../biblatex_files/bibliography.bib}
+\loadBibIfExists{./../../biblatex_files/myArticles.bib}
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% PICK FONT FAMILIES TO BE DEMOED
+\newcommand{\FontFamilies}
+    {% empty items get ignored (e.g. trailing commas)
+        %%% TEST USER DEFINED FONTS IN ARTICLES
+        \myMainFont/Main font,
+        \myMainFontBackup/Main backup font,
+        % \myDraftFont/Draft font,
+        % \myDraftFontBackup/Draft backup font,
+        % \myTitleFont/Title font,
+        % \myTitleFontBackup/Title backup font,
+        % \mySubtitleFont/Subtitle font,
+        % \mySubtitleFontBackup/Subtitle backup font,
+        %%% TEST FONTS DIRECTLY (case insensitive)
+        % Comic Sans MS/,
+        % Chalkboard/,
+        % Cambria/,
+        Didot/,
+        % Futura/,
+        % Herculanum/,
+        % Impact/,
+        % Phosphate/,
+        % Rockwell/,
+        % Savoye LET/,
+        % Snell Roundhand/,
+        % Zapfino/,
+    }%
+
+% Identify fonts to include or exclude based on availability
+\filterFontFamilies
+
+
+%%%%%%%%%%% PICK FONT STYLES TO BE DEMOED
+\newcommand{\FontStyles}
+    {% empty items get ignored (e.g. trailing commas)
+        mdseries/Medium,%
+        bfseries/Bold,%
+        lsstyle/test,%
+        itshape/Italic,%
+        slshape/Slated,%
+        upshape/Upright,%
+        scshape/Smallcaps,%
+        color{red}/Color red,%
+    }%
+
+%%%%%%%%%%% PICK FONT SIZES TO BE DEMOED
+\newcommand{\FontSizes}
+    {% empty items get ignored (e.g. trailing commas)
+        tiny/smallest font,%
+        scriptsize/,%
+        footnotesize/,%
+        small/,%
+        normalsize/,%
+        large/,
+        Large/,%
+        huge/,%
+        Huge/,%
+        HUGE/Largest font,%
+    }%
+
+%%%%%%%%%%% DEFINE WITH OF EACH COOLUMN
+\def\widthHeadI{2cm}
+\def\widthHeadII{3cm}
+\def\widthHeadGap{0.25cm}
+\def\widthHeadIII{% adjust automatically or add explicitly
+    %7cm
+    \dimexpr\linewidth-% auto adjust
+    \widthHeadI-\widthHeadII-\widthHeadGap\relax%
+    -0.2cm% slight adjustment
+    }
+
+
+%%%%%%%%%%% PICK TEXT TO BE DISPLAYED WITH FONTS
+\newcommand{\fontDemoText}{%
+    % Demonstration text%
+    \myCiteEntry{\myarticleKey}{title}
+    %
+    %%% PANGRAMS
+    % The quick brown fox jumps over a lazy dog. % pangram english
+    % Portez ce vieux whisky au juge blond qui fume. % pangram french
+    % Falsches Üben von Xylophonmusik quält jeden größeren Zwerg. % pangram german
+    % El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja. % pangram spanish
+    % Gazeta publica hoje no jornal uma breve nota de faxina na quermesse. % pangram portuguese
+}
+
+%%%%%%%%%%% Choose which list corresponds  to which layer in the loop
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% be sure to update labels
+\def\aLoopHeadI{}% first header label
+\def\aLoopHeadII{Family Macro}% second header label
+\def\aLoopHeadIII{}% third header label
+\edef\aLoop{% Outer loop
+% Pick list to use in the loop:
+    \directlua{printFamiliesIncluded()}% available fonts only
+    % \FontStyles%
+%
+}%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% be sure to update labels
+\def\bLoopHeadI{}% first header label
+\def\bLoopHeadII{Size Macro}% second header label
+\def\bLoopHeadIII{}% third header label
+\edef\bLoop{% Middle loop
+% Pick list to use in the loop:
+    \FontSizes%
+%
+}%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% be sure to update labels
+\def\cLoopHeadI{Effect}% first header label
+\def\cLoopHeadII{Style Macro}% second header label
+\def\cLoopHeadIII{}% third header label
+\edef\cLoop{% Inner loop
+% Pick list to use in the loop:
+    \FontStyles%
+    % \directlua{printFamiliesIncluded()}%
+%
+}%
+
+\geometry{
+          left=0.2cm,
+          right=0.2cm,
+          top=0.2cm,
+          bottom=0.2cm,
+          bindingoffset=0cm
+          }
+\begin{document}
+    %%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \pagecolor{black!7.5}
+    \section*{Fonts Demonstration}
+    \singlespacing
+
+    %%%%%%%%%%%% INCLUDED FONTS
+    \noindent\textcolor{myColorSuccess!50!black}{Available fonts} :% label
+    \ \directlua{printFamiliesIncluded()}% elements
+    \ (\directlua{fontFamiliesIncludedLength()})% list length
+
+    %%%%%%%%%%%% EXCLUDED FONTS
+    \noindent\textcolor{myColorDanger!50!black}{Unavailable fonts} :% label
+    \ \directlua{printFamiliesExcluded()}% elements
+    \ (\directlua{fontFamiliesExcludedLength()})% list length
+
+
+    \iftrue
+    %Loop structure:
+    \noindent\aLoopHeadI \myLabel{\ (outer loop)}\\
+    $\rightarrow$ \bLoopHeadI \myLabel{\ (middle loop)}\\
+    ---$\rightarrow$bLoopHeadI \myLabel{\ (inner loop)}\\
+    %
+    %
+    %
+    % Initialize the length counter
+    \newcounter{aListLength}
+    \setcounter{aListLength}{0}
+    % Count the length of the list
+    \foreach \itemA in \aLoop {
+        \stepcounter{aListLength}
+    }
+    %------------------- INNER LOOP
+    \foreach \itemA/\labelA [count=\nA] in \aLoop {%
+        \ifthenelse{\equal{\itemA}{}}% check if empty
+        {}
+        {%
+        \subsection*{%
+        \myLabel{\aLoopHeadII:} \itemA
+        \ \myLabel{%
+            (\ifthenelse{\equal{\labelA}{}}{}{\labelA,\ }% label
+            \nA\ out of \theaListLength) % current position in loop
+        }%
+        }%
+        %%% Check if font family exists
+        %
+        %------------------- MIDDLE LOOP
+        \foreach \itemB/\labelB  [count=\nB] in \bLoop
+        {%
+            \ifthenelse{\equal{\itemB}{}}% check if empty
+            {}
+            {%
+            \paragraph*{%
+                \dotfill%
+                \myLabel{\bLoopHeadII:} \itemB%
+                \ifthenelse{\equal{\labelB}{}}{}
+                    {\myLabel{\ (\labelB)}}%
+                \dotfill%
+            }%
+            %
+            \begin{myListMeta}[
+                leftmargin=0pt,
+                labelsep=0pt
+                ]
+                %%% Header
+                \item[] %
+                    % First head
+                    \makebox[\widthHeadI][r]{
+                        \myLabel{\cLoopHeadI}%
+                    }%
+                    % Second head
+                    \makebox[\widthHeadII][r]{
+                        \myLabel{\cLoopHeadII}%
+                    }%
+                    \makebox[\widthHeadGap]{}% GAP
+                    % Third head
+                    \myLabel{\cLoopHeadIII}%
+                    \myLabel{\hrule}
+                %------------------- INNER LOOP
+                \foreach \itemC/\labelC [count=\nC] in \cLoop
+                {%
+                    \ifthenelse{\equal{\itemC}{}}% check if empty
+                    {}
+                    {%
+                    \item[]%
+                    %%%%%% FIRST COLUMN
+                    \makebox[\widthHeadI][r]{%
+                        \ifthenelse{\equal{\labelC}{}}{}
+                        {\myLabel{\labelC}}%
+                    }%
+                    %%%%%% SECOND COLUMN
+                    \makebox[\widthHeadII][r]{%
+                        \expandafter\detokenize\expandafter{\itemC}%
+                    }%
+                    \makebox[\widthHeadGap]{}% Gap
+                    %%%%%% Apply style/size/family/etc
+                    \fcolorbox{black!10}{white}{\parbox{\widthHeadIII}{%
+                        \applyProperty{\itemA}%
+                        \applyProperty{\itemB}%
+                        \applyProperty{\itemC}%
+                        %%%%%% DEMO TEXT
+                        \fontDemoText%
+                    }}
+                    }
+                }%end of innerloop
+            \end{myListMeta}%
+            }
+        }}% end of middle loop
+        \vspace{1cm}
+        %%%% END RULE
+        \outerSeparator
+    }% end of outer loop
+    \fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

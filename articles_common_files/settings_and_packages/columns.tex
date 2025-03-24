@@ -1,0 +1,38 @@
+% Package for splitting pages into columns.
+% Multicol is great to split within a page into 2 or more columns, but it is does not allow floats (unless using things like figure*)
+% \usepackage{multicol}
+
+
+% Environment to conditionally split into two columns using the base twocolumn functionality (cannot do in-page differences)
+\NewDocumentEnvironment{SplitColumnsInTwo}{
+    O{isSplitInTwoColumns}% can be overridden optionally
+}
+{%
+    \ifthenelse{\boolean{#1}}
+    {\twocolumn}
+    {}%
+}
+{%
+    \ifthenelse{\boolean{#1}}
+    {\onecolumn}
+    {}%
+}
+% Space between columnx
+\setlength{\columnsep}{1.4cm}
+
+% Vertical line between columns
+\setlength{\columnseprule}{0.4pt}
+
+% Change color of vertical line
+\newcommand{\latexcolumnseprulecolor}{\color{myGrayMed}}
+%
+\makeatletter
+\patchcmd\@outputdblcol{% find
+  \normalcolor\vrule
+}{% and replace by
+  \latexcolumnseprulecolor\vrule
+}{% success
+}{% failure
+  \@latex@warning{Patching \string\@outputdblcol\space failed}%
+}
+\makeatother

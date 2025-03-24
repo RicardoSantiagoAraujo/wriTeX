@@ -1,0 +1,77 @@
+\usepackage{datatool}% http://ctan.org/pkg/datatool
+
+\newcommand{\myGlossaryBullet}{\bullet}
+\newcommand{\myGlossaryKeyColor}{myColorPrimary}
+
+% Glossary counter
+\newtotcounter{myGlossCounterAlt}
+\setcounter{myGlossCounterAlt}{0} % change counter value to a starting specific value
+
+%%% SORTING ALPHABETICALLY
+%%% Source: https://tex.stackexchange.com/questions/121489/alphabetically-display-the-items-in-itemize/121492#121492
+
+\newcommand{\sortitem}[2][\relax]{%
+  \DTLnewrow{list}% Create a new entry
+  \ifx#1\relax
+    \DTLnewdbentry{list}{sortlabel}{#2}% Add entry sortlabel (no optional argument)
+  \else
+    \DTLnewdbentry{list}{sortlabel}{#1}% Add entry sortlabel (optional argument)
+  \fi%
+  \DTLnewdbentry{list}{description}{#2}% Add entry description
+}
+
+
+\newenvironment{sortedlist}{%
+  \DTLifdbexists{list}{\DTLcleardb{list}}{\DTLnewdb{list}}% Create new/discard old list
+}{%
+  \DTLsort*{sortlabel}{list}%  Sort list (replace the \DTLsort command by \DTLsort* for case-insensitive comparison)
+  %
+  \begin{itemize}[label=\myGlossaryBullet]%
+    \DTLforeach*{list}{\theDesc=description}{%
+      \item \theDesc}% Print each item
+  \end{itemize}%
+}
+
+
+\newcommand{\myGlossary}[1]{
+    % \total{myGlossCounterAlt}
+    \ifthenelse{\totvalue{myGlossCounterAlt}=0}{ %%% Include only if there are glossary items
+      % No glossary items in \myLanguage
+    }
+    {
+      \newpage
+      \mySectionTitle{Glossary}
+      \begin{sortedlist} % order items alphabetically
+          \input{#1}
+      \end{sortedlist}
+      % Total number of glossary items in this document: \total{myGlossCounterAlt}
+    }
+}
+
+
+
+\NewDocumentCommand{\glossaryItemAlt}{O{en} m m}{
+    \glossaryItemAltDebug{#1} % line to check if matches are ok
+    \ifthenelse{\equal{\myLanguage}{#1}}{
+        \stepcounter{myGlossCounterAlt} % increment counter
+        \sortitem[#2]{
+            \normalsize\textcolor{\myGlossaryKeyColor}{#2}: #3
+            }
+    }{}
+}
+
+
+\newcommand{\glossaryItemAltDebug}[1]{
+    \ifthenelse{\boolean{isDraft}}
+    {%
+    % \text{%
+      \tiny%
+      \mbox{
+        \noindent%
+        \nobreak\themyGlossCounterAlt: \myLanguage\ = #1 >\ %
+        \ifthenelse{\equal{\myLanguage}{#1}}{\textcolor{myColorSuccess}{T}}{\textcolor{myColorWarning}{F}}%
+      }%
+    % }
+    }
+    {}
+  }

@@ -1,0 +1,60 @@
+% commands to move textboxes on end of document/chapter/setion/etc
+
+\newcommand{\moveTextboxToEnd}
+[1]
+{%
+    \ifthenelse{\boolean{isMoveTextBoxesToEndOfArticle}}
+    {%
+        \immediate\write\writeenditems{%
+        \detokenize{#1}}%
+    }%
+    {%
+        #1%
+    }%
+}
+
+
+
+\AtBeginDocument{%
+  \newwrite\writeenditems
+  \immediate\openout\writeenditems=myfile.tmp
+  }
+
+
+\newcommand{\printMovedContents}
+{
+    \immediate\closeout\writeenditems
+
+    % This branch may need some tests s.a. \IfFileExists{myfile.tmp}{True}{False}
+    \clearpage
+    \newread\readenditems
+    \immediate\openin\readenditems=myfile.tmp
+    \loop
+    \immediate\read\readenditems to\linein
+    \linein
+    \ifeof\readenditems
+    \else\repeat
+    \immediate\closein\readenditems
+}
+
+% To print at the VERY END of the document
+% \AtEndDocument{%
+%     \printMovedContents{}
+% }
+
+% To print where this command is placed
+\newcommand{\postponeTextBoxPrintTillHere}{%
+    \noindent\isDraftDebugger{\myBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (start)}}{}% visually mark float barrier in pdf
+    \FloatBarrier % Do not let floats past here UNCONDITIONALLY (do not use myFloatBarrier)
+    %
+    %
+    \ifthenelse{\boolean{isMoveTextBoxesToEndOfArticle}}
+    {%
+        \printMovedContents{}%
+    }
+    {}
+    %
+    %
+    \FloatBarrier % Do not let floats past here UNCONDITIONALLY
+    \noindent\isDraftDebugger{\myBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (finish)}}{}%
+}

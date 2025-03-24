@@ -1,0 +1,399 @@
+\newcommand{\myArticleTitleLinker}{}
+
+\newcommand{\tocTitleBgColor}{}
+\isDraft{\renewcommand{\tocTitleBgColor}{draftBgColor}}{\renewcommand{\tocTitleBgColor}{bgColor}}%
+\newcommand{\setArticleTitle}[1]{%
+  \renewcommand{\myArticleTitleLinker}{%
+    #1:articleHeader%
+  }
+  \phantomsection % ensures linking with hyperref to exact page
+  \sectionmark{#1}
+  \hypertarget{#1}{}
+  %%% TOC ENTRY MANUALLY
+  \isPortfolio
+  {
+    % CONTROL SPACE ABOVE LINE
+    \addtocontents{toc}{\protect\vspace*{1ex}}
+    % ADD TARGET TO BE ABLE TO REACH IT
+    \addtocontents{toc}{
+      \protect\hypertarget%
+      {\myArticleTitleLinker}{}%
+        % \par% "par" only needed in single articles for some reason
+    }%
+  }%
+  { %
+    % CONTROL SPACE ABOVE LINE
+    \addtocontents{toc}{\protect\vspace*{0ex}}
+    % ADD TARGET TO BE ABLE TO REACH IT
+    \addtocontents{toc}{
+      \protect\hypertarget%
+      {\myArticleTitleLinker}{}%
+        \par% "par must be included, so it a newline is create. Use vspacer above to compensate.
+  }%
+  }
+  % ADD LINE
+  \addcontentsline{toc}{section}{%
+    {%
+      % \colorbox{\tocTitleBgColor}{%
+        \noindent%
+        % \parbox[][1cm]% box height
+        %   [c]% c: centered, t: top, b: bottom
+        %   {0.90\linewidth}{% Not
+          % \large% Uncomment this to change font size
+          \protect\hyperref[\myArticleTitleLinker]{%
+            \textbf{Article body:} \myCiteEntry{#1}{title}% ToC entry
+          }
+        % }
+      % }
+    }%
+  }
+  %
+  %
+  %
+  %
+  {%
+    %%% SECTION TITLE
+    \section*{%
+      \hyperlink{\myArticleTitleLinker}
+      {\Huge\setTitleFont\color{myGrayDark}\myCiteEntry{#1}{title}%
+      }% Document entry
+    }%
+    \label{\myArticleTitleLinker}%
+    \isDraftDebugger{%
+      \begin{center}%
+        Title ref: \myArticleTitleLinker%
+      \end{center}}%
+      {
+        \vspace{-5ex}% remove empty space if needed
+      }
+  }%
+}
+
+\newcommand{\setArticleSubtitle}[1]
+{%
+      %%% SECTION subTITLE
+      {%
+      \begin{center}%
+        \vspace{-2mm}%
+        \setTitleFont%
+        \color{myGrayDark}%
+        \large%
+        \myCiteEntry{#1}%
+        {subtitle}%
+        \vspace{-4mm}%
+      \end{center}%
+      }%
+}
+
+\newenvironment{bodyEnvironment}
+{
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% Article subsection style
+    \titlespacing*{\subsection}{0pt}{30pt}{5pt}
+    \newfontfamily\articlesectionfont[Color=myGrayMed]{\myTitleFont}
+    \titleformat{\subsection}
+    {%
+    \myFloatBarrier
+    \Large\articlesectionfont%
+    }
+    {\thesubsection}
+    {0.1em}
+    {}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% Article subsubsection style
+    \titlespacing*{\subsubsection}{0pt}{15pt}{3pt}
+    \newfontfamily\articlesubsectionfont[Color=myGrayMed]{\myTitleFont}
+    \titleformat{\subsubsection}
+    {%
+    % \myFloatBarrier
+    \large\articlesubsectionfont%
+    }
+    {\thesubsubsection}
+    {0.1em}
+    {}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% Article paragraph style (used as "sub"-subsubsection)
+    \titlespacing*{\paragraph}{0pt}{10pt}{0pt}
+    \newfontfamily\articleparagraphfont[Color=myGrayMed]{\myTitleFont}
+    \titleformat{\paragraph}
+    {%
+    % \myFloatBarrier
+    \normalsize\articleparagraphfont%
+    }
+    {\theparagraph}
+    {0.1em}
+    {} % Adds the line break
+
+    %begin code
+    \isPrint
+    {\newpage\pagestyle{empty}\cleardoublepage}
+    {\newpage}
+    \draftVersionOnly{
+      \linenumbers %activate to add lines
+    }
+    \isPortfolio
+    {
+      % IF PORTFOLIO, DO THIS:
+      % THIS IS THE PORTFOLIO
+    }
+    {
+      % IF SINGLE ARTICLE, DO THIS:
+      % Reset page counter
+      \setcounter{page}{1}
+    }
+    \pageStyleBody %%% RUN LATE TO ENSURE IT IS EFFECTIVE
+      % \pagestyle{plain}
+    \begin{SplitColumnsInTwo}% conditionally split in two
+    %%%%%% TITLE
+    \setArticleTitle{\myarticleKey}
+    %%%%%% SUBTITLE
+    \setArticleSubtitle{\myarticleKey}%
+    %%%%%% ILLUSTRATIVE IMAGE
+    \printTitleImg
+    %%%%%% DECLARE MAIN SOURCE
+    \printMainSource
+    % \begin{multicols}{2}% to split article body into columns
+}
+{% ========= END CODE
+    % \end{multicols}
+    %%%%%% CREDITS
+    \printCredits
+    \end{SplitColumnsInTwo}% conditionally split in two
+    %%%%%% MOVED TEXTBOXES
+    \postponeTextBoxPrintTillHere
+    %%%% Store number of last article page
+    % \totalArticles
+
+    \setcounter{lastPageInArticle:\myarticleKeyCore}{\thepage}
+    \newpage
+}
+
+
+
+
+% Article section references
+\newcommand{\articleSectionRef}{\myarticleKey:secAnchor%
+\the\value{totalSectionsInArticle:\myarticleKeyCore}%
+}
+\newcommand{\articleSubsectionRef}{\myarticleKey:subSecAnchor%
+\the\value{totalSubsectionsInArticle:\myarticleKeyCore}%
+}
+\newcommand{\articleSubsubsectionRef}{\myarticleKey:subsubSecAnchor%
+\the\value{totalSubsubsectionsInArticle:\myarticleKeyCore}%
+}
+
+\ifthenelse{\boolean{isIncludeToC}}
+{ % if TOC included, link to it
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \newcommand{\linkSectionConditionally}[1]
+  {
+    \protect\hyperlink
+    {\articleSectionRef}
+    {#1}
+    \isDraftDebugger{\ Section key: \articleSectionRef}{}
+  }
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \newcommand{\linkSubsectionConditionally}[1]
+  {
+    \protect\hyperlink
+    {\articleSubsectionRef}
+    {#1}
+    \isDraftDebugger{\ Subsection key: \articleSubsectionRef}{}
+  }
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \newcommand{\linkSubsubsectionConditionally}[1]
+  {
+    \protect\hyperlink
+    {\articleSubsubsectionRef}
+    {#1}
+    \isDraftDebugger{\ Subsubsection key: \articleSubsubsectionRef}{}
+  }
+}
+{ % if TOC not included, link to title instead
+  \newcommand{\linkSectionConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Section key: LINK IS INACTIVE}{}
+  }
+  \newcommand{\linkSubsectionConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Subsection key: LINK IS INACTIVE}{}
+  }
+  \newcommand{\linkSubsubsectionConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Subsubsection key: LINK IS INACTIVE}{}
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% SECTION
+\NewDocumentCommand{\secLabel}
+{m}{%
+  sec:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+\NewDocumentCommand{\myArticleSection}
+{
+  m %
+  O{} % optional alternative label for ease of referencing
+}
+{%
+  \stepcounter{totalSectionsInArticle:\myarticleKeyCore} % increase counter
+  \refstepcounter{totalArticleSectionsAltogether} % increase counter
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\articleSectionRef}
+    {}% text to add to TOC (leave empty)
+    }
+  \subsection[#1]{% style defined elsewhere with \titleformat. Section are actually subsections!
+    \linkSectionConditionally
+    {#1}% (Sub)Section title
+  }%
+  \ifthenelse{\equal{#2}{}}{}{\label{\secLabel{#2}}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% SUBSECTION
+\NewDocumentCommand{\subsecLabel}
+{m}{%
+  subsec:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+\NewDocumentCommand{\myArticleSubsection}
+{
+  m %
+  O{} % optional alternative label for ease of referencing
+}
+{%
+  \stepcounter{totalSubsectionsInArticle:\myarticleKeyCore} % increase counter
+  \refstepcounter{totalArticleSubsectionsAltogether} % increase counter
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\articleSubsectionRef}
+    {}% text to add to TOC (leave empty)
+    }
+  \subsubsection[#1]{% style defined elsewhere with \titleformat. Subsection are actually subsubsections!
+      \linkSubsectionConditionally{#1}
+    }%
+  \ifthenelse{\equal{#2}{}}{}{\label{\subsecLabel{#2}}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% SUBSUBSECTION
+\NewDocumentCommand{\subsubsecLabel}
+{m}{%
+  subsubsec:\detokenize{#1}% detokenize to treat special characters as plain text
+}
+\NewDocumentCommand{\myArticleSubsubsection}
+{
+  m %
+  O{} % optional alternative label for ease of referencing
+}
+{%
+  \stepcounter{totalSubsubsectionsInArticle:\myarticleKeyCore} % increase counter
+  \refstepcounter{totalArticleSubsubsectionsAltogether} % increase counter
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\articleSubsubsectionRef}
+    {}% text to add to TOC (leave empty)
+    }
+  \paragraph[#1]{% style defined elsewhere with \titleformat. Subsection are actually subsubsections!
+      \linkSubsubsectionConditionally{#1}
+    }%
+  \ifthenelse{\equal{#2}{}}{}{\label{\subsubsecLabel{#2}}}%
+}
+
+
+
+
+
+\newcommand{\refDraftMessage}[1]{%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{myColorWarning}%
+    {\texttt{(#1)}}%
+  }%
+  {%
+    \color{myGrayMed}%
+  }%
+}
+
+%%% Classic ref, which includes the label number/text
+\NewDocumentCommand{\mySecRef}
+{%
+    m % section reference prefix: sec or subsec or subsubsec
+    m % reference key
+    O{Section} % reference prefix
+}{%
+  \begingroup%
+  \refDraftMessage{#1:#2}%
+  #3\ \ref{#1:#2}% REFER TO IT BY NUMBER
+  % #3\ \nameref{#1:#2}% REFER TO IT BY NAME (full text)
+  \endgroup%
+}
+
+
+%%% Hyper ref, which links a piece of text
+\NewDocumentCommand{\mySecHyperref}
+{%
+    O{} % section reference prefix: "part" or "chapter" ir "sec" or "subsec" or "subsubsec"
+    O{} % reference key
+    m % reference prefix
+}{%
+  \begingroup%
+  \refDraftMessage{#1:#2}%
+  \hyperref[#1:#2]{#3}%
+  \endgroup%
+}
+
+
+\newcommand{\printMainSource}{%
+  \ifthenelse{\equal{\mainSourceKey}{}}% check if source is empty
+  {%
+    % empty main source
+  }%
+  {%
+    \textcolor{myGrayMed}{\textbf{\TEXTmainSource:}}%
+    \myCiteEntry{\mainSourceKey}{title}\myCite{\mainSourceKey}%
+  }%
+}%
+
+
+\newcommand{\printCredits}{%
+  \ifthenelse{\boolean{isCreditsInArticleBody}}% check if source is empty
+  {%
+  \vspace{1cm}
+  \begin{myListMeta}
+    [
+      align=left,
+      leftmargin=30pt,
+      labelsep=5pt,
+      itemsep=5pt,
+    ]
+    %%% START WITH EMPTY ITEM
+    \item [\setTitleFont\color{myGrayDark}\textbf{Contributions}]
+    \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
+    \noindent\myCiteEntryWithLabel{\myarticleKey}{author}%
+    \noindent\myCiteEntryWithLabel{\myarticleKey}{translator}%
+    \noindent\myCiteEntryWithLabel{\myarticleKey}{illustrator}%
+    \noindent\myCiteEntryWithLabel{\myarticleKey}{reviewer}%
+    \noindent\myCiteEntryWithLabel{\myarticleKey}{thank}%
+  \end{myListMeta}
+  }%
+  {%
+  }%
+}%
+
+\newcommand{\printTitleImg}{
+  \ifthenelse{\boolean{isIncludeArticleCoverImgInBody}}{
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{\myMainImg}%
+    \isDraftDebugger{\\MAIN IMAGE}{}%
+  \end{center}
+  }
+  {
+    \isDraftDebugger{
+      \begin{center}
+    EXCLUDE MAIN IMAGE FROM HERE
+    \end{center} }{}%
+  }
+}

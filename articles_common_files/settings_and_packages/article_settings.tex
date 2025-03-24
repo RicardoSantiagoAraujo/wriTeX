@@ -1,0 +1,145 @@
+
+% \usepackage{ifthen}
+\usepackage{xifthen}
+\usepackage{lipsum} % Lorem Ipsum
+
+\input{./../../articles_common_files/settings_and_packages/minimal.tex}
+\input{./../../articles_common_files/settings_and_packages/languages.tex}
+\input{./../../articles_common_files/settings_and_packages/lists.tex}
+\input{./../../articles_common_files/settings_and_packages/color.tex}
+
+
+\input{./../../articles_common_files/settings_and_packages/font/font.tex}
+
+\input{./../../articles_common_files/settings_and_packages/geometry_and_dimensions.tex}
+
+\input{./../../articles_common_files/settings_and_packages/header_and_footer.tex}
+
+\input{./../../articles_common_files/settings_and_packages/article_section_titles.tex}
+
+
+
+
+
+\usepackage{titlesec} % to control spacing around section titles
+
+\usepackage{titlecaps} % capitalize words
+
+\usepackage{lineno} % to add line numbering for submission
+
+\usepackage{import} % to handle nested imports
+
+\usepackage{xparse}
+
+\usepackage{totcount} % to store counts between runs
+
+
+
+
+\usepackage{dashrule} % for dashed hrules (hdashrule)
+\newcommand*{\mydashrule}{
+\smallskip
+{\color{gray}\hdashrule{\linewidth}{1pt}{1pt}}
+\medskip
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{%
+  {./}
+  % Common files
+  {./../articles_common_files/assets/}% Portfolio
+  {./../../articles_common_files/assets/}% Article
+  % Article files
+  {./assets/} % single articles
+  {../articles/\myarticleKeyCore/assets/} % portfolio
+}
+
+\usepackage{verbatim} %\begin{comment} and end to comment out long sections
+\usepackage{amsmath} % for text in math mode.
+\usepackage[nointegrals]{wasysym} % diameter symbol. Nointegrals is t avoid incompatibility with amsmath
+\usepackage{microtype} %improves justification, change letter spacing
+\usepackage{xspace} % to add  space if necessary - seems to cause more trouble than help
+
+
+
+\input{./../../articles_common_files/settings_and_packages/biblatex_settings/biblio.tex}
+
+\input{./../../articles_common_files/settings_and_packages/tikz/tikz.tex}
+
+\input{./../../articles_common_files/settings_and_packages/draft.tex}
+
+
+
+\usepackage[section]{placeins} %force image floats to stay in their section
+ % ... and to make them stay in their SUBSECTION:
+
+
+\usepackage{float} % for custom floats (to behave like figures and tables). RUN BEFORE ALL FIGURES AND OTHER FLOATS PACKAGES
+\restylefloat{figure}%FIXES CAPTION IN WRAPFIGURE BUG %https://tex.stackexchange.com/questions/128643/cannot-use-caption-in-wrap-figure
+
+\newcommand{\myFloatBarrier}{%
+  \ifthenelse{\boolean{isConstrainFloats}}
+  {%
+  \isDraftDebugger{%
+    \noindent\myBreakMessage[yellow][blue]{FLOAT BARRIER}%
+  }{}% visually mark float barrier in pdf
+  \FloatBarrier%
+  }%
+  {}
+}
+
+
+\usepackage{soul} % to strikethrough
+\usepackage{textcomp}
+
+%%% to get darkmode (already implemented in custom draftmode)
+% \usepackage{darkmode}
+% \enabledarkmode
+
+%%% LINKING IMAGES/TABLES TO LIST OF IMAGES/TABLES
+%https://tex.stackexchange.com/questions/24283/how-to-link-images-to-their-entry-in-list-of-figures
+
+
+
+\newcommand{\na}{
+  \textcolor{red}{NA} }
+
+  \input{./../../articles_common_files/settings_and_packages/meta_info_settings.tex}
+  \input{./../../articles_common_files/settings_and_packages/article_substance.tex}
+  \input{./../../articles_common_files/settings_and_packages/article_cover/article_cover.tex}
+  \input{./../../articles_common_files/settings_and_packages/lists_of_content.tex}
+
+  \input{./../../articles_common_files/settings_and_packages/print_vs_digital.tex}
+
+
+  \input{./../../articles_common_files/settings_and_packages/footnotes.tex}
+
+  \input{./../../articles_common_files/settings_and_packages/columns.tex}
+
+
+  \input{./../../articles_common_files/settings_and_packages/article_body.tex}
+  \input{./../../articles_common_files/settings_and_packages/figures.tex}
+  \input{./../../articles_common_files/settings_and_packages/tables.tex}
+
+  \input{./../../articles_common_files/settings_and_packages/margin_notes.tex}
+
+  \input{./../../articles_common_files/settings_and_packages/textbox/textbox.tex}
+
+  \input{./../../articles_common_files/settings_and_packages/counters.tex}
+
+  \input{./../../articles_common_files/settings_and_packages/benchmarks.tex}
+
+
+%%%% LOAD HYPERREF
+\input{./../../articles_common_files/settings_and_packages/hyperref.tex}
+%%%% LOAD AFTER HYPERREF
+\input{./../../articles_common_files/settings_and_packages/page_ribbons.tex}
+% \input{./../../articles_common_files/settings_and_packages/glossary_and_abreviations/glossary_selfmade.tex}
+\input{./../../articles_common_files/settings_and_packages/glossary_and_abreviations/glossary_and_abreviations.tex}
+
+
+\input{./../../articles_common_files/settings_and_packages/textbox/textbox_move_to_end.tex}
+\input{./../../articles_common_files/settings_and_packages/markdown.tex}
+
+\input{./../../articles_common_files/settings_and_packages/appendix/appendix.tex}
