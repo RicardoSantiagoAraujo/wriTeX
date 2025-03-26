@@ -199,7 +199,7 @@
 
 %%%% Shorthand to check if portfolio (yes) or article (no) document
 \newcommand{\isPortfolio}[2]{%
-  \ifthenelse{\equal{\jobname}{\detokenize{article_portfolio}}}
+  \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}}
   {#1}
   {#2}
 }%

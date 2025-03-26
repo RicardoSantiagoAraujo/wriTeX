@@ -330,6 +330,8 @@ TSWLatexianTemp*
 *.ind
 *.ilg
 _markdown_document/
+_markdown_portfolio_document/
+*.verbatim
 
 # Ignore temporary files
 *.tmp
@@ -343,3 +345,4 @@ _markdown_document/
 # Ignore build directory, if you're using one
 auxiliary_files/
 */auxiliary_files/
+
