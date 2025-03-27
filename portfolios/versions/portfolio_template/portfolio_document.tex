@@ -9,6 +9,32 @@
 % INITIAL IMPORTS: VARIABLES, CONSTANTS, ETC...
 \input{../../../articles_common_files/document/initial_inputs.tex}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% INPUT AND REDIFINE PORTFOLIO CONSTANTS
+\input{./../../portfolio_only_files/portfolio_constants.tex}
+\usepackage{xifthen}
+\renewcommand{\myLanguagePortfolio}{en}% select languague to be used in portfolio
+\renewcommand{\portfolioMainTitle}{Portfolio Main Title}
+\renewcommand{\portfolioSubTitle}{Portfolio Subtitle}
+\renewcommand{\portfolioAuthorName}{Author Name}
+\renewcommand{\portfolioInstituteShort}{Your Institute Short Name Here}
+\renewcommand{\portfolioInstituteLong}{Your Institute Long Name Here}
+\renewcommand{\portfolioUniversityShort}{Your University Short Name Here}
+\renewcommand{\portfolioUniversityLong}{Your University Long Name Here}
+\renewcommand{\portfolioDateContractStart}{Contract Start Date Here}
+\renewcommand{\portfolioDateContractEnd}{Contract End Date Here}
+\renewcommand{\portfolioDateManuscript}{Manuscript Submission Date Here}
+\renewcommand{\portfolioDateDefense}{Defense Date Here}
+\renewcommand{\portfolioCity}{City Here}
+\renewcommand{\portfolioCountry}{Country Here}
+\ifthenelse{\equal{\myLanguage}{fr}}
+{
+    \renewcommand{\portfolioMainTitle}{Titre du Portfolio}
+    \renewcommand{\portfolioSubTitle}{Sutitre du Portfolio}
+}
+{}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Define your list of articles to be imported into portfolio
 % TO SPLIT CHAPTERS INTO PARTS, USE "PART:<part title>" in between articles
@@ -37,8 +63,6 @@ article_template,% example article for demonstration
   mock_certificate%
 }
 
-
-\newcommand{\myLanguagePortfolio}{en}% select languague to be used in portfolio
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GENERAL SWITCHES:
