@@ -1,0 +1,65 @@
+
+\tikzset{
+    % defining an Arrow
+    arrow/.style={line width=0.3mm, black!100,
+    decoration={markings,mark=at position 1 with {\arrow[scale=1.5,#1]{latex}}},
+    postaction={decorate},
+    shorten >=3pt, shorten <=3pt,
+    align=center},
+    arrow/.default=black!100
+}
+%%% Defining styles
+\tikzstyle{exampleStyle}=[
+    align=center,
+    anchor=center,
+    scale=0.3
+];
+%%% Defining coordinates
+% Distances are in cm by default
+\coordinate (coordinateA) at (0,0);
+\coordinate (coordinateB) at (5,0);
+
+%%% Creating nodes
+% \node[<options>] (<id>) at (<coordinates>) {<contents>}
+\node[
+    exampleStyle
+    ]
+    (nodeA)
+    at (coordinateA)
+    {\includegraphics{example-image.jpg}};
+%%% Placing a node relative to first one
+\node[
+    exampleStyle,
+    yshift=9cm,
+    font={\Huge\bfseries}
+    ]
+    (nodeB)
+    at (nodeA)
+    {TEXT CONTENT OF NODE};
+%%% Another node
+\node[
+    exampleStyle,
+    rotate=-180,
+    opacity=0.65
+    ]
+    (nodeC)
+    at (coordinateB)
+    {\includegraphics{example-image.jpg}};
+%%% Another node
+\node[
+    exampleStyle,
+    rotate=90,
+    scale=0.5,
+    xshift=15cm,
+    ]
+    (nodeD)
+    [above right=1.0 and 1.7 of nodeC] % different way to position
+    {\includegraphics{example-image.jpg}};
+
+\node[yshift=-15mm] at (coordinateA) {Some more text};
+
+%%% Arrows
+\draw [->, line width=1mm] (nodeA) -- (nodeB);
+\draw [->, red] (0,1) -- (1,1);
+\draw [->, myColorSuccess] (nodeB) --+ (1,1);
+\draw[arrow] (nodeB) --+ (0,1);

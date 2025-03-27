@@ -58,7 +58,13 @@
 % \nocite{*}
 
 %%% MY OWN TYPE AND RESPECTIVE FIELDS
-\input{../../../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}
+\isPortfolio%
+{%
+    \input{../../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}%
+}%
+{%
+    \input{../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}%
+}%
 
 
 \AtDataInput{\stepcounter{%
