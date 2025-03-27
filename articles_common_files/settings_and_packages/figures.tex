@@ -172,8 +172,8 @@
   O{%
     {./}%
     {./assets/figures/}%lone article
-    {../articles/\myarticleKeyCore/assets/figures/}%portfolio
-    {./../articles_common_files/assets/}% Portfolio
+    {../../../articles/\myarticleKeyCore/assets/figures/}%portfolio
+    {./../../../articles_common_files/assets/}% Portfolio
     {./../../articles_common_files/assets/}% Article
   } % #2: default filepath(s). Can be overwritten
   m % #3: file name
@@ -235,8 +235,8 @@
   O{%
   {./}%
   {./assets/figures/}%lone article
-  {../articles/\myarticleKeyCore/assets/figures/}%portfolio
-  {./../articles_common_files/assets/}% Portfolio
+  {../../../articles/\myarticleKeyCore/assets/figures/}%portfolio
+  {./../../../articles_common_files/assets/}% Portfolio
   {./../../articles_common_files/assets/}% Article
   } % #2: default filepath(s). Can be overwritten
   m % #3: file name
@@ -270,7 +270,7 @@
     {%%% Load stored PDF to be faster
       \isPortfolio
       {%
-        \includegraphics[#1]{../articles/\myarticleKeyCore/assets/tikz/#3/auxiliary_files/standalone.pdf}%
+        \includegraphics[#1]{../../../articles/\myarticleKeyCore/assets/tikz/#3/auxiliary_files/standalone.pdf}%
       }
       {%
         \includegraphics[#1]{assets/tikz/#3/auxiliary_files/standalone.pdf}%
@@ -293,7 +293,7 @@
 
         \isPortfolio
         {% Relative address for portfolio
-          \input{../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
+          \input{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
         }{% Relative address for article
           \input{assets/tikz/#3/content.tex}%
         }%

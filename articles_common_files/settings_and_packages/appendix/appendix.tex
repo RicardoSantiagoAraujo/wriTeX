@@ -41,7 +41,13 @@
 }
 {%
     % \detokenize{./elements/appendix/#1/content.tex}
-    \input{./elements/appendix/#1/content.tex}%
+    \isPortfolio
+    {%
+        \input{./../../elements/appendix/#1/content.tex}%
+    }%
+    {%
+        \input{./elements/appendix/#1/content.tex}%
+    }%
 }%
 
 \NewDocumentCommand{\myAppendixTitle}

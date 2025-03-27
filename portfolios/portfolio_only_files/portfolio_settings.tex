@@ -3,7 +3,7 @@
 }
 
 % \pagestyle{headings}
-\input{portfolio_only_files/portfolio_variables.tex}
+\input{./../../portfolio_only_files/portfolio_variables.tex}
 \renewcommand{\myLanguage}{\myLanguagePortfolio}
 
 
@@ -83,7 +83,7 @@
 
 \newcommand{\addSingleArticle}[1]{
   %%% RECOVER MAIN VARIABLES
-  \input{../articles/#1/#1}
+  \input{../../../articles/#1/#1}
   % Overwrite language setting to use portfolio language
   \renewcommand{\myLanguage}{\myLanguagePortfolio}
   % Add article key to my mediation category
@@ -139,7 +139,7 @@
   %%%%%%%%%%%%
   %%%%%%%%% SUBSTANCE
   \addSubstanceToPortfolio{%
-    \input{../articles/\article/elements/substance/substance.tex}%
+    \input{./../../../articles/\article/elements/substance/substance.tex}%
   }%
 
 
@@ -160,7 +160,7 @@
         {
           ARTICLE CONTENT \ribbonSpacer PORTFOLIO \ribbonSpacer \myLanguage
         }
-      \subimport{../articles/\myarticleKeyCore/elements/body}{body_\myLanguage.tex}
+      \subimport{./../../../articles/\myarticleKeyCore/elements/body}{body_\myLanguage.tex}
     \end{bodyEnvironment}%
     %
     %%%%%%%%% ARTICLE  BIBLIOGRAPHY
@@ -221,8 +221,8 @@
       \checkIsPart{\article}
       {}
       {%
-      \input{../articles/\article/elements/glossary/glossary.tex}%
-      \input{../articles/\article/elements/abreviations/abreviations.tex}%
+      \input{./../../../articles/\article/elements/glossary/glossary.tex}%
+      \input{./../../../articles/\article/elements/abreviations/abreviations.tex}%
       }%
     }%
   }%
