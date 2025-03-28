@@ -21,13 +21,14 @@
 %
 %
 % INITIAL INPUTS
-\input{../articles_common_files/document/initial_inputs.tex}
-\input{../articles/article_template/article_template}
+\input{../../../../../articles_common_files/document/initial_inputs.tex}
+\input{../../../../../articles/article_template/article_template}
+\input{../../../../portfolio_only_files/portfolio_constants.tex}
 %
 %
 %
 %
-\newcommand{\myLanguagePortfolio}{fr}% select languague to be used in portfolio
+\renewcommand{\myLanguagePortfolio}{fr}% select languague to be used in portfolio
 \renewcommand{\myLanguage}{\myLanguagePortfolio}
 %
 %
@@ -50,21 +51,21 @@
 %
 %
 % LOAD ALL SETTINGS FROM ARTICLE
-\input{./../articles_common_files/settings_and_packages/article_settings.tex}
+\input{../../../../../articles_common_files/settings_and_packages/article_settings.tex}
 % LOAD ALL SETTINGS FROM PORTFOLIO
-\input{portfolio_only_files/portfolio_settings.tex}
+\input{../../../../portfolio_only_files/portfolio_settings.tex}
 %
 %
 %
 %
 % LOAD NECESSARY BIB FILES
-% \loadBibIfExists{./../biblatex_files/bibliography.bib}
-% \loadBibIfExists{./../biblatex_files/myArticles.bib}
+% \loadBibIfExists{./../../../../../biblatex_files/bibliography.bib}
+% \loadBibIfExists{./../../../../../biblatex_files/myArticles.bib}
 %
 %
 %
 %
-%SET CORRECT GRAPHICS PATH
+% %SET CORRECT GRAPHICS PATH
 \graphicspath{%
 {./../../}%
 }

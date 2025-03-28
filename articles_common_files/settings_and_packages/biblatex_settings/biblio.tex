@@ -63,7 +63,9 @@
     \input{../../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}%
 }%
 {%
-    \input{../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}%
+    \isArticle{%%% make sure it really is an article, and not e.g. a standalone file
+    \input{../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}%% FOR SINGLE ARTICLES
+    }{}
 }%
 
 
