@@ -214,10 +214,13 @@
     \ifthenelse{\boolean{isIncludeAppendix}}{}{\textsuperscript{\textcolor{myColorDanger}{\tiny APPENDIX EXCLUDED}}}%
     }
     \begin{myListMeta}
-        \foreach \entries [count=\n] in \appendixList {
-            \item[\myListLabelStyle{\makeAlph{\n}}] %
-            \hyperlink{appendix:target:\n}{\expandafter\detokenize\expandafter{\entries}}%
-        }
+        \foreach \entry [count=\n] in \appendixList {
+            \ifthenelse{\equal{\entry}{}}{}
+            {%
+                \item[\myListLabelStyle{\makeAlph{\n}}] %
+                \hyperlink{appendix:target:\n}{\expandafter\detokenize\expandafter{\entry}}%
+            }%
+        }%
     \end{myListMeta}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

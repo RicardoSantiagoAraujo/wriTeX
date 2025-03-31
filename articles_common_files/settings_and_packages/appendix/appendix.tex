@@ -26,13 +26,17 @@
 
 
         \foreach \item [count=\n] in \appendixList {%
-            \cleardoublepage%
-            \refstepcounter{totalAppendixItemsAltogether}%
-            \expandafter\addAppendixItem\expandafter{\item}%
-        }
-    }
-    {}
-}
+            \ifthenelse{\equal{\item}{}}%
+            {}% if appendix item is empty, skip it
+            {%
+                \cleardoublepage%
+                \refstepcounter{totalAppendixItemsAltogether}%
+                \expandafter\addAppendixItem\expandafter{\item}%
+            }%
+        }%
+    }%
+    {}%
+}%
 
 
 \NewDocumentCommand{\addAppendixItem}
