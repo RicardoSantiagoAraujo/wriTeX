@@ -1,4 +1,4 @@
-# artTeX: A LuaLaTeX articles template and Portfolio
+# arTeX: A LuaLaTeX articles template and Portfolio
 A highly versatile and customisable LuaLaTeX template for writing modular articles and compiling them into a single portfolio.
 
 ### Requirements
