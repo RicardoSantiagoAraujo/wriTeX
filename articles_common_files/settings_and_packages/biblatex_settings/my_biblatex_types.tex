@@ -1,11 +1,14 @@
 %%%% My own references
 \isPortfolio
-{
-  \loadBibIfExists{../../../articles_common_files/biblatex_files/myArticles.bib} % FOR PORTFOLIO
+{ % FOR PORTFOLIO
+  \loadBibIfExists{../../../articles_common_files/biblatex_files/myArticles_template.bib}
+  \loadBibIfExists{../../../articles_common_files/biblatex_files/myArticles.bib}
 }
 {
   \isArticle{%%% make sure it really is an article, and not e.g. a standalone file
-    \loadBibIfExists{../../articles_common_files/biblatex_files/myArticles.bib} % FOR SINGLE ARTICLES
+    % FOR SINGLE ARTICLES
+    \loadBibIfExists{../../articles_common_files/biblatex_files/myArticles_template.bib}
+    \loadBibIfExists{../../articles_common_files/biblatex_files/myArticles.bib}
   }{}
 }
 

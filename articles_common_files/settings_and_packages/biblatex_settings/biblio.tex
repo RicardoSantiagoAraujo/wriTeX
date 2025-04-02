@@ -40,12 +40,15 @@
     {}%
 }
 \isPortfolio
-{
-    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography.bib}% FOR PORTFOLIO
+{% FOR PORTFOLIO
+    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography_template.bib}
+    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography.bib}
 }
 {
     \isArticle{%%% make sure it really is an article, and not e.g. a standalone file
-        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography.bib}% FOR SINGLE ARTICLES
+        % FOR SINGLE ARTICLES
+        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography_template.bib}
+        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography.bib}
     }{}
 }
 
