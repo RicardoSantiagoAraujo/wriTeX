@@ -4,6 +4,7 @@ import glob
 
 # CONSTANTS
 article_template_string = "article_template" # change here if the name of the template changes
+build_folder = 'auxiliary_files' # folder name where the LaTeX build compilation outputs are placed
 biblatex_filepath = "../articles_common_files/biblatex_files/myArticles.bib" # change here if the name of the template changes
 # biblatex entries: update if the myarticle type is updated in settings
 biblatex_fields=[
@@ -37,10 +38,20 @@ def main():
     # Rename template latex file with new filename
     old_path = new_folder + f"/{article_template_string}.tex"
     new_path = new_folder + "/" + new_article_name + ".tex"
-    os.system("mv " + old_path + " " +  new_path)
+    if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
+        os.system("mv " + old_path + " " +  new_path)
+    elif os.name == 'nt': # if Windows OS
+        os.system("move " + old_path + " " +  new_path)
+
+
 
     # Remove template auxiliary folder and files
-    os.system("rm -r " +  new_folder + "/auxiliary_files/*")
+    if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
+        os.system("rm -r " +  new_folder + f'/{build_folder}/*')
+    elif os.name == 'nt': # if Windows OS 
+        os.system("del /S /Q " +  new_folder + f'\\{build_folder}\\* > NUL') # delete files
+        os.system("rmdir /S /Q " + new_folder + f'\\{build_folder}') # delete directories
+
 
     # Remove template markdown auxiliary files
     # Create the path for the target folder using a wildcard
@@ -49,7 +60,12 @@ def main():
     matching_dirs = glob.glob(pattern)
     # Iterate over the matching directories and delete them
     for dir_path in matching_dirs:
-        os.system("rm -r " +  dir_path)
+        if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
+            os.system("rm -r " +  dir_path)
+        elif os.name == 'nt': # if Windows OS 
+            os.system("del /S /Q " +  dir_path + f' > NUL') # delete files
+            os.system("rmdir /S /Q " + dir_path) # delete directories
+
 
     # Replace template article name
     replace_string_in_tex_file(f"{new_folder}/document.tex", article_template_string, new_article_name)
@@ -77,7 +93,7 @@ def initial_prompt():
     os.system('clear')
     print('\t****************************************************************************************************')
     print(f'\t {bold}You are about to initiate a new article folder and respective files based on the existing template.{reset}')
-    print(f'\t Script works with shell language: {blue+bold}zsh{reset}')
+    print(f'\t Script works with shell languages: {blue+bold}zsh (MacOS){reset}, {blue+bold}Batch Scripting (windows){reset}')
     print('\t****************************************************************************************************\n')
 
     print((f'Type {bold+red}"q"{reset} or {bold+red}"quit"{reset} to exit program'))
@@ -114,12 +130,18 @@ def request_article_name(article_names):
 
 def create_new_folder_with_files(new_article_name, dir_path):
     if new_article_name != "q" and new_article_name != "quit":
-        # create file in articles folder with chosen article name
-        new_folder = dir_path + '/' + new_article_name
-        os.system('mkdir ' + new_folder)
 
         # copy all contents of article template folder into newly created folder
-        os.system(f'cp -R  {dir_path}/{article_template_string}/. {new_folder}')
+        if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
+            # create file in versions folder with chosen article name
+            new_folder = dir_path + '/' + new_article_name
+            os.system('mkdir ' + new_folder)
+            os.system(f'cp -R  {dir_path}/{new_article_name}/. {new_folder}')
+        elif os.name == 'nt': # if Windows OS
+            # create file in versions folder with chosen article name
+            new_folder = dir_path + '\\' + new_article_name
+            os.system('mkdir ' + new_folder)
+            os.system(f'xcopy  {dir_path}\\{article_template_string}\\* {new_folder} /E /I > NUL')
 
         print(f"\n\n 🙂🙂🙂 Article successfully created with name: {bold+green}{new_article_name}{reset} 🙂🙂🙂")
     else:

@@ -113,7 +113,6 @@ def request_portfolio_name(portfolio_names):
 def create_new_folder_with_files(new_portfolio_name, dir_path):
     if new_portfolio_name != "q" and new_portfolio_name != "quit":
 
-
         # copy all contents of portfolio template folder into newly created folder
         if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
             # create file in versions folder with chosen portfolio name
