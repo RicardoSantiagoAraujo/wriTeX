@@ -80,7 +80,7 @@ def initial_prompt():
     print(f'\t Script works with shell language: {blue+bold}zsh{reset}')
     print('\t****************************************************************************************************\n')
 
-    print((f'Write {bold+red}"q"{reset} or {bold+red}"quit"{reset} to exit program'))
+    print((f'Type {bold+red}"q"{reset} or {bold+red}"quit"{reset} to exit program'))
     print((f'File name convention: use only {bold+green}lowercase{reset}  characters and {bold+green}underscores{reset} for spaces (script performs automatic correction).'))
     print('')
 
@@ -93,7 +93,7 @@ def list_existing_articles(dir_path):
         # check if path is directory:
         if os.path.isdir(file_path):
             article_names.append(file_name)
-    print("\nArticle names already used:")
+    print("\nArticle names already in use:")
     for name in article_names:
         print("- " + name)
     print("")
@@ -106,7 +106,7 @@ def request_article_name(article_names):
     while new_article_name in article_names:
         if new_article_name != "q" and new_article_name != "quit":
             print("Article already exists. Please pick a new name or quit.\n")
-            new_article_name =  request_article_name()
+            new_article_name =  request_article_name(article_names)
         else:
             print("\nProgram quit without creation of new file.")
             exit()
