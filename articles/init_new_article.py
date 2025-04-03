@@ -36,11 +36,13 @@ def main():
 
     #### Cleaning up files in folder:
     # Rename template latex file with new filename
-    old_path = new_folder + f"/{article_template_string}.tex"
-    new_path = new_folder + "/" + new_article_name + ".tex"
     if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
+        old_path = new_folder + f"/{article_template_string}.tex"
+        new_path = new_folder + "/" + new_article_name + ".tex"     
         os.system("mv " + old_path + " " +  new_path)
     elif os.name == 'nt': # if Windows OS
+        old_path = new_folder + f"\\{article_template_string}.tex"
+        new_path = new_folder + "\\" + new_article_name + ".tex" 
         os.system("move " + old_path + " " +  new_path)
 
 
@@ -69,6 +71,7 @@ def main():
 
     # Replace template article name
     replace_string_in_tex_file(f"{new_folder}/document.tex", article_template_string, new_article_name)
+    replace_string_in_tex_file(f"{new_folder}/{new_article_name}.tex", article_template_string, new_article_name)
     print(f'\n\n You can now edit the files directly in the {new_article_name} folder')
 
 
