@@ -17,7 +17,7 @@ def initial_prompt(thing_type):
         # clear terminal
     os.system('clear')
     print('\t****************************************************************************************************')
-    print(f'\t {bold}You are about to initiate a new {thing_type} folder and respective files based on the existing template.{reset}')
+    print(f'\t {bold}You are about to initiate a new {green}{thing_type}{reset} folder and respective files based on the existing template.{reset}')
     print(f'\t Script works with shell languages: {blue+bold}zsh (MacOS){reset}, {blue+bold}Batch Scripting (windows){reset}')
     print('\t****************************************************************************************************\n')
 

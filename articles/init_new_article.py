@@ -23,7 +23,7 @@ def main():
     # get the directory of the current script
     dir_path = os.path.dirname(os.path.realpath(__file__))
     # Print initial prompt
-    h.initial_prompt("article")
+    h.initial_prompt("Article")
     # Get list of existing articles
     article_names =h.list_existing_things(dir_path)
     # ask user for desired name for the new article
