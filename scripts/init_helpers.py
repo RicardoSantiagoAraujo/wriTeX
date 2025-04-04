@@ -49,11 +49,7 @@ def rename_file(folder_path, old_name, new_name):
 
 
 def delete_build(folder_path):
-    if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
-        shutil.rmtree(os.path.join(folder_path, build_folder))
-    elif os.name == 'nt': # if Windows OS
-        os.system("del /S /Q " +  folder_path + f'\\{build_folder}\\* > NUL') # delete files
-        os.system("rmdir /S /Q " + folder_path + f'\\{build_folder}') # delete directories
+    shutil.rmtree(os.path.join(folder_path, build_folder))
 
 def delete_md_aux(folder_path):
     # Create the path for the target folder using a wildcard
@@ -62,11 +58,7 @@ def delete_md_aux(folder_path):
     matching_dirs = glob.glob(pattern)
     # Iterate over the matching directories and delete them
     for dir_path in matching_dirs:
-        if os.name == 'posix': # if Unix-like OS (e.g., Linux, MacOS)
-            shutil.rmtree(dir_path)
-        elif os.name == 'nt': # if Windows OS
-            os.system("del /S /Q " +  dir_path + f' > NUL') # delete files
-            os.system("rmdir /S /Q " + dir_path) # delete directories
+        shutil.rmtree(dir_path)
 
 
 
