@@ -1,17 +1,13 @@
 # Script to automatically create and cleanup new article files and folder from template
 import os
 import sys
-
-# Add parent directory to the system path
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(0, parent_dir)
-
-import scripts.init_helpers as h
+import helpers as h
 
 # CONSTANTS
 article_template_string = (
     "article_template"  # change here if the name of the template changes
 )
+articles_directory = "./../articles/" # relative to script location
 biblatex_filepath = "../articles_common_files/biblatex_files/myArticles.bib"  # change here if the name of the template changes
 # biblatex entries: update if the myarticle type is updated in settings
 biblatex_fields = [
@@ -48,7 +44,8 @@ biblatex_fields = [
 def main():
     ### MAIN PROGRAM ###
     # get the directory of the current script
-    dir_path = os.path.dirname(os.path.realpath(__file__))
+    base_dir = os.path.dirname(os.path.realpath(__file__)) # dir of current file
+    dir_path = os.path.join(base_dir, articles_directory)
     # Print initial prompt
     h.initial_prompt("Article")
     # Get list of existing articles

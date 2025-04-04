@@ -3,22 +3,21 @@ import os
 import glob
 import sys
 
-# Add parent directory to the system path
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-sys.path.insert(0, parent_dir)
 
-import scripts.init_helpers as h
+import helpers as h
 
 # CONSTANTS
 portfolio_template_string = (
     "portfolio_template"  # change here if the name of the template changes
 )
+portfolio_versions_directory = "./../portfolios/versions/" # relative to script location
 
 
 def main():
     ### MAIN PROGRAM ###
     # get the directory of the current script
-    dir_path = os.path.dirname(os.path.realpath(__file__))
+    base_dir = os.path.dirname(os.path.realpath(__file__)) # dir of current file
+    dir_path = os.path.join(base_dir, portfolio_versions_directory)
     # Print initial prompt
     h.initial_prompt("Portfolio")
     # Get list of existing articles

@@ -347,3 +347,4 @@ auxiliary_files/
 */auxiliary_files/
 
 *.pyc
+*/__pycache__/
