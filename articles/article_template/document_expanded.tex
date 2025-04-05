@@ -537,7 +537,41 @@ sorting=nty, citestyle=\myCiteStyle,
     url=false,
     eprint=false
 ]{biblatex} \newcommand{\loadBibIfExists}[1]{\IfFileExists{#1}
-    {\addbibresource{#1}}{}}
+    {\begin{filecontents*}{./../../articles_common_files/biblatex_files/bibliography_template.bib}
+% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
+
+@article{bibliography:source_template,
+	title = {template},
+	volume = {template},
+	issn = {template},
+	url = {template},
+	doi = {template},
+	language = {template},
+	urldate = {template},
+	journal = {template},
+	author = {{Name1}, Surname1 and {Name2}, Surname2},
+	month = {1},
+	year = {1900},
+	pages = {template},
+	file = {template},
+	abstract = {template}
+}
+
+\end{filecontents*}
+
+\usepackage{xpatch}
+
+%Patch the biblatex input command.
+%replace "testinput-bbl" if you change the name above.
+%disable if you want to run biblatex/biber normally
+\makeatletter
+\patchcmd\blx@bblinput{\blx@blxinit}
+                      {\blx@blxinit
+                       \def\jobname{./../../articles_common_files/biblatex_files/bibliography_template.bib}%new jobname
+                      }{}{\fail}
+\makeatother
+			     }
+{}}
 \isPortfolio
 {\loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography_template.bib}
     \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography.bib}
@@ -2225,7 +2259,7 @@ title={}
 \abreviationsItem[fr]{acronym}[Acronym]{\myGLS{glossaryItem2}}
  }
 
-\begin{document}
+\makeatletter\begin{document}
 \pagenumbering{roman}
 \addMetadata
 
