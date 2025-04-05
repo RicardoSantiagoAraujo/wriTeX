@@ -1,7 +1,5 @@
 # Script to automatically create and cleanup new article files and folder from template
 import os
-import glob
-import sys
 
 
 import helpers as h
@@ -10,11 +8,14 @@ import helpers as h
 portfolio_template_string = (
     "portfolio_template"  # change here if the name of the template changes
 )
-portfolio_versions_directory = "./../portfolios/versions/" # relative to script location
+portfolio_versions_directory = (
+    "./../portfolios/versions/"  # relative to script location
+)
 
 # get the directory of the current script
-base_dir = os.path.dirname(os.path.realpath(__file__)) # dir of current file
+base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
 dir_path = os.path.join(base_dir, portfolio_versions_directory)
+
 
 def main():
     ### MAIN PROGRAM ###

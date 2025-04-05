@@ -331,6 +331,9 @@ TSWLatexianTemp*
 *.ilg
 _markdown_document/
 _markdown_portfolio_document/
+_markdown_document_expanded/
+_markdown_portfolio_document_expanded/
+
 *.verbatim
 
 # Ignore temporary files

@@ -5,6 +5,11 @@
   ]{book}
 % \documentclass[a4paper,12pt,twoside,openright]{article}
 
+\makeatletter
+%%% Set path(s) for input file(s) similarly to graphicspath
+\def\input@path{{./}{../}}
+%or: \def\input@path{{/path/to/folder/}{/path/to/other/folder/}}
+\makeatother
 
 % INITIAL IMPORTS: VARIABLES, CONSTANTS, ETC...
 \input{../../../articles_common_files/document/initial_inputs.tex}
