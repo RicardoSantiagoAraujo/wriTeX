@@ -12,18 +12,18 @@ portfolio_template_string = (
 )
 portfolio_versions_directory = "./../portfolios/versions/" # relative to script location
 
+# get the directory of the current script
+base_dir = os.path.dirname(os.path.realpath(__file__)) # dir of current file
+dir_path = os.path.join(base_dir, portfolio_versions_directory)
 
 def main():
     ### MAIN PROGRAM ###
-    # get the directory of the current script
-    base_dir = os.path.dirname(os.path.realpath(__file__)) # dir of current file
-    dir_path = os.path.join(base_dir, portfolio_versions_directory)
     # Print initial prompt
-    h.initial_prompt("Portfolio")
+    h.initial_prompt(h.ThingType("Portfolio"))
     # Get list of existing articles
     version_names = h.list_existing_things(dir_path)
     # ask user for desired name for the new article
-    new_portfolio_name = h.request_name("Portfolio", version_names)
+    new_portfolio_name = h.request_name(h.ThingType("Portfolio"), version_names)
 
     #### Creating new portfolio version folder/files:
     # create portfolio version unless user quits
@@ -46,7 +46,7 @@ def main():
     )
 
     # Print success message
-    h.final_message("Portfolio", new_portfolio_name)
+    h.final_message(h.ThingType("Portfolio"), new_portfolio_name)
 
 
 ###############################################################################

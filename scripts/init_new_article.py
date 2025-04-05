@@ -40,18 +40,18 @@ biblatex_fields = [
     "mainSource",
 ]
 
+# get the directory of the current script
+base_dir = os.path.dirname(os.path.realpath(__file__)) # dir of current file
+dir_path = os.path.join(base_dir, articles_directory)
 
 def main():
     ### MAIN PROGRAM ###
-    # get the directory of the current script
-    base_dir = os.path.dirname(os.path.realpath(__file__)) # dir of current file
-    dir_path = os.path.join(base_dir, articles_directory)
     # Print initial prompt
-    h.initial_prompt("Article")
+    h.initial_prompt(h.ThingType("Article").value)
     # Get list of existing articles
     article_names = h.list_existing_things(dir_path)
     # ask user for desired name for the new article
-    new_article_name = h.request_name("Article", article_names)
+    new_article_name = h.request_name(h.ThingType("Article").value, article_names)
 
     #### Creating new article folder/files:
     # create article unless user quits
@@ -78,12 +78,17 @@ def main():
         f"Removed old {h.bold+h.green}_markdown{h.reset} folder from new article "
     )
 
+    # Remove template expanded files
+    h.delete_expanded(h.ThingType("Article").value, new_folder)
+    h.print_progress_msg(
+        f"Removed old {h.bold+h.green}expanded{h.reset} file from new article "
+    )
+
     # Replace template article name
-    h.replace_string_in_tex_file(
-        f"{new_folder}/document.tex", article_template_string, new_article_name
+    h.replace_string_in_tex_file(new_folder, "document.tex", article_template_string, new_article_name
     )
     h.replace_string_in_tex_file(
-        f"{new_folder}/{new_article_name}.tex",
+        new_folder, f"{new_article_name}.tex",
         article_template_string,
         new_article_name,
     )
@@ -97,8 +102,10 @@ def main():
     # Give user option to generate new bib entry
     create_new_bib_entry(new_article_name, article_template_string, new_folder)
 
+
+
     # Print success message
-    h.final_message("Article", new_article_name)
+    h.final_message(h.ThingType("Article").value, new_article_name)
 
 
 ###############################################################################
@@ -109,9 +116,10 @@ def main():
 
 
 def update_biblatex_file(new_article_name):
-    print(f"English (en) version by default 🇬🇧")
+    print(f'{h.blue}English (en) version by default 🇬🇧🇬🇧🇬🇧{h.reset}')
     # Open the file in append mode ('a') so that new content is added at the end
-    with open(biblatex_filepath, "a", encoding="utf-8") as file:
+    rel_path = os.path.join(base_dir, biblatex_filepath) # path relative to script folder
+    with open(rel_path, "a", encoding="utf-8") as file:
         new_entry = f"""
         \n\n@myarticle{{myarticle:{new_article_name}:en,"""
         for i, field in enumerate(biblatex_fields):
@@ -135,15 +143,20 @@ def update_biblatex_file(new_article_name):
 
 
 def create_new_bib_entry(new_thing_name, old_thing_name, new_folder):
+    print("\n\n📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚")
     print(
-        f"\n\n Would you also like to create a new {h.blue}biblatex{h.reset} entry for {h.green+h.bold}{new_thing_name}{h.reset} ?"
+        f"Would you also like to create a new {h.blue}biblatex{h.reset} entry for {h.green+h.bold}{new_thing_name}{h.reset} ?"
     )
     is_create_new_bib = input("(y/N) :").lower()
     if is_create_new_bib.lower().strip() in ["y", "yes"]:
         update_biblatex_file(new_thing_name)
         h.replace_string_in_tex_file(
-            f"{new_folder}/{new_thing_name}.tex", old_thing_name, new_thing_name
+            new_folder, f'{new_thing_name}.tex', old_thing_name, new_thing_name
         )
+        h.print_progress_msg(
+        f"Replaced old string {h.bold+h.green}{old_thing_name}{h.reset} with {h.bold+h.green}{new_thing_name}{h.reset} for bibliography"
+    )
+
     else:
         print(
             f"\n You will have to manually create a new bib entry in {h.green}{biblatex_filepath}{h.reset}.\n"
