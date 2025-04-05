@@ -10,24 +10,24 @@
 {%
     \newcommand{\myCiteStyle}{numeric}%
     \newcommand{\myBibStyle}{numeric}%
-}
+}%
 
 
 
-\usepackage[
+\usepackage[%
     %sorting=none,
     sorting=nty, %name, title, year
     %%% CITATION STYLES: "style applies to both citations in text and display in printed bibliography, citestyle and bibstyles splits
     % Style option examples: numeric, authoryear, authortitle, verbose
     % style=authoryear,
-    citestyle=\myCiteStyle,
-    bibstyle=\myBibStyle,
-    backend=biber,
-    datamodel=mydatamodels,
-    doi=false,
-    isbn=false,
-    url=false,
-    eprint=false
+    citestyle=\myCiteStyle,%
+    bibstyle=\myBibStyle,%
+    backend=biber,%
+    datamodel=mydatamodels,%
+    doi=false,%
+    isbn=false,%
+    url=false,%
+    eprint=false%
     % maxcitenames=2
     % maxbibnames=1,
     % minbibnames=3
@@ -35,22 +35,22 @@
 %Import the bibliography file(s)
 %%%% bibliographic sources
 \newcommand{\loadBibIfExists}[1]%%% load bib file only if it exists
-{\IfFileExists{#1}
+{\IfFileExists{#1}%
     {\addbibresource{#1}}%
     {}%
 }
-\isPortfolio
+\isPortfolio%
 {% FOR PORTFOLIO
-    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography_template.bib}
-    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography.bib}
-}
-{
+    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography_template.bib}%
+    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography.bib}%
+}%
+{%
     \isArticle{%%% make sure it really is an article, and not e.g. a standalone file
         % FOR SINGLE ARTICLES
-        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography_template.bib}
-        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography.bib}
-    }{}
-}
+        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography_template.bib}%
+        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography.bib}%
+    }{}%
+}%
 
 
 \DeclareBibliographyCategory{myMediationArticles}

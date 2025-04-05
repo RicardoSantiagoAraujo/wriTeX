@@ -4,6 +4,10 @@ import helpers as h
 
 
 articles_directory = "./../articles/"  # relative to script location
+expanded_file = "document_expanded.tex"
+bib_dir = "./../articles_common_files/biblatex_files/"  # relative to script location"
+temp_bib_file = "temp.bib"
+
 # get the directory of the current script
 base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
 
@@ -21,8 +25,14 @@ def main():
         print(f"{h.red}INVALID CHOICE: must pick from existing list{h.reset}")
         main()
     else:
-        # Get list of existing articles
-        thing_path = os.path.join(base_dir, articles_directory, thing_name)
+
+        thing_dir = os.path.join(base_dir, articles_directory, thing_name)
+
+        # create single temporary bib file
+        tmp_bib_path = fuse_files(
+            os.path.join(base_dir, bib_dir),
+            os.path.join(thing_dir, temp_bib_file)
+            )
 
         subprocess.run(
             # latexpand --verbose --output document_expanded.tex document.tex
@@ -37,23 +47,38 @@ def main():
                 ### "--explain", # generate explanatory comments in output
                 ### "--show-graphics", # show included graphics
                 ### "--fatal", # Die in case a file can't be found.
-                "--makeatletter", # Insert a \makeatletter in the preamble. In some rare cases it may break your document, but it may help fixing bad interactions between @-commands and inclusion.
+                # "--makeatletter", # Insert a \makeatletter in the preamble. In some rare cases it may break your document, but it may help fixing bad interactions between @-commands and inclusion.
                 #==============================================================
                 # +++++ OUTPUT FILE:
                 "--biber", # Include \bibliography{} with FILE's content, as needed by biblatex with the biber backend.(similar to --expand-bbl FILE, but for biber+biblatex).
-                "./../../articles_common_files/biblatex_files/bibliography_template.bib",
+                temp_bib_file,
                 # +++++ OUTPUT FILE:
                 "--output",
-                "document_expanded.tex",
+                expanded_file,
                 # +++++ INPUT FILE:
                 "document.tex",
             ],
-            cwd=thing_path,  # 👈 set your desired directory here
+            cwd=thing_dir,  # 👈 set your desired directory here
             check=True,
         )
+
+        os.remove(tmp_bib_path)
         print(
             f"\n\n 😁😁😁  successfully expanded article {h.bold+h.green}{thing_name}{h.reset} 😁😁😁"
         )
+        print(f'\n⚠️ To get the bibliography to work, you must manually add a new line {h.blue}\\addbibresource{{temp_bib_file}}{h.reset} to the generated file {h.blue}{expanded_file}{h.reset} as well as remove the included @articles out of the surrounding macro !')
+
+
+def fuse_files(directory, output_file):
+    with open(output_file, 'w', encoding='utf-8') as outfile:
+        for filename in os.listdir(directory):
+            filepath = os.path.join(directory, filename)
+            if os.path.isfile(filepath):
+                with open(filepath, 'r', encoding='utf-8', errors='ignore') as infile:
+                    # outfile.write(f"\n--- Start of {filename} ---\n")
+                    outfile.write(infile.read())
+                    # outfile.write(f"\n--- End of {filename} ---\n\n")
+    return output_file
 
 
 if __name__ == "__main__":
