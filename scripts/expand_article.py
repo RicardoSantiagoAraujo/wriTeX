@@ -27,6 +27,7 @@ def main():
     else:
 
         thing_dir = os.path.join(base_dir, articles_directory, thing_name)
+        thing_path = os.path.join(thing_dir, expanded_file)
 
         # create single temporary bib file
         tmp_bib_path = fuse_files(
@@ -40,7 +41,7 @@ def main():
                 "latexpand",
                 # "--verbose",  # for details to be printed to terminal
                 # "--keep-comments", # don't strip comments (lines starting with %, and anything below\end{document}
-                # "--empty-comments", # keep empty comments (i.e. % at end of lines) for clarity
+                "--empty-comments", # keep empty comments (i.e. % at end of lines) for clarity
                 ###   "--keep-includes", # don't expand \input and \include directives
                 ### "--expand-usepackage", # Expand \usepackage{...} directives
                 ### "--expand-bbl FILE", # Expand the bibliography by inlining FILE (should be a *.bbl file) - not what the project uses
@@ -63,10 +64,13 @@ def main():
         )
 
         os.remove(tmp_bib_path)
+
+
+        handle_biblatex_bug(thing_path)
+
         print(
             f"\n\n 😁😁😁  successfully expanded article {h.bold+h.green}{thing_name}{h.reset} 😁😁😁"
         )
-        print(f'\n⚠️ To get the bibliography to work, you must manually add a new line {h.blue}\\addbibresource{{temp_bib_file}}{h.reset} to the generated file {h.blue}{expanded_file}{h.reset} as well as remove the included @articles out of the surrounding macro !')
 
 
 def fuse_files(directory, output_file):
@@ -79,6 +83,50 @@ def fuse_files(directory, output_file):
                     outfile.write(infile.read())
                     # outfile.write(f"\n--- End of {filename} ---\n\n")
     return output_file
+
+
+
+def replace_content_in_file(file_path, old_string, new_string):
+    # Read the file
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+
+    # Replace the string
+    content = content.replace(old_string, new_string)
+
+    # Write the modified content back to the file
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(content)
+
+
+def handle_biblatex_bug(thing_path):
+    print(f'\n⚠️ To get the bibliography to work, one must add a new line {h.blue}\\addbibresource{{temp_bib_file}}{h.reset} to the generated file {h.blue}{expanded_file}{h.reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {h.blue}latexpand flags{h.reset}')
+
+    replace_content_in_file(thing_path,
+                                '''\\newcommand{\loadBibIfExists}[1]%
+{\IfFileExists{#1}%
+    {%'''
+    , "")
+
+
+    replace_content_in_file(thing_path,
+                                f'''\\usepackage{{xpatch}}
+
+%Patch the biblatex input command.
+%replace "testinput-bbl" if you change the name above.
+%disable if you want to run biblatex/biber normally
+\\makeatletter
+\\patchcmd\\blx@bblinput{{\\blx@blxinit}}
+                      {{\\blx@blxinit
+                       \\def\\jobname{{{temp_bib_file}}}%new jobname
+                      }}{{}}{{\\fail}}
+\\makeatother
+			     %
+}}%
+    {{}}%
+}}'''
+    , f'\\addbibresource{{{temp_bib_file}}}')
+
 
 
 if __name__ == "__main__":
