@@ -198,7 +198,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
         \def\fileAddress{elements/#1/#1.tex}%
       }%
       { %
-        \def\fileAddress{elements/#1/#1\_#2.tex}%
+        \def\fileAddress{./#1\_#2.tex}%
       }%
     %
 
@@ -3569,9 +3569,9 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
 
         \isPortfolio
         {%
-          \input{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
+          \expandafter\input\expandafter{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
         }{%
-          \input{assets/tikz/#3/content.tex}%
+        \expandafter\input\expandafter{assets/tikz/#3/content.tex}%
         }%
         %
         \isDraftDebugger{%
@@ -4593,6 +4593,30 @@ title={#2},
 
 
 
+\begin{filecontents*}{appendix_b.tex}
+                       \myAppendixTitle{Appendix Title B}[ref-b-appendix]
+
+
+\lipsum[1-2]
+\end{filecontents*} 
+
+\begin{filecontents*}{appendix_a.tex}
+                       \myAppendixTitle{Appendix Title A}
+
+\begin{myFigEnv}[H][width=0.6\linewidth]
+    {Caption of Appendix Figure.}% Caption
+    {Details.}% Caption details
+    [appendix-fig-env-ref]
+
+
+    \myFigGraphics
+    [width=0.5\linewidth, angle=90]
+    {example-image}
+    [jpg]
+
+\end{myFigEnv}
+\end{filecontents*} 
+
 \NewDocumentCommand{\myAppendix}
 {
     %
@@ -4637,10 +4661,10 @@ title={#2},
     %
     \isPortfolio
     {%
-        \input{./elements/appendix/#1/content.tex}%
+        \expandafter\input\expandafter{./#1.tex}%
     }%
     {%
-        \input{./elements/appendix/#1/content.tex}%
+        \expandafter\input\expandafter{./#1.tex}%
     }%
 }%
 
@@ -4737,6 +4761,389 @@ title={#2},
 
 \abreviationsItem[fr]{demonstration}[DEMO]{Demo dEmo deMo demO}
  }
+
+\begin{filecontents*}{body_en.tex}
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MY ARTICLE TEMPLATE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This is the \textcolor{myColorWarning}{\textbf{\myLanguageLong} (\myLanguage)} version.\\
+
+\myArticleSection{Structuring the Article}
+
+%%%%%% CHAPEAU/INTRO/STANDFIRST
+%%% Factual
+%%% Short
+%%% Simple
+%%% Summary-oriented
+Start with \textcolor{myColorSuccess}{\textbf{Chapeau/Intro/Standfirst}}. typically a few sentences that set the stage for the article, giving readers a quick snapshot of what to expect. It is often used to highlight the most relevant or intriguing aspects of the article, nudging readers to continue. It is a  a more factual or summary-oriented introduction. Somewhat equivalent to the \textcolor{myColorSuccess}{\textbf{Abstract}} in academia.
+
+
+%%%%%% Lead/Lede
+%%% Who?
+%%% What?
+%%% When/Where?
+%%% Why ?
+%%% How ?
+%%% Dynamic and Engaging
+%%% May be Anecdotal or even Humorous
+%%% Open with HOOK/ACCROCHE
+The \textcolor{myColorSuccess}{\textbf{Lead/Lede}} appears at the very start of the story. Its purpose is to \textcolor{myColorSuccess}{\textbf{hook/accroche}} readers and provide the essential \textbf{"who, what, when, where, why, and how"} in an engaging manner. Leads are usually more narrative or conversational, aiming to pull readers into the story rather than simply summarizing it. Leads can be factual, anecdotal, or even humorous, depending on the article's style.
+
+
+\myArticleSection{Section}[manual-key-for-sec]
+Example of article section.
+\myArticleSubsection{Subsection}[manual-key-for-subsec]
+Example of article subsection.
+\myArticleSubsubsection{Subsubsection}[manual-key-for-subsubsec]
+Example of article subsubsection.
+The code generates key for each section and (sub)(sub)section automatically, which are used for linking to the TOC.
+Moreover, you can manually provide an optional argument for an additional shorter key, which is useful when you want refer link to a specific (sub)section within the text. To do that, you can do like so:\mySecRef{subsec}{manual-key-for-subsec} or \mySecRef{subsubsec}{manual-key-for-subsubsec}[Subsubsection].
+
+With an alternative command, you can also \mySecHyperref[sec][manual-key-for-sec]{link to a secton/subsection} without the section number included, which should make sense in most cases. A similar feature has not been implemented for Figures/tables/textboxes as those are numbered so it makes more sense to refer to them by number.
+
+\myArticleSection{Basic commands}
+
+\myArticleSubsection{Font styles}
+\newcommand\demoString{This is a sentence}
+
+\begin{myListMeta}
+  \item[Default] \demoString
+  \item[Medium] \textmd{\demoString}\ (textmd\{\} or mdseries)
+  \item[Bold] \textbf{\demoString}\ (textbf\{\} or bfseries)
+  \item[Italic] \textit{\demoString}\ (textit\{\} or itshape)
+  \item[Slanted] \textsl{\demoString}\ (textsl\{\} or slshape)
+  \item[Upright] \textup{\demoString}\ (textup\{\} or upshape)
+  \item[Spaced out] \textls{\demoString} \ (textls\{\} or lsstyle) % with microtype package
+  \item[Uppercase] \MakeUppercase{\demoString}\ (MakeUppercase\{\})
+  \item[Small caps] \textsc{\demoString}\ (textsc\{\} or scshape)
+  \item[Colored] \textcolor{myColorSuccess}{\demoString}\ (textcolor\{\}\{\} or color\{\})
+\end{myListMeta}
+
+\myArticleSubsection{Font sizes}
+\begin{myListMeta}
+  \item[tiny] {\tiny\demoString}
+  \item[scriptsize] {\scriptsize\demoString}
+  \item[footnotesize] {\footnotesize\demoString}
+  \item[small] {\small\demoString}
+  \item[normalsize] {\normalsize\demoString}
+  \item[large] {\large\demoString}
+  \item[Large] {\Large\demoString}
+  \item[LARGE] {\LARGE\demoString}
+  \item[huge] {\huge\demoString}
+  \item[Huge] {\Huge\demoString}
+  \item[HUGE] {\HUGE\demoString}
+\end{myListMeta}
+
+
+\myArticleSubsection{Font families}
+\begin{myListMeta}
+  \item[My main font] {\setMainFont\ [\myMainFont; \myMainFontBackup] \demoString}\ (myMainFont)
+  %
+  \item[My draft font] {\setDraftFont\ [\myDraftFont; \myDraftFontBackup] \demoString} (myDraftFont)
+  %
+  \item[My title font] {\setTitleFont\ [\myTitleFont; \myTitleFontBackup] \demoString} (myTitleFont)
+  %
+  \item[My subtitle font] {\setSubtitleFont\ [\mySubtitleFont; \mySubtitleFontBackup] \demoString} (mySubtitleFont)
+  %
+  \item[Serif (Roman)] \textrm{\demoString}\ (textrm\{\} or rmfamily)
+  %
+  \item[Sans serif] \textsf{\demoString}\ (textsf\{\} or sffamily)
+  %
+  \item[Typewriter/monospace/teletype] \texttt{\demoString}\ (texttt\{\} or ttfamily)
+\end{myListMeta}
+
+
+\myArticleSection{Color Palette}
+\NewDocumentCommand{\myPaletteColor}
+{
+  O{0.6cm}% length
+  O{0.4cm}% height
+  m % color
+}{%
+  \item[#3:]\textcolor{#3}{\rule{#1}{#2}}\ \textcolor{#3}{\demoString}
+}
+\begin{myListMeta}
+  \myPaletteColor{myColorPrimary}
+  \myPaletteColor{myColorSecondary}
+  \myPaletteColor{myColorSuccess}
+  \myPaletteColor{myColorWarning}
+  \myPaletteColor{myColorDanger}
+  \myPaletteColor{myGrayLight}
+  \myPaletteColor{myGrayMed}
+  \myPaletteColor{myGrayDark}
+\end{myListMeta}
+
+
+\myArticleSection{Positioned features}
+
+\myArticleSubsection{Footnotes}
+Adding a footnote to a phrase\myFN{This is a footnote}.
+
+\myArticleSubsection{Citations}
+Adding a citations to a phrase\myCite{bibliography:source_template}.
+
+\myArticleSubsection{Glossary entries}
+Adding a glossary entry \myGLS{entryExampleKey1}.
+You can also provide an alternative glossary text in [square brackets]: \myAbrev{entryExampleKey1}[AlternativeText].
+
+\myArticleSubsection{Abreviations}
+Adding an abreviation.\\
+The first time \myAbrev{aeoaa}, it is shown in full.\\
+The second time is different  \myAbrev{aeoaa}.
+You can also provide an alternative abreviation text in [square brackets]: \myAbrev{aeoaa}[ALTTEXT].
+
+\myArticleSubsection{Margin notes}
+Adding a margin note. \marginpar[left margin note]{right margin note}
+
+\myArticleSection{My lists}
+\myArticleSubsection{Ordered lists}
+
+\begin{myListEnumerate}
+  \item First element
+  \item Second element
+  \item Third element
+\end{myListEnumerate}
+\myArticleSubsection{Unordered lists}
+\begin{myListItemize}
+  \item First element
+  \item Second element
+  \item Third element
+\end{myListItemize}
+
+\myArticleSubsection{Compact lists (used mostly in meta section)}
+\begin{myListMeta}
+  \item[First element] About first element
+  \item[Second element] About second element
+  \item[\myListLabelStyle{Third element styled}] About third element
+  \myCiteEntryWithLabel{\mainSourceKey}{title}[Example of a cite entry in the list][]%
+\end{myListMeta}
+
+\myArticleSection{Input Images}
+
+These would usually be placed inside float environments (see floats section of this guide), but they can also be used independently.
+Each has an automatically-generated key that corresponds to the filename (graphics) or foldername (TikZ).
+
+\textcolor{myColorWarning}{Warning: since this image is repeated several times, the link leads to last instance.}
+
+\myArticleSubsection{Using external graphics}
+\myFigRef{example-image}
+
+\myFigGraphics
+[width=0.6\linewidth]% Dimensions
+{example-image} % File name
+[jpg]% File extension
+
+\myArticleSubsection{Using TikZ code}
+\myFigRef{tikz_example}
+
+\myFigTikz
+[scale=1]% Dimensions (relative to initial size)
+{tikz_example}% containing folder name
+
+\myArticleSection{My floats}
+
+Floats do not have a precise position. \LaTeX takes care of optimizing their location.
+
+\myArticleSubsection{Float placement}[float-placement-keys]
+
+\begin{myListMeta}
+  \item[h] ---	Place the float \textbf{h}ere, i.e., approximately at the same point it occurs in the source text (however, not exactly at the spot)
+  \item[t] ---	Position at the \textbf{t}op of the page.
+  \item[b] --- Position at the \textbf{b}ottom of the page.
+  \item[p] --- Put on a special \textbf{p}age for floats only.
+  \item[!] --- Override internal parameters LaTeX uses for determining "good" float positions.
+  \item[H] ---	Places the float at precisely the location in the LATEX code, as in ``exactly \textbf{H}ERE''. Requires the float package. This is somewhat equivalent to h!
+\end{myListMeta}
+
+
+\myArticleSubsection{Figures}
+
+
+Figures are can be added inside \mySecHyperref[subsubsec][fig-env-explanation]{figure} (myFigEnv) or \mySecHyperref[subsubsec][wrapfig-env-explanation]{wrapfigure} (myWrapFigEnv) environments.
+
+\myArticleSubsubsection{Figure Environments}[fig-env-explanation]
+
+A figure environment(myFigEnv) takes arguments as follows:
+\begin{myListItemize}
+  \item position (optimal) input as \mySecHyperref[subsec][float-placement-keys]{keys}: LaTeX takes care of optimizing the figure's position in the text.
+  \item fig env native optional arguments such as width.
+  \item Caption (mandatory, used in ToC).
+  \item Caption details (optional).
+  \item Optionally, a key to be able to link to it without depending on the contained image, for example \myFigRef{env:fig-env-ref} (make sure to include "env:" when refering to an environment).
+\end{myListItemize}
+
+You can then refer to it in the text \myFigRef{example-image}.
+
+
+
+\begin{myFigEnv}[][width=0.6\linewidth]
+  {Main caption of graphics figure.}% Caption
+  {Further details about Graphics Figure.}% Caption details
+  [fig-env-ref]
+  %
+  \myFigGraphics[width=0.6\linewidth]{example-image}[jpg]% Image
+\end{myFigEnv}
+
+
+\begin{myFigEnv}[][width=1\linewidth]
+  {Main caption of TikZ figure.}% Caption
+  {Further details about TikZ Figure.}% Caption details
+  [lab-for-tikz-demo]
+  %
+  \myFigTikz[scale=1]{tikz_example}% Image
+\end{myFigEnv}
+
+
+
+\myArticleSubsubsection{Wrap Figure environments}[wrapfig-env-explanation]
+
+Wrap figures are wrapped by surrounding text.
+\begin{myListItemize}
+  \item Number of lines (optimal) to be taken up by wrapfigure.
+  \item position (optimal) input which differs from the usual\mySecHyperref[subsec][float-placement-keys]{keys}. See list below.
+  \item fig env native optional arguments such as width.
+  \item Caption (mandatory, used in ToC).
+  \item Caption details (optional).
+  \item Optionally, a key to be able to link to it without depending on the contained image, for example \myFigRef{env:wrapfig-env-ref} (make sure to include "env:" when refering to an environment).
+\end{myListItemize}
+
+\begin{myListMeta}
+  \item[r] \textbf{r}ight (Exact position)
+  \item[R] \textbf{r}ight (Float)
+  \item[l] \textbf{l}eft (Exact position)
+  \item[L] \textbf{l}eft (Float)
+  \item[i] \textbf{i}nside edge
+  \item[o] \textbf{o}utside edge.
+  \item[!] Override internal parameters\textbf{!}
+\end{myListMeta}
+
+
+\begin{myWrapFigEnv}[8][R][0.33\textwidth]
+  {Caption of wrap figure.}% Caption
+  {Details about wrap figure}% Caption details
+  [wrapfig-env-ref]
+  %
+  \myFigGraphics{example-image}[jpg]% Image
+\end{myWrapFigEnv}
+
+\lipsum[1]
+
+\myArticleSubsubsection{Figures with subfigures}
+
+Floats that take a mandatory filename; an optional filetype (default is jpg); a mandatory main caption (also used in LoF); and a mandatory description (that may remain empty).
+
+Subfigures can be added inside a figure/wrapfigure using the mySubFig command. Then you can refer specifically to a subfigure inside the figure (\myFigRef{lab-for-first-subfig-demo}), or the figure itself (\myFigRef{env:lab-for-fig-group-demo}).
+
+Note that this system to refer to the SubFig requires a key to be manually given, in contrast to the auto-labeling in Graphics and TikZ pictures.
+This is because the label works weirdly inside a subfloat for unknown reasons.
+
+
+\begin{myFigEnv}[][width=1\linewidth]
+  {Main caption of figure group} % Caption
+  {Details.}% Caption details
+  [lab-for-fig-group-demo]
+  %
+  \mySubfig
+  {Main subcaption 1}% Subcaption
+  {Details}% Subcaption details
+  {%
+    \myFigGraphics[width=0.475\linewidth]{example-image}[jpg]% Image
+  }%
+  [lab-for-first-subfig-demo]
+  %
+  %
+  \hfill
+  %s
+  %
+  \mySubfig
+  {Main subcaption 2}% Subcaption
+  {}% Subcaption details
+  {%
+    \myFigGraphics[width=0.475\linewidth]{example-image}[jpg]% Image
+  }%
+  [lab-for-second-subfig-demo]
+\end{myFigEnv}
+
+
+\myArticleSubsection{Textboxes}
+Textboxes are floats that take a mandatory title; and a mandatory content.
+You can then refer to it in the text \myTextboxRef{1}. A second optional argument may be passed to alter the text of the reference, as in \myTextboxRef{1}[TeXtBoX].
+
+\myTextBox[width=0.75\linewidth]{Textbox A title.}
+{
+Custom textboxes are included in the document using the myTextBox command. Option arguments can be passed to further customize the textbox.
+\\%
+Paragraphs and line breaks cannot be added by leaving an empty line, instead you must use commands such as a double backslash \detokenize{\\}.
+}
+
+\myArticleSubsection{Tables}
+Tables are floats that use a custom environment that takes a mandatory title; a mandatory description; and a mandatory reference key.
+You can then refer to it in the text \myTabRef{tablekey}.
+
+
+\begin{articleTableEnv}
+    {Example table}
+    {Further details about the table.}
+    [tablekey]
+    %
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{ID} & \textbf{Name} & \textbf{Age} \\
+        \hline
+        1 & Alice & 30 \\
+        2 & Bob & 25 \\
+        3 & Charlie & 35 \\
+        4 & Diana & 28 \\
+        \hline
+    \end{tabular}
+\end{articleTableEnv}
+
+
+
+\myArticleSection{Appendix files}
+
+Appendix files can be added by including them in the appendixList macro, separated by commas.
+Reference an appendix item with \myAppendixRef{ref-b-appendix}. You can also reference its content [\myFigRef{env:appendix-fig-env-ref}].
+
+\myArticleSection{Lorem Ipsum text}
+
+% \lipsum[<par-range>][<sentence-range>]
+\lipsum[1][1-4]
+
+\myArticleSection{Math mode}
+
+Example of math mode block:
+\begin{displaymath}
+    E = \frac{m_{0} c^{2}}{\sqrt{1-v^{2}/c^{2}}}
+\end{displaymath}
+
+
+\myArticleSection{Specific features of Lua\TeX{}}
+
+Lua\TeX{} can execute Lua code from the source file in Lua\LaTeX{} or Con\TeX{}t. For example, \texttt{directlua}
+can generate a random number: \directlua{tex.print(math.random())}.
+It is no longer necessary to remember the value of $π$ :
+\directlua{tex.print(math.pi)}.
+
+Using the \texttt{luacode} environment, you can count, as the following example (to 60):
+\begin{luacode}
+  for x=1,60 do
+    tex.print(x)
+  end
+\end{luacode}
+
+
+\myArticleSection{REAME contents}
+
+Import the contents of the markdown README.md file.
+\myInputREADME
+
+\end{filecontents*} 
 
 \begin{document}
 %

@@ -5,9 +5,10 @@ import helpers as h
 
 articles_directory = "./../articles/"  # relative to script location
 expanded_file_name = "document_expanded.tex"
-expanded_file_folder = "expanded/"
+expanded_file_folder = "" # /!\ leave empty until all the file imports are managed as I have done for appendix and body
 bib_dir = "./../articles_common_files/biblatex_files/"  # relative to script location"
 temp_bib_file = "temp.bib"
+language = "en"
 
 # get the directory of the current script
 base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
@@ -69,6 +70,7 @@ def main():
 
         os.remove(tmp_bib_path)
 
+        add_article_body_contents(language, thing_dir, extended_thing_path)
 
         handle_biblatex_bug(extended_thing_path)
 
@@ -141,6 +143,32 @@ def handle_biblatex_bug(extended_thing_path):
 
 
 
+def add_article_body_contents(lang, thing_dir, extended_thing_path):
+    print(f'\n⚠️ To get the body contents into the file they are injected into the expanded_file. Otherwise latexpand only really deals with standard simple \inputs, such as for setting files. Changed to macro may disturb functionality.')
+
+    body_folder = os.path.join(thing_dir, "elements/body/")
+    body_file = f'body_{lang}.tex'
+    # Open and read the entire content of the file
+    with open(os.path.join(body_folder,  body_file), "r") as file:
+        contents = file.read()
+
+    # Place the body in the chosen location
+    target_location = "\\begin{document}"
+    replace_content_in_file(extended_thing_path,
+            target_location
+            ,
+            # NEW CONTENTS
+            f'''\\begin{{filecontents*}}{{{body_file}}}
+                    {contents}
+\\end{{filecontents*}} \n\n''' + target_location
+)
+
+    replace_content_in_file(extended_thing_path,"\\def\\fileAddress{elements/#1/#1\\_#2.tex}", "\\def\\fileAddress{./#1\_#2.tex}")
+
+
+
+
+
 def add_appendix_contents(thing_dir, extended_thing_path):
     print(f'\n⚠️ To get the appendix files to work, one must add a new line, they are injected into the expanded_file above the appendix macro. Changed to macro may disturb functionality.')
 
@@ -166,6 +194,13 @@ def add_appendix_contents(thing_dir, extended_thing_path):
 )
 
     replace_content_in_file(extended_thing_path,"\\expandafter\\input\\expandafter{./elements/appendix/#1/content.tex}", "\\expandafter\\input\\expandafter{./#1.tex}")
+
+
+
+
+
+
+
 
 # =============================================================================
 
