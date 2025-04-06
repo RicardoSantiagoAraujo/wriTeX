@@ -4,7 +4,8 @@ import helpers as h
 
 
 articles_directory = "./../articles/"  # relative to script location
-expanded_file = "document_expanded.tex"
+expanded_file_name = "document_expanded.tex"
+expanded_file_folder = "expanded/"
 bib_dir = "./../articles_common_files/biblatex_files/"  # relative to script location"
 temp_bib_file = "temp.bib"
 
@@ -27,7 +28,10 @@ def main():
     else:
 
         thing_dir = os.path.join(base_dir, articles_directory, thing_name)
-        thing_path = os.path.join(thing_dir, expanded_file)
+        extended_thing_path = os.path.join(thing_dir,expanded_file_folder, expanded_file_name)
+
+        # Create folder for expanded output
+        os.makedirs(os.path.join(thing_dir, expanded_file_folder), exist_ok=True)
 
         # create single temporary bib file
         tmp_bib_path = fuse_files(
@@ -55,7 +59,7 @@ def main():
                 temp_bib_file,
                 # +++++ OUTPUT FILE:
                 "--output",
-                expanded_file,
+                os.path.join(expanded_file_folder, expanded_file_name),
                 # +++++ INPUT FILE:
                 "document.tex",
             ],
@@ -66,11 +70,19 @@ def main():
         os.remove(tmp_bib_path)
 
 
-        handle_biblatex_bug(thing_path)
+        handle_biblatex_bug(extended_thing_path)
+
+        add_appendix_contents(thing_dir, extended_thing_path)
 
         print(
             f"\n\n 😁😁😁  successfully expanded article {h.bold+h.green}{thing_name}{h.reset} 😁😁😁"
         )
+
+
+# =============================================================================
+# =============================================================================
+# =============================================================================
+# ===========================HELPER FUNCTIONS=================================
 
 
 def fuse_files(directory, output_file):
@@ -99,17 +111,17 @@ def replace_content_in_file(file_path, old_string, new_string):
         file.write(content)
 
 
-def handle_biblatex_bug(thing_path):
-    print(f'\n⚠️ To get the bibliography to work, one must add a new line {h.blue}\\addbibresource{{temp_bib_file}}{h.reset} to the generated file {h.blue}{expanded_file}{h.reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {h.blue}latexpand flags{h.reset}')
+def handle_biblatex_bug(extended_thing_path):
+    print(f'\n⚠️ To get the bibliography to work, one must add a new line {h.blue}\\addbibresource{{temp_bib_file}}{h.reset} to the generated file {h.blue}{expanded_file_name}{h.reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {h.blue}latexpand flags{h.reset}')
 
-    replace_content_in_file(thing_path,
+    replace_content_in_file(extended_thing_path,
                                 '''\\newcommand{\loadBibIfExists}[1]%
 {\IfFileExists{#1}%
     {%'''
     , "")
 
 
-    replace_content_in_file(thing_path,
+    replace_content_in_file(extended_thing_path,
                                 f'''\\usepackage{{xpatch}}
 
 %Patch the biblatex input command.
@@ -128,6 +140,34 @@ def handle_biblatex_bug(thing_path):
     , f'\\addbibresource{{{temp_bib_file}}}')
 
 
+
+def add_appendix_contents(thing_dir, extended_thing_path):
+    print(f'\n⚠️ To get the appendix files to work, one must add a new line, they are injected into the expanded_file above the appendix macro. Changed to macro may disturb functionality.')
+
+
+    appendix_folder = os.path.join(thing_dir, "elements/appendix/")
+    # List of folder names
+    appendix_list = [name for name in os.listdir(appendix_folder) if os.path.isdir(os.path.join(appendix_folder, name))]
+
+    for appendix in appendix_list:
+        # Open and read the entire content of the file
+        with open(os.path.join(appendix_folder, appendix, "content.tex"), "r") as file:
+            contents = file.read()
+
+        # Place the appendix items in the chosen location
+        target_location = "\\NewDocumentCommand{\\myAppendix}"
+        replace_content_in_file(extended_thing_path,
+                target_location
+                ,
+                # NEW CONTENTS
+                f'''\\begin{{filecontents*}}{{{appendix+".tex"}}}
+                       {contents}
+\\end{{filecontents*}} \n\n''' + target_location
+)
+
+    replace_content_in_file(extended_thing_path,"\\expandafter\\input\\expandafter{./elements/appendix/#1/content.tex}", "\\expandafter\\input\\expandafter{./#1.tex}")
+
+# =============================================================================
 
 if __name__ == "__main__":
     main()

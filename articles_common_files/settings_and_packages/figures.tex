@@ -293,9 +293,9 @@
 
         \isPortfolio
         {% Relative address for portfolio
-          \input{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
+          \expandafter\input\expandafter{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
         }{% Relative address for article
-          \input{assets/tikz/#3/content.tex}%
+        \expandafter\input\expandafter{assets/tikz/#3/content.tex}%
         }%
         % Place a node at the center using current bounding box
         \isDraftDebugger{%

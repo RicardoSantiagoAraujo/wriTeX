@@ -3569,9 +3569,9 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
 
         \isPortfolio
         {%
-          \input{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
+          \expandafter\input\expandafter{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
         }{%
-          \input{assets/tikz/#3/content.tex}%
+        \expandafter\input\expandafter{assets/tikz/#3/content.tex}%
         }%
         %
         \isDraftDebugger{%
@@ -4593,6 +4593,30 @@ title={#2},
 
 
 
+\begin{filecontents*}{appendix_b.tex}
+                       \myAppendixTitle{Appendix Title B}[ref-b-appendix]
+
+
+\lipsum[1-2]
+\end{filecontents*} 
+
+\begin{filecontents*}{appendix_a.tex}
+                       \myAppendixTitle{Appendix Title A}
+
+\begin{myFigEnv}[H][width=0.6\linewidth]
+    {Caption of Appendix Figure.}% Caption
+    {Details.}% Caption details
+    [appendix-fig-env-ref]
+
+
+    \myFigGraphics
+    [width=0.5\linewidth, angle=90]
+    {example-image}
+    [jpg]
+
+\end{myFigEnv}
+\end{filecontents*} 
+
 \NewDocumentCommand{\myAppendix}
 {
     %
@@ -4637,10 +4661,10 @@ title={#2},
     %
     \isPortfolio
     {%
-        \input{./elements/appendix/#1/content.tex}%
+        \expandafter\input\expandafter{./#1.tex}%
     }%
     {%
-        \input{./elements/appendix/#1/content.tex}%
+        \expandafter\input\expandafter{./#1.tex}%
     }%
 }%
 
