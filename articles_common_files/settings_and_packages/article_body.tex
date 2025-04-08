@@ -251,6 +251,7 @@
     {#1}% (Sub)Section title
   }%
   \ifthenelse{\equal{#2}{}}{}{\label{\secLabel{#2}}}%
+  \myLogger{START SECTION NUMBER \the\value{totalSectionsInArticle:\myarticleKeyCore}}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -276,6 +277,7 @@
       \linkSubsectionConditionally{#1}
     }%
   \ifthenelse{\equal{#2}{}}{}{\label{\subsecLabel{#2}}}%
+  \myLogger{START SUBSECTION NUMBER \the\value{totalSubsectionsInArticle:\myarticleKeyCore}}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,6 +303,7 @@
       \linkSubsubsectionConditionally{#1}
     }%
   \ifthenelse{\equal{#2}{}}{}{\label{\subsubsecLabel{#2}}}%
+  \myLogger{START SUBSUBSECTION NUMBER \the\value{totalSubsubsectionsInArticle:\myarticleKeyCore}}
 }
 
 
