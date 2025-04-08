@@ -81,6 +81,7 @@
 \newcommand{\addSingleArticle}[1]{
   %%% RECOVER MAIN VARIABLES
   \input{../../../articles/#1/#1}
+  \myLogger{START OF ARTICLE \myarticleKeyCore (\myLanguage)}
   % Overwrite language setting to use portfolio language
   \renewcommand{\myLanguage}{\myLanguagePortfolio}
   % Add article key to my mediation category
