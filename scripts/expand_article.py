@@ -17,17 +17,25 @@ base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
 def main():
     ### MAIN PROGRAM ###
     # Print initial prompt
-    print(f"Which article would you like to expand ? ")
+    print(f"\n Which article would you like to expand ? (Write full name or pick by number)")
     article_names = h.list_existing_things(os.path.join(base_dir, articles_directory))
-    thing_name = input(f"{h.blue}Pick one:{h.reset}")
-    if thing_name in ["q", "quit"]:
+    article_indexes = list(range(1, len(article_names)+1))
+    choice = input(f"{h.blue}Pick one:{h.reset}")
+    if choice in ["q", "quit"]:
         print(f"\n💀💀💀 {h.red}Program quit without expanding an article.{h.reset}")
         exit()
-    elif thing_name not in article_names:
+    elif (choice not in article_names) & (int(choice) not in article_indexes):
         print(f"{h.red}INVALID CHOICE: must pick from existing list{h.reset}")
+        # Restart proccess
         main()
     else:
-
+        # if used picked a number:
+        if int(choice) in article_indexes:
+            thing_name = article_names[int(choice)-1]
+        # if used wrote the article name:
+        else:
+            thing_name = choice
+        print(f"\n{h.blue} Your pick: {h.green}{thing_name}{h.reset}\n")
         thing_dir = os.path.join(base_dir, articles_directory, thing_name)
         extended_thing_path = os.path.join(thing_dir,expanded_file_folder, expanded_file_name)
 
@@ -77,7 +85,7 @@ def main():
         add_appendix_contents(thing_dir, extended_thing_path)
 
         print(
-            f"\n\n 😁😁😁  successfully expanded article {h.bold+h.green}{thing_name}{h.reset} 😁😁😁"
+            f"\n\n 😁😁😁 Successfully expanded article {h.bold+h.green}{thing_name}{h.reset} 😁😁😁"
         )
 
 
@@ -117,8 +125,8 @@ def handle_biblatex_bug(extended_thing_path):
     print(f'\n⚠️ To get the bibliography to work, one must add a new line {h.blue}\\addbibresource{{temp_bib_file}}{h.reset} to the generated file {h.blue}{expanded_file_name}{h.reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {h.blue}latexpand flags{h.reset}')
 
     replace_content_in_file(extended_thing_path,
-                                '''\\newcommand{\loadBibIfExists}[1]%
-{\IfFileExists{#1}%
+                                '''\\newcommand{\\loadBibIfExists}[1]%
+{\\IfFileExists{#1}%
     {%'''
     , "")
 
@@ -144,7 +152,7 @@ def handle_biblatex_bug(extended_thing_path):
 
 
 def add_article_body_contents(lang, thing_dir, extended_thing_path):
-    print(f'\n⚠️ To get the body contents into the file they are injected into the expanded_file. Otherwise latexpand only really deals with standard simple \inputs, such as for setting files. Changed to macro may disturb functionality.')
+    print(f'\n⚠️ To get the body contents into the file they are injected into the expanded_file. Otherwise latexpand only really deals with standard simple \\inputs, such as for setting files. Changed to macro may disturb functionality.')
 
     body_folder = os.path.join(thing_dir, "elements/body/")
     body_file = f'body_{lang}.tex'
@@ -163,7 +171,7 @@ def add_article_body_contents(lang, thing_dir, extended_thing_path):
 \\end{{filecontents*}} \n\n''' + target_location
 )
 
-    replace_content_in_file(extended_thing_path,"\\def\\fileAddress{elements/#1/#1\\_#2.tex}", "\\def\\fileAddress{./#1\_#2.tex}")
+    replace_content_in_file(extended_thing_path,"\\def\\fileAddress{elements/#1/#1\\_#2.tex}", "\\def\\fileAddress{./#1\\_#2.tex}")
 
 
 

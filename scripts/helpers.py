@@ -170,8 +170,8 @@ def list_existing_things(dir_path):
         if os.path.isdir(file_path):
             names.append(file_name)
     print("\nNames already in use:")
-    for name in names:
-        print("- " + name)
+    for i, name in enumerate(names, 1):
+        print(f"{i} - {name}")
     print("")
     return names
 
