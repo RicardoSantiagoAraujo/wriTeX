@@ -119,9 +119,12 @@ def delete_md_aux(folder_path):
 def delete_expanded(thing_type, folder_path):
     try:
         if thing_type == ThingType("Article").value:
-            os.remove(os.path.join(folder_path, "document_expanded.tex"))
+            file_path = os.path.join(folder_path, "document_expanded.tex")
         elif thing_type == ThingType("Portfolio").value:
-            os.remove(os.path.join(folder_path, "portfolio_document_expanded.tex"))
+            file_path = os.path.join(folder_path, "portfolio_document_expanded.tex")
+        # check if file exists before trying to delete to avoid error
+        if os.path.exists(file_path):
+            os.remove(file_path)
     except:
         exit_code = 1
     else:
@@ -192,19 +195,13 @@ def request_name(thing_type, existing_names):
 
 def create_new_folder_with_files(new_name, template_name, dir_path):
     if new_name != "q" and new_name != "quit":
-        # copy all contents of template folder into newly created folder
-        if os.name == "posix":  # if Unix-like OS (e.g., Linux, MacOS)
-            # create file in versions folder with chosen name
-            new_folder = dir_path + "/" + new_name
-            os.system("mkdir " + new_folder)
-            exit_code = os.system(f"cp -R  {dir_path}/{template_name}/. {new_folder}")
-        elif os.name == "nt":  # if Windows OS
-            # create file in versions folder with chosen name
-            new_folder = dir_path + "\\" + new_name
-            os.system("mkdir " + new_folder)
-            exit_code = os.system(
-                f"xcopy  {dir_path}\\{template_name}\\* {new_folder} /E /I > NUL"
-            )
+        new_folder = dir_path + "/" + new_name
+        try:
+            shutil.copytree(f'{dir_path}/{template_name}/.', new_folder)
+        except:
+            exit_code = 1
+        else:
+            exit_code = 0
         check_if_successful(create_new_folder_with_files.__name__, exit_code)
         print_progress_msg(
             f"Created new folder with contents from {bold+green}{template_name}{reset} "
