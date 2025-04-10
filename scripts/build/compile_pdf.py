@@ -1,3 +1,6 @@
+# LaTeX workshop is set up to used latexmk, which automates the proccess of generating a latex document. Under the hood, it calls a latex compiler, e.g., lualatex.
+# However, it might be slow, so alternatively you can use this script which calls lualatex directly.
+
 import subprocess
 import os
 
