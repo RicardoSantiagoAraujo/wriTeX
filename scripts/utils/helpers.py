@@ -139,7 +139,7 @@ def replace_string_in_tex_file(new_folder : str, file_name : str, old_word : str
     replace_str_cnt += 1
 
 
-def list_existing_things(dir_path : str) -> None:
+def list_existing_things(dir_path : str, print_list:bool = True) -> list[str]:
     # list of thing names already used
     names = []
     for file_name in os.listdir(dir_path):
@@ -147,10 +147,12 @@ def list_existing_things(dir_path : str) -> None:
         # check if path is directory:
         if os.path.isdir(file_path):
             names.append(file_name)
-    print("\nNames already in use:")
-    for i, name in enumerate(names, 1):
-        print(f"{i} - {name}")
-    print("")
+
+    if print_list:
+        print("\nNames already in use:")
+        for i, name in enumerate(names, 1):
+            print(f"{i} - {name}")
+        print("")
     return names
 
 
