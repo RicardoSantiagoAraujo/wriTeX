@@ -3,6 +3,8 @@
 
 import subprocess
 import os
+import argparse
+from ..utils.helpers import *
 
 articles_directory = "./../../articles/"  # relative to script location
 
@@ -41,4 +43,12 @@ def compile_with_lualatex(thing_name):
 
 
 if __name__ == "__main__":
+    # Create command line argument parser
+    parser = argparse.ArgumentParser(description="arTeX command line argument parser")
+    # Add arguments
+    parser.add_argument('thing_type', type=str, help='"article" or "portfolio"')
+    parser.add_argument('--biber', type=bool, help='Your age', default=True)
+
+    # Parse the arguments
+    args = parser.parse_args()
     main()

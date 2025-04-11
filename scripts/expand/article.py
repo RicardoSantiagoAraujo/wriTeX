@@ -1,12 +1,11 @@
 import os
 import subprocess
-import helpers as h
+from ..utils.helpers import *
 
-
-articles_directory = "./../articles/"  # relative to script location
+articles_directory = "./../../articles/"  # relative to script location
 expanded_file_name = "document_expanded.tex"
 expanded_file_folder = "" # /!\ leave empty until all the file imports are managed as I have done for appendix and body
-bib_dir = "./../articles_common_files/biblatex_files/"  # relative to script location"
+bib_dir = "./../../articles_common_files/biblatex_files/"  # relative to script location"
 temp_bib_file = "temp.bib"
 language = "en"
 
@@ -18,14 +17,14 @@ def main():
     ### MAIN PROGRAM ###
     # Print initial prompt
     print(f"\n Which article would you like to expand ? (Write full name or pick by number)")
-    article_names = h.list_existing_things(os.path.join(base_dir, articles_directory))
+    article_names = list_existing_things(os.path.join(base_dir, articles_directory))
     article_indexes = list(range(1, len(article_names)+1))
-    choice = input(f"{h.blue}Pick one:{h.reset}")
+    choice = input(f"{blue}Pick one:{reset}")
     if choice in ["q", "quit"]:
-        print(f"\n💀💀💀 {h.red}Program quit without expanding an article.{h.reset}")
+        print(f"\n💀💀💀 {red}Program quit without expanding an article.{reset}")
         exit()
     elif (choice not in article_names) & (int(choice) not in article_indexes):
-        print(f"{h.red}INVALID CHOICE: must pick from existing list{h.reset}")
+        print(f"{red}INVALID CHOICE: must pick from existing list{reset}")
         # Restart proccess
         main()
     else:
@@ -35,7 +34,7 @@ def main():
         # if used wrote the article name:
         else:
             thing_name = choice
-        print(f"\n{h.blue} Your pick: {h.green}{thing_name}{h.reset}\n")
+        print(f"\n{blue} Your pick: {green}{thing_name}{reset}\n")
         thing_dir = os.path.join(base_dir, articles_directory, thing_name)
         extended_thing_path = os.path.join(thing_dir,expanded_file_folder, expanded_file_name)
 
@@ -85,7 +84,7 @@ def main():
         add_appendix_contents(thing_dir, extended_thing_path)
 
         print(
-            f"\n\n 😁😁😁 Successfully expanded article {h.bold+h.green}{thing_name}{h.reset} 😁😁😁"
+            f"\n\n 😁😁😁 Successfully expanded article {bold+green}{thing_name}{reset} 😁😁😁"
         )
 
 
@@ -122,7 +121,7 @@ def replace_content_in_file(file_path, old_string, new_string):
 
 
 def handle_biblatex_bug(extended_thing_path):
-    print(f'\n⚠️ To get the bibliography to work, one must add a new line {h.blue}\\addbibresource{{temp_bib_file}}{h.reset} to the generated file {h.blue}{expanded_file_name}{h.reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {h.blue}latexpand flags{h.reset}')
+    print(f'\n⚠️ To get the bibliography to work, one must add a new line {blue}\\addbibresource{{temp_bib_file}}{reset} to the generated file {blue}{expanded_file_name}{reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {blue}latexpand flags{reset}')
 
     replace_content_in_file(extended_thing_path,
                                 '''\\newcommand{\\loadBibIfExists}[1]%
