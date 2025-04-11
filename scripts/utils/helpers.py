@@ -1,42 +1,24 @@
 import os
 import glob
 import shutil
-
-from enum import Enum
-
-
-class ThingType(Enum):
-    Article = "Article"
-    Portfolio = "Portfolio"
-
-
-### Pimping up the console output
-bold = "\033[1m"  # to make console text bold
-reset = "\033[0m"  # to revert o normal
-# Color codes
-red = "\033[31m"
-green = "\033[32m"
-blue = "\033[34m"
+from .style_console_text import red, green, blue, bold, reset
+from ..enums.ThingType import ThingType
 
 
 build_folder = "auxiliary_files"  # folder name where the LaTeX build compilation outputs are placed
 
 
-def initial_prompt(thing_type):
+def initial_prompt(thing_type: ThingType.value) -> None:
     # clear terminal
     os.system("clear")
-    print(
-        "\t****************************************************************************************************"
-    )
+    print("\t****************************************************************************************************")
     print(
         f"\t {bold}You are about to initiate a new {green}{thing_type}{reset} folder and respective files based on the existing template.{reset}"
     )
     print(
         f"\t Script works with shell languages: {blue+bold}zsh (MacOS){reset}, {blue+bold}Batch Scripting (windows){reset}"
     )
-    print(
-        "\t****************************************************************************************************\n"
-    )
+    print("\t****************************************************************************************************\n")
 
     print((f'Type {bold+red}"q"{reset} or {bold+red}"quit"{reset} to exit program'))
     print(
@@ -47,25 +29,21 @@ def initial_prompt(thing_type):
     print("")
 
 
-def final_message(thing_type, new_thing_name):
-    print(
-        f"\n\n 😁😁😁 {thing_type} successfully created with name: {bold+green}{new_thing_name}{reset} 😁😁😁"
-    )
-    print(
-        f"\n You can now edit the files directly in the {bold+green}{new_thing_name}{reset} folder \n"
-    )
+def final_message(thing_type: ThingType.value, new_thing_name: str) -> None:
+    print(f"\n\n 😁😁😁 {thing_type} successfully created with name: {bold+green}{new_thing_name}{reset} 😁😁😁")
+    print(f"\n You can now edit the files directly in the {bold+green}{new_thing_name}{reset} folder \n")
 
 
 progress_cnt = 1
 
 
-def print_progress_msg(msg_content):
+def print_progress_msg(msg_content: str) -> None:
     global progress_cnt
     print(f"✅✅✅ {bold}({progress_cnt}){reset} {msg_content}")
     progress_cnt += 1
 
 
-def check_if_successful(function_name, exit_code, folder_path=None):
+def check_if_successful(function_name:str, exit_code: int, folder_path: str = None) -> None:
     global progress_cnt
     print(f"\nStep {progress_cnt}:{blue} {function_name}{reset}...")
     if exit_code == 0:
@@ -79,7 +57,7 @@ def check_if_successful(function_name, exit_code, folder_path=None):
         exit()
 
 
-def rename_file(folder_path, old_name, new_name):
+def rename_file(folder_path : str, old_name : str, new_name : str) -> None:
     if os.name == "posix":  # if Unix-like OS (e.g., Linux, MacOS)
         old_path = folder_path + f"/{old_name}.tex"
         new_path = folder_path + "/" + new_name + ".tex"
@@ -91,7 +69,7 @@ def rename_file(folder_path, old_name, new_name):
     check_if_successful(rename_file.__name__, exit_code, folder_path)
 
 
-def delete_build(folder_path):
+def delete_build(folder_path : str) -> None:
     try:
         shutil.rmtree(os.path.join(folder_path, build_folder))
     except:
@@ -101,7 +79,7 @@ def delete_build(folder_path):
     check_if_successful(delete_build.__name__, exit_code, folder_path)
 
 
-def delete_md_aux(folder_path):
+def delete_md_aux(folder_path :str) -> None:
     # Create the path for the target folder using a wildcard
     pattern = os.path.join(folder_path, "_markdown*")
     # Use glob to find all directories that partially match "_markdown"
@@ -116,7 +94,7 @@ def delete_md_aux(folder_path):
     check_if_successful(delete_md_aux.__name__, exit_code, folder_path)
 
 
-def delete_expanded(thing_type, folder_path):
+def delete_expanded(thing_type: ThingType.value, folder_path : str) -> None:
     try:
         if thing_type == ThingType("Article").value:
             file_path = os.path.join(folder_path, "document_expanded.tex")
@@ -136,7 +114,7 @@ def delete_expanded(thing_type, folder_path):
 replace_str_cnt = 1
 
 
-def replace_string_in_tex_file(new_folder, file_name, old_word, new_word):
+def replace_string_in_tex_file(new_folder : str, file_name : str, old_word : str, new_word : str) -> None:
     global replace_str_cnt
     # Open the .tex file and read the contents
     try:
@@ -161,7 +139,7 @@ def replace_string_in_tex_file(new_folder, file_name, old_word, new_word):
     replace_str_cnt += 1
 
 
-def list_existing_things(dir_path):
+def list_existing_things(dir_path : str) -> None:
     # list of thing names already used
     names = []
     for file_name in os.listdir(dir_path):
@@ -176,36 +154,30 @@ def list_existing_things(dir_path):
     return names
 
 
-def request_name(thing_type, existing_names):
+def request_name(thing_type : ThingType.value, existing_names : list[str]) -> str:
     new_name = input(f"Write filename for new {thing_type}: ").lower().replace(" ", "_")
     # check if thing already exists and keep requesting name until original name is given or user quits:
     while new_name in existing_names:
         if new_name != "q" and new_name != "quit":
-            print(
-                f"{red}{thing_type} already exists.{reset} Please pick a new name or quit.\n"
-            )
+            print(f"{red}{thing_type} already exists.{reset} Please pick a new name or quit.\n")
             new_name = request_name(thing_type, existing_names)
         else:
-            print(
-                f"\n💀💀💀 {red}Program quit without creation of new {thing_type}.{reset}"
-            )
+            print(f"\n💀💀💀 {red}Program quit without creation of new {thing_type}.{reset}")
             exit()
     return new_name
 
 
-def create_new_folder_with_files(new_name, template_name, dir_path):
+def create_new_folder_with_files(new_name: str, template_name:str, dir_path : str) -> str:
     if new_name != "q" and new_name != "quit":
         new_folder = dir_path + "/" + new_name
         try:
-            shutil.copytree(f'{dir_path}/{template_name}/.', new_folder)
+            shutil.copytree(f"{dir_path}/{template_name}/.", new_folder)
         except:
             exit_code = 1
         else:
             exit_code = 0
         check_if_successful(create_new_folder_with_files.__name__, exit_code)
-        print_progress_msg(
-            f"Created new folder with contents from {bold+green}{template_name}{reset} "
-        )
+        print_progress_msg(f"Created new folder with contents from {bold+green}{template_name}{reset} ")
     else:
         print(f"\n💀💀💀 {red}Program quit without creation of new folder.{reset}")
         exit()

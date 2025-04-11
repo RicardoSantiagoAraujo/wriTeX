@@ -1,6 +1,8 @@
 # Script to automatically create and cleanup new article files and folder from template
 import os
 from ..utils.helpers import *
+from ..utils.style_console_text import red, green, blue, bold, reset
+from ..enums.ThingType import ThingType
 
 # CONSTANTS
 article_template_string = (
@@ -115,7 +117,7 @@ def main():
 ### USED FUNCTIONS ###
 
 
-def update_biblatex_file(new_article_name):
+def update_biblatex_file(new_article_name: str) -> None:
     print(f"{blue}English (en) version by default 🇬🇧🇬🇧🇬🇧{reset}")
     # Open the file in append mode ('a') so that new content is added at the end
     rel_path = os.path.join(
@@ -144,7 +146,7 @@ def update_biblatex_file(new_article_name):
         )
 
 
-def create_new_bib_entry(new_thing_name, old_thing_name, new_folder):
+def create_new_bib_entry(new_thing_name: str, old_thing_name:str, new_folder:str) -> None:
     print("\n\n📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚")
     print(
         f"Would you also like to create a new {blue}biblatex{reset} entry for {green+bold}{new_thing_name}{reset} ?"

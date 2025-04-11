@@ -1,6 +1,8 @@
 # Script to automatically create and cleanup new article files and folder from template
 import os
 from ..utils.helpers import *
+from ..utils.style_console_text import red, green, blue, bold, reset
+from ..enums.ThingType import ThingType
 
 # CONSTANTS
 portfolio_template_string = (

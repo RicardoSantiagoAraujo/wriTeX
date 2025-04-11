@@ -1,6 +1,7 @@
 import os
 import subprocess
 from ..utils.helpers import *
+from ..utils.style_console_text import red, green, blue, bold, reset
 
 articles_directory = "./../../articles/"  # relative to script location
 expanded_file_name = "document_expanded.tex"

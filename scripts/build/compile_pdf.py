@@ -5,6 +5,9 @@ import subprocess
 import os
 import argparse
 from ..utils.helpers import *
+from ..utils.style_console_text import red, green, blue, bold, reset
+from ..enums.ThingType import ThingType
+
 
 articles_directory = "./../../articles/"  # relative to script location
 
@@ -14,14 +17,14 @@ build_folder = "auxiliary_files"  # relative to script location
 base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
 dir_path = os.path.join(base_dir, articles_directory)
 
-def main():
+def main(args):
 
     choice = input("which article? ")
     compile_with_lualatex(choice)
 
 
 
-def compile_with_lualatex(thing_name):
+def compile_with_lualatex(thing_name:str):
     try:
         # print( os.path.join(dir_path, thing_name + ".tex"))
         # CHANGE DIRECTORY TO THING'S
@@ -41,14 +44,20 @@ def compile_with_lualatex(thing_name):
         print(e.stdout)
         print(e.stderr)
 
+thing_type_list_as_string = ', '.join([f'{blue}{e.value}{reset}' for e in ThingType])
 
 if __name__ == "__main__":
     # Create command line argument parser
-    parser = argparse.ArgumentParser(description="arTeX command line argument parser")
+    parser = argparse.ArgumentParser(description="arTeX compilation with biblatex.")
     # Add arguments
-    parser.add_argument('thing_type', type=str, help='"article" or "portfolio"')
+    parser.add_argument('thing_type', type=str, help=f"available options: {thing_type_list_as_string}")
     parser.add_argument('--biber', type=bool, help='Your age', default=True)
 
     # Parse the arguments
     args = parser.parse_args()
-    main()
+
+    if args.thing_type not in [e.value for e in ThingType]:
+        print(f'Invalid thing_type, pick from: {thing_type_list_as_string}')
+        exit()    
+        
+    main(args)
