@@ -10,16 +10,33 @@ from ..enums.ThingType import ThingType
 
 
 articles_directory = "./../../articles/"  # relative to script location
+portfolios_directory = "./../../portfolios/versions/"  # relative to script location
 
 build_folder = "auxiliary_files"  # relative to script location
 
 # get the directory of the current script
 base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
-dir_path = os.path.join(base_dir, articles_directory)
+articles_dir_path = os.path.join(base_dir, articles_directory)
+portfolios_dir_path = os.path.join(base_dir, portfolios_directory)
+
+
+
 
 def main(args):
+    thing_type = args.thing_type.lower()
+    global dir_path
+    
+    if thing_type == ThingType.Article.value.lower():
+        dir_path = articles_dir_path
+    elif thing_type == ThingType.Portfolio.value.lower():
+        dir_path = portfolios_dir_path
+    else:
+        exit()
+        print("Invalid type")
 
-    choice = input("which article? ")
+    list_existing_things(dir_path)
+    choice = input(f"Which {thing_type}? ")
+
     compile_with_lualatex(choice)
 
 
@@ -56,7 +73,7 @@ if __name__ == "__main__":
     # Parse the arguments
     args = parser.parse_args()
 
-    if args.thing_type not in [e.value for e in ThingType]:
+    if args.thing_type.lower() not in [e.value.lower() for e in ThingType]:
         print(f'Invalid thing_type, pick from: {thing_type_list_as_string}')
         exit()    
         

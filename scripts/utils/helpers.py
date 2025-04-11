@@ -8,7 +8,7 @@ from ..enums.ThingType import ThingType
 build_folder = "auxiliary_files"  # folder name where the LaTeX build compilation outputs are placed
 
 
-def initial_prompt(thing_type: ThingType.value) -> None:
+def initial_prompt(thing_type: ThingType) -> None:
     # clear terminal
     os.system("clear")
     print("\t****************************************************************************************************")
@@ -29,7 +29,7 @@ def initial_prompt(thing_type: ThingType.value) -> None:
     print("")
 
 
-def final_message(thing_type: ThingType.value, new_thing_name: str) -> None:
+def final_message(thing_type: ThingType, new_thing_name: str) -> None:
     print(f"\n\n 😁😁😁 {thing_type} successfully created with name: {bold+green}{new_thing_name}{reset} 😁😁😁")
     print(f"\n You can now edit the files directly in the {bold+green}{new_thing_name}{reset} folder \n")
 
@@ -94,7 +94,7 @@ def delete_md_aux(folder_path :str) -> None:
     check_if_successful(delete_md_aux.__name__, exit_code, folder_path)
 
 
-def delete_expanded(thing_type: ThingType.value, folder_path : str) -> None:
+def delete_expanded(thing_type: ThingType, folder_path : str) -> None:
     try:
         if thing_type == ThingType("Article").value:
             file_path = os.path.join(folder_path, "document_expanded.tex")
@@ -154,7 +154,7 @@ def list_existing_things(dir_path : str) -> None:
     return names
 
 
-def request_name(thing_type : ThingType.value, existing_names : list[str]) -> str:
+def request_name(thing_type : ThingType, existing_names : list[str]) -> str:
     new_name = input(f"Write filename for new {thing_type}: ").lower().replace(" ", "_")
     # check if thing already exists and keep requesting name until original name is given or user quits:
     while new_name in existing_names:
