@@ -18,7 +18,7 @@ def main():
     ### MAIN PROGRAM ###
     # Print initial prompt
     print(f"\n Which article would you like to expand ? (Write full name or pick by number)")
-    article_names = list_existing_things(os.path.join(base_dir, articles_directory))
+    article_names = list_existing_things(os.path.join(base_dir, articles_directory), header_message="Articles that can be expanded:")
     article_indexes = list(range(1, len(article_names)+1))
     choice = input(f"{blue}Pick one:{reset}")
     if choice in ["q", "quit"]:
@@ -30,7 +30,7 @@ def main():
         main()
     else:
         # if used picked a number:
-        if int(choice) in article_indexes:
+        if choice.isdigit() and int(choice) in article_indexes:
             thing_name = article_names[int(choice)-1]
         # if used wrote the article name:
         else:

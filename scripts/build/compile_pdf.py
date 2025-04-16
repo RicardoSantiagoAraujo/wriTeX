@@ -4,10 +4,12 @@
 import subprocess
 import os
 import argparse
-from ..utils.helpers import *
+from ..utils.helpers import list_existing_things
+from ..utils.prompts import first_prompt
 from ..utils.style_console_text import red, green, blue, bold, reset
 from ..enums.ThingType import ThingType
 import enum
+import sys
 
 articles_directory = "./../../articles/"  # relative to script location
 portfolios_directory = "./../../portfolios/versions/"  # relative to script location
@@ -24,12 +26,13 @@ article_names = list_existing_things(articles_dir_path, print_list=False)
 portfolio_names = list_existing_things(portfolios_dir_path, print_list=False)
 thing_names = article_names + portfolio_names
 
+
 def list_as_string(list: list[any]) -> str:
-    return ', '.join([f'{blue}{e}{reset}' for e in list])
+    return ", ".join([f"{blue}{e}{reset}" for e in list])
 
-def enum_list_as_string(enumName: enum.Enum)  -> str:
-    return ', '.join([f'{blue}{e.value}{reset}' for e in enumName])
 
+def enum_list_as_string(enumName: enum.Enum) -> str:
+    return ", ".join([f"{blue}{e.value}{reset}" for e in enumName])
 
 
 article_list_as_string = list_as_string(article_names)
@@ -38,9 +41,53 @@ thing_name_list_as_string = list_as_string(thing_names)
 thing_type_list_as_string = enum_list_as_string(ThingType)
 
 
+def main():
+    """Main function of script to compile an existing LaTeX document (article or portfolio) into a PDF."""
 
+    first_prompt("Script for pdf compilation from existing document (article or portfolio)")
+    # Create command line argument parser
+    parser = argparse.ArgumentParser(description="arTeX compilation with biblatex.")
+    # Add arguments
+    parser.add_argument(
+        "thing_name", nargs="?", type=str, help=f"available options: {thing_name_list_as_string}", default=None
+    )
+    # parser.add_argument('thing_type', type=str, help=f"available options: {thing_type_list_as_string}")
+    parser.add_argument("--biber", type=bool, help="Whether to run biber too", default=True)
+    # Parse the arguments
+    args = parser.parse_args()
+    keep_asking = True
+    while keep_asking == True:
+        # If not thing name as been provided in the command line directly, request it from the user
+        if args.thing_name == None:
+            art_names = list_existing_things(articles_dir_path, header_message="Articles:")
+            prt_names = list_existing_things(
+                portfolios_dir_path, header_message="Portfolio versions:", cnt_start=len(art_names)
+            )
+            all_names = art_names + prt_names
+            indexes = list(range(1, len(all_names) + 1))
+            choice = input(f"Which do you want to compile? ({blue}choose from options above{reset}): ")
 
-def main(args):
+            # if used picked a number:
+            if choice.isdigit() and int(choice) in indexes:
+                thing_name = all_names[int(choice) - 1]
+            # if used wrote the article name:
+            else:
+                thing_name = choice
+                # Store it in the command line object
+            args.thing_name = thing_name
+            print(f"You have chosen to compile {blue}{thing_name}{reset}\n...")
+
+        # check if chosen thing actually exists:
+        if args.thing_name in ["q", "quit"]:
+            print(f"\n💀💀💀 {red}Program quit without compiling anything.{reset}")
+            exit()
+        elif args.thing_name not in thing_names:
+            print(f"\n\n\n{red}Invalid thing_name{reset}, pick from options:\n")
+            # Restart proccess
+            args.thing_name = None
+        else:
+            keep_asking = False
+
     thing_name = args.thing_name
     global dir_path
 
@@ -52,8 +99,12 @@ def main(args):
     compile_with_lualatex(thing_name)
 
 
+def compile_with_lualatex(thing_name: str):
+    """Compile a LaTeX document (article or portfolio) with lualaTeX.
 
-def compile_with_lualatex(thing_name:str):
+    Args:
+        thing_name (str): name of an existing LaTeX document to compile.
+    """
     try:
         # print( os.path.join(dir_path, thing_name + ".tex"))
         # CHANGE DIRECTORY TO THING'S
@@ -65,7 +116,7 @@ def compile_with_lualatex(thing_name:str):
             ["lualatex", "-interaction=nonstopmode", f"-output-directory={build_folder}", "document.tex"],
             check=True,
             capture_output=True,
-            text=True
+            text=True,
         )
         print(result.stdout)
     except subprocess.CalledProcessError as e:
@@ -76,27 +127,4 @@ def compile_with_lualatex(thing_name:str):
 
 if __name__ == "__main__":
 
-    # print(all_names)
-    # Create command line argument parser
-    parser = argparse.ArgumentParser(description="arTeX compilation with biblatex.")
-    # Add arguments
-    parser.add_argument('thing_name', nargs='?', type=str, help=f"available options: {thing_name_list_as_string}",  default=None)
-    # parser.add_argument('thing_type', type=str, help=f"available options: {thing_type_list_as_string}")
-    parser.add_argument('--biber', type=bool, help='Whether to run biber too', default=True)
-    # Parse the arguments
-    args = parser.parse_args()
-
-    # If not thing name as been provided in the command line directly, request it from the user
-    if args.thing_name == None:
-        list_existing_things(articles_dir_path)
-        list_existing_things(portfolios_dir_path)
-        choice = input(f"Which do you want to compile? ")
-        # Store it in the command line object
-        args.thing_name = choice
-
-    # check if chosen thing actually exists:
-    if args.thing_name not in thing_names:
-        print(f'Invalid thing_name, pick from: {thing_name_list_as_string}')
-        exit()   
-        
-    main(args)
+    main()

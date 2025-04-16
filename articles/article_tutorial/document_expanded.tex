@@ -161,6 +161,8 @@ myarticle:\myarticleKeyCore:\myLanguage%
 \createAndSetBoolean{isLandscapeMode}{false}  %
 %
 \createAndSetBoolean{isIncludeAppendix}{false}  %
+%
+\createAndSetBoolean{isPrintLogs}{true}  %
 
 
 %
@@ -214,6 +216,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
         }%
         {%
     %
+        \textcolor{myColorDanger}{\Huge #1 #2: CONTENT DOES NOT EXIST}
     %
         }%
     }
@@ -381,6 +384,7 @@ bibliography:source_template%
 \setbool{isSplitInTwoColumns}{false} %
 \setbool{isLandscapeMode}{false} %
 \setbool{isIncludeAppendix}{true} %
+\setbool{isPrintLogs}{true} %
 
 
 
@@ -1075,6 +1079,9 @@ binding offset:
 %
 
 \begin{filecontents*}{temp.bib}
+% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE. 
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+
 % /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
 
 @article{bibliography:source_template,
@@ -1093,7 +1100,11 @@ binding offset:
 	file = {template},
 	abstract = {template}
 }
-% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
+% ADD YOUR ARTICLE ENTRIES INTO THIS FILE.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+%
+% Add commas after each field, after last one it is ok too
+NAME FIELDS: name, forename AND name, forename AND name, forename% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
 
 % Add commas after each field, after last one it is ok too
 NAME FIELDS: name, forename AND name, forename AND name, forename
@@ -1160,14 +1171,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 	discipline={tutorial},
 	copyright={},
 	mainSource={},
-}% ADD YOUR ARTICLE ENTRIES INTO THIS FILE.
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
-%
-% Add commas after each field, after last one it is ok too
-NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE. 
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
-
-
+}
 \end{filecontents*}
 
 \addbibresource{temp.bib}
@@ -3128,6 +3132,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
     {#1}%
   }%
   \ifthenelse{\equal{#2}{}}{}{\label{\secLabel{#2}}}%
+  \myLogger{START SECTION NUMBER \the\value{totalSectionsInArticle:\myarticleKeyCore} \myarticleKeyCore}
 }
 
 %
@@ -3153,6 +3158,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
       \linkSubsectionConditionally{#1}
     }%
   \ifthenelse{\equal{#2}{}}{}{\label{\subsecLabel{#2}}}%
+  \myLogger{START SUBSECTION NUMBER \the\value{totalSubsectionsInArticle:\myarticleKeyCore} \myarticleKeyCore}
 }
 
 %
@@ -3178,6 +3184,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
       \linkSubsubsectionConditionally{#1}
     }%
   \ifthenelse{\equal{#2}{}}{}{\label{\subsubsecLabel{#2}}}%
+  \myLogger{START SUBSUBSECTION NUMBER \the\value{totalSubsubsectionsInArticle:\myarticleKeyCore} \myarticleKeyCore}
 }
 
 
@@ -4047,6 +4054,22 @@ title={#2},
 %
 \newcommand\abspagenumber{\inteval{\ReadonlyShipoutCounter+1}} 
   %
+\NewDocumentCommand{\myLogger}
+{
+    O{}
+    m
+}
+{%
+    \ifthenelse{\boolean{isPrintLogs}}%
+    {%
+    \typeout{}%
+    \typeout{================================= ARTEX-LOG =================================}%
+    \typeout{LOG #1: #2}%
+    \typeout{=============================================================================}%
+    }%
+    {}%
+}% 
+  %
 \RequirePackage{l3benchmark}
 \ExplSyntaxOn
 \AfterEndDocument { \benchmark_toc: }
@@ -4593,13 +4616,6 @@ title={#2},
 
 
 
-\begin{filecontents*}{appendix_b.tex}
-                       \myAppendixTitle{Appendix Title B}[ref-b-appendix]
-
-
-\lipsum[1-2]
-\end{filecontents*} 
-
 \begin{filecontents*}{appendix_a.tex}
                        \myAppendixTitle{Appendix Title A}
 
@@ -4615,6 +4631,13 @@ title={#2},
     [jpg]
 
 \end{myFigEnv}
+\end{filecontents*} 
+
+\begin{filecontents*}{appendix_b.tex}
+                       \myAppendixTitle{Appendix Title B}[ref-b-appendix]
+
+
+\lipsum[1-2]
 \end{filecontents*} 
 
 \NewDocumentCommand{\myAppendix}
@@ -5127,7 +5150,7 @@ Example of math mode block:
 
 Lua\TeX{} can execute Lua code from the source file in Lua\LaTeX{} or Con\TeX{}t. For example, \texttt{directlua}
 can generate a random number: \directlua{tex.print(math.random())}.
-It is no longer necessary to remember the value of $π$ :
+It is no longer necessary to remember the value of $Ï€$â€¯:
 \directlua{tex.print(math.pi)}.
 
 Using the \texttt{luacode} environment, you can count, as the following example (to 60):
