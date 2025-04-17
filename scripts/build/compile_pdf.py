@@ -14,7 +14,9 @@ import sys
 articles_directory = "./../../articles/"  # relative to script location
 portfolios_directory = "./../../portfolios/versions/"  # relative to script location
 
-build_folder = "auxiliary_files"  # relative to script location
+# build folders for main pdf output AND all auxiliary files relative to script location
+build_folder__main_output = "auxiliary_files"
+build_folder__aux_files = "auxiliary_files"
 
 # get the directory of the current script
 base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
@@ -136,16 +138,18 @@ def compile_with_lualatex(thing_name: str):
         # print( os.path.join(dir_path, thing_name + ".tex"))
         # CHANGE DIRECTORY TO THING'S
         os.chdir(os.path.join(dir_path, thing_name))
-        # CREATE BUILD FOLDER IF IT DOES NOT EXIST
-        if not os.path.exists(build_folder):
-            os.makedirs(build_folder)
+        # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
+        if not os.path.exists(build_folder__main_output):
+            os.makedirs(build_folder__main_output)
+        if not os.path.exists(build_folder__aux_files):
+            os.makedirs(build_folder__aux_files)
         result = subprocess.run(
             [
                 "lualatex",
                 "--interaction=nonstopmode",
                 f"--job-name={thing_name}", # output file(s) name
-                f"--output-directory={build_folder}", # output directory of pdf file 
-                f"--aux-directory={'auxiliary_files/test'}",  # output directory of all other auxiliary files
+                f"--output-directory={build_folder__main_output}", # output directory of pdf file 
+                f"--aux-directory={build_folder__aux_files}",  # output directory of all other auxiliary files
                 "document.tex",
             ],
             check=True,
