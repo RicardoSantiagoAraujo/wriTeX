@@ -68,7 +68,7 @@ def main():
     elif thing_name in portfolio_names:
         dir_path = portfolios_dir_path
 
-    compile_with_lualatex(thing_name)
+    perform_build_steps(thing_name)
 
 
 def deal_with_user_input(thing_name_from_cmd_line: str) -> str:
@@ -92,9 +92,12 @@ def deal_with_user_input(thing_name_from_cmd_line: str) -> str:
             all_names = art_names + prt_names
             indexes = list(range(1, len(all_names) + 1))
             choice = input(f"Which do you want to compile? ({blue}choose from options above{reset}): ")
-
+            #  if user passed an instruction to quit the program:
+            if choice in ["q", "quit"]:
+                print(f"\n💀💀💀 {red}Program quit without compiling anything.{reset}")
+                exit()
             # if user picked a valid index (number):
-            if choice.isdigit() and int(choice) in indexes:
+            elif choice.isdigit() and int(choice) in indexes:
                 thing_name = all_names[int(choice) - 1]
             # if user wrote the article name directly and it is valid:
             elif choice in thing_names:
@@ -109,10 +112,6 @@ def deal_with_user_input(thing_name_from_cmd_line: str) -> str:
 
 
         # If thing name has been provided...
-        # ...but it is actually an instruction to quit the program:
-        elif thing_name_from_cmd_line in ["q", "quit"]:
-            print(f"\n💀💀💀 {red}Program quit without compiling anything.{reset}")
-            exit()
         # ...but it does not actually exist:
         elif thing_name_from_cmd_line not in thing_names:
             print(f"\n\n\n{red}thing_name{reset} does not exist, pick from options:\n")
@@ -128,7 +127,7 @@ def deal_with_user_input(thing_name_from_cmd_line: str) -> str:
     return thing_name
 
 
-def compile_with_lualatex(thing_name: str):
+def perform_build_steps(thing_name: str):
     """Compile a LaTeX document (article or portfolio) with lualaTeX.
 
     Args:
@@ -139,28 +138,72 @@ def compile_with_lualatex(thing_name: str):
         # CHANGE DIRECTORY TO THING'S
         os.chdir(os.path.join(dir_path, thing_name))
         # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
-        if not os.path.exists(build_folder__main_output):
-            os.makedirs(build_folder__main_output)
-        if not os.path.exists(build_folder__aux_files):
-            os.makedirs(build_folder__aux_files)
-        result = subprocess.run(
-            [
-                "lualatex",
-                "--interaction=nonstopmode",
-                f"--job-name={thing_name}", # output file(s) name
-                f"--output-directory={build_folder__main_output}", # output directory of pdf file 
-                f"--aux-directory={build_folder__aux_files}",  # output directory of all other auxiliary files
-                "document.tex",
-            ],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        print(result.stdout)
+        create_build_directories()
+
+        trigger_biblatex(thing_name, printout=False)
+        trigger_biber(thing_name, printout=False)
+        trigger_biblatex(thing_name, printout=False)
+        trigger_biblatex(thing_name, printout=False)
+
+        print(f"\n{green}Compilation finished{reset}")
+
     except subprocess.CalledProcessError as e:
-        print("Compilation failed:")
+        print("Compilation log:")
         print(e.stdout)
         print(e.stderr)
+        print(f"{red}Compilation failed{reset}")
+
+
+
+
+def create_build_directories() -> None:
+    """
+    Create required build directories if they do not exist yet
+    """
+    if not os.path.exists(build_folder__main_output):
+        os.makedirs(build_folder__main_output)
+    if not os.path.exists(build_folder__aux_files):
+        os.makedirs(build_folder__aux_files)
+
+def trigger_biber(thing_name : str, printout:bool = True) -> None :
+    """Trigger biber
+
+    Args:
+        thing_name (str): _description_
+        printout (bool, optional): _description_. Defaults to True.
+    """
+    result =  subprocess.run(
+    ["biber", os.path.join(build_folder__aux_files, f"{'document'}")])
+
+    if printout:
+        print(result.stdout)
+    print(f"{blue}trigger_biber : DONE{reset}")
+
+
+
+def trigger_biblatex(thing_name : str, printout:bool = True) -> None :
+    """Trigger biblatex compilation
+
+    Args:
+        thing_name (str): _description_
+        printout (bool, optional): _description_. Defaults to True.
+    """
+    result = subprocess.run(
+        [
+            "lualatex",
+            "--interaction=nonstopmode",
+            f"--job-name={thing_name}", # output file(s) name
+            f"--output-directory={build_folder__main_output}", # output directory of pdf file
+            f"--aux-directory={build_folder__aux_files}",  # output directory of all other auxiliary files
+            f"{'portfolio_document'}.tex",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if printout:
+        print(result.stdout)
+    print(f"{blue}trigger_biblatex : DONE{reset}")
 
 
 if __name__ == "__main__":

@@ -10,7 +10,6 @@ body_path = "./../../articles/article_tutorial/elements/body/body_en.tex"
 
 
 def main():
-
     dir_path = os.path.join(base_dir, body_path)
 
     macros_to_convert = {
@@ -18,12 +17,7 @@ def main():
         r"\\myArticleSubsection\{(.*?)\}": "hello",
         r"\\myArticleSubsubsection\{(.*?)\}": "hello",
     }
-    lista = [
-        Tag_h1,
-        Tag_h2
-
-    ]
-
+    lista = [Tag_h1, Tag_h2]
 
     with open(dir_path, "r", encoding="utf-8") as file:
         content = file.read()
@@ -40,9 +34,11 @@ def main():
             matches = re.findall(obj.latex_pttrn, content)
             print(f"\n🟰  Matches for '{obj.__name__}")
             [print(match) for match in matches]
-            content = re.sub(obj.latex_pttrn,  lambda m: obj.html_pttrn[0] + m.group(1) + obj.html_pttrn[2] ,content)
-
-
+            content = re.sub(
+                obj.latex_pttrn,
+                lambda m: obj.html_pttrn[0] + m.group(1) + obj.html_pttrn[2],
+                content,
+            )
 
     with open("scripts/test.html", "w", encoding="utf-8") as file:
         file.write(content)
@@ -65,6 +61,7 @@ class GenericTag:
 class Tag_h1(GenericTag):
     latex_pttrn = r"\\myArticleSection\{(.*?)\}"
     html_pttrn = [r"<h1>", r"(.*?)", r"</h1>"]
+
     def __init__(self, innerHTML, id, HTMLClass, customAttribute):
         # Call the parent class' constructor (initialize the attributes)
         super().__init__(innerHTML, id, HTMLClass)
@@ -73,12 +70,15 @@ class Tag_h1(GenericTag):
 
     def showCustomInfo(self):
         # Additional method specific to CustomTag
-        print(f'Custom Tag with ID "{self.id}" has a custom attribute: {self.customAttribute}')
+        print(
+            f'Custom Tag with ID "{self.id}" has a custom attribute: {self.customAttribute}'
+        )
 
 
 class Tag_h2(GenericTag):
     latex_pttrn = r"\\myArticleSubsection\{(.*?)\}"
     html_pttrn = [r"<h2>", r"(.*?)", r"</h2>"]
+
     def __init__(self, innerHTML, id, HTMLClass, customAttribute):
         # Call the parent class' constructor (initialize the attributes)
         super().__init__(innerHTML, id, HTMLClass)
@@ -87,8 +87,9 @@ class Tag_h2(GenericTag):
 
     def showCustomInfo(self):
         # Additional method specific to CustomTag
-        print(f'Custom Tag with ID "{self.id}" has a custom attribute: {self.customAttribute}')
-
+        print(
+            f'Custom Tag with ID "{self.id}" has a custom attribute: {self.customAttribute}'
+        )
 
 
 # Example of using the class

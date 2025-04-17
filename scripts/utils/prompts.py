@@ -11,12 +11,16 @@ def first_prompt(custom_prompt: str = None) -> None:
     """
     # clear terminal
     os.system("cls" if os.name == "nt" else "clear")
-    print("\t****************************************************************************************************")
+    print(
+        "\t****************************************************************************************************"
+    )
     print("\t" + bold + custom_prompt + reset)
     print(
         f"\tScript works with shell languages: {blue+bold}zsh (MacOS){reset}, {blue+bold}Batch Scripting (windows){reset}"
     )
-    print("\t****************************************************************************************************\n")
+    print(
+        "\t****************************************************************************************************\n"
+    )
 
     print(
         (

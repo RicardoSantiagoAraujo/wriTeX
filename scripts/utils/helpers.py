@@ -15,8 +15,12 @@ def final_message(thing_type: ThingType, new_thing_name: str) -> None:
         thing_type (ThingType): type of object to generate: article or portfolio.
         new_thing_name (str): Name to use for the new object.
     """
-    print(f"\n\n 😁😁😁 {thing_type} successfully created with name: {bold+green}{new_thing_name}{reset} 😁😁😁")
-    print(f"\n You can now edit the files directly in the {bold+green}{new_thing_name}{reset} folder \n")
+    print(
+        f"\n\n 😁😁😁 {thing_type} successfully created with name: {bold+green}{new_thing_name}{reset} 😁😁😁"
+    )
+    print(
+        f"\n You can now edit the files directly in the {bold+green}{new_thing_name}{reset} folder \n"
+    )
 
 
 progress_cnt = 1
@@ -33,7 +37,9 @@ def print_progress_msg(msg_content: str) -> None:
     progress_cnt += 1
 
 
-def check_if_successful(function_name: str, exit_code: int, folder_path: str = None) -> None:
+def check_if_successful(
+    function_name: str, exit_code: int, folder_path: str = None
+) -> None:
     global progress_cnt
     print(f"\nStep {progress_cnt}:{blue} {function_name}{reset}...")
     if exit_code == 0:
@@ -104,7 +110,9 @@ def delete_expanded(thing_type: ThingType, folder_path: str) -> None:
 replace_str_cnt = 1
 
 
-def replace_string_in_tex_file(new_folder: str, file_name: str, old_word: str, new_word: str) -> None:
+def replace_string_in_tex_file(
+    new_folder: str, file_name: str, old_word: str, new_word: str
+) -> None:
     global replace_str_cnt
     # Open the .tex file and read the contents
     try:
@@ -129,7 +137,9 @@ def replace_string_in_tex_file(new_folder: str, file_name: str, old_word: str, n
     replace_str_cnt += 1
 
 
-def list_existing_things(dir_path: str, print_list: bool = True, header_message: str = None, cnt_start=0) -> list[str]:
+def list_existing_things(
+    dir_path: str, print_list: bool = True, header_message: str = None, cnt_start=0
+) -> list[str]:
     """list all things all things in a given directory
 
     Args:
@@ -163,15 +173,21 @@ def request_name(thing_type: ThingType, existing_names: list[str]) -> str:
     # check if thing already exists and keep requesting name until original name is given or user quits:
     while new_name in existing_names:
         if new_name != "q" and new_name != "quit":
-            print(f"{red}{thing_type} already exists.{reset} Please pick a new name or quit.\n")
+            print(
+                f"{red}{thing_type} already exists.{reset} Please pick a new name or quit.\n"
+            )
             new_name = request_name(thing_type, existing_names)
         else:
-            print(f"\n💀💀💀 {red}Program quit without creation of new {thing_type}.{reset}")
+            print(
+                f"\n💀💀💀 {red}Program quit without creation of new {thing_type}.{reset}"
+            )
             exit()
     return new_name
 
 
-def create_new_folder_with_files(new_name: str, template_name: str, dir_path: str) -> str:
+def create_new_folder_with_files(
+    new_name: str, template_name: str, dir_path: str
+) -> str:
     if new_name != "q" and new_name != "quit":
         new_folder = dir_path + "/" + new_name
         try:
@@ -181,7 +197,9 @@ def create_new_folder_with_files(new_name: str, template_name: str, dir_path: st
         else:
             exit_code = 0
         check_if_successful(create_new_folder_with_files.__name__, exit_code)
-        print_progress_msg(f"Created new folder with contents from {bold+green}{template_name}{reset} ")
+        print_progress_msg(
+            f"Created new folder with contents from {bold+green}{template_name}{reset} "
+        )
     else:
         print(f"\n💀💀💀 {red}Program quit without creation of new folder.{reset}")
         exit()
