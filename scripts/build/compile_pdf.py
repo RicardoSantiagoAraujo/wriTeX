@@ -55,38 +55,8 @@ def main():
     parser.add_argument("--biber", type=bool, help="Whether to run biber too", default=True)
     # Parse the arguments
     args = parser.parse_args()
-    keep_asking = True
-    while keep_asking == True:
-        # If not thing name as been provided in the command line directly, request it from the user
-        if args.thing_name == None:
-            art_names = list_existing_things(articles_dir_path, header_message="Articles:")
-            prt_names = list_existing_things(
-                portfolios_dir_path, header_message="Portfolio versions:", cnt_start=len(art_names)
-            )
-            all_names = art_names + prt_names
-            indexes = list(range(1, len(all_names) + 1))
-            choice = input(f"Which do you want to compile? ({blue}choose from options above{reset}): ")
 
-            # if used picked a number:
-            if choice.isdigit() and int(choice) in indexes:
-                thing_name = all_names[int(choice) - 1]
-            # if used wrote the article name:
-            else:
-                thing_name = choice
-                # Store it in the command line object
-            args.thing_name = thing_name
-            print(f"You have chosen to compile {blue}{thing_name}{reset}\n...")
-
-        # check if chosen thing actually exists:
-        if args.thing_name in ["q", "quit"]:
-            print(f"\n💀💀💀 {red}Program quit without compiling anything.{reset}")
-            exit()
-        elif args.thing_name not in thing_names:
-            print(f"\n\n\n{red}Invalid thing_name{reset}, pick from options:\n")
-            # Restart proccess
-            args.thing_name = None
-        else:
-            keep_asking = False
+    args.thing_name = deal_with_user_input(args.thing_name)
 
     thing_name = args.thing_name
     global dir_path
@@ -97,6 +67,63 @@ def main():
         dir_path = portfolios_dir_path
 
     compile_with_lualatex(thing_name)
+
+
+def deal_with_user_input(thing_name_from_cmd_line: str) -> str:
+    """Manage user input by first checking whether it was passed directly in the terminal or must be collected with the input() command.
+    Additionally, perform tests for availability, quit commands and index inputs.
+
+    Args:
+        thing_name_from_cmd_line (str): user input thing (target document) as passed through the command line; may be empty in which case input is collected with the input() command
+
+    Returns:
+        str: _description_
+    """
+    keep_asking = True
+    while keep_asking == True:
+        # If no thing name has been provided in the command line directly, request it from the user
+        if thing_name_from_cmd_line == None:
+            art_names = list_existing_things(articles_dir_path, header_message="Articles:")
+            prt_names = list_existing_things(
+                portfolios_dir_path, header_message="Portfolio versions:", cnt_start=len(art_names)
+            )
+            all_names = art_names + prt_names
+            indexes = list(range(1, len(all_names) + 1))
+            choice = input(f"Which do you want to compile? ({blue}choose from options above{reset}): ")
+
+            # if user picked a valid index (number):
+            if choice.isdigit() and int(choice) in indexes:
+                thing_name = all_names[int(choice) - 1]
+            # if user wrote the article name directly and it is valid:
+            elif choice in thing_names:
+                thing_name = choice
+            # if invalid choice (non existing name or index):
+            else:
+                print(f"\n\n\n{red}Invalid choice{reset}, pick from options:\n")
+                continue
+
+            print(f"You have chosen to compile {blue}{thing_name}{reset}\n...")
+            keep_asking = False
+
+
+        # If thing name has been provided...
+        # ...but it is actually an instruction to quit the program:
+        elif thing_name_from_cmd_line in ["q", "quit"]:
+            print(f"\n💀💀💀 {red}Program quit without compiling anything.{reset}")
+            exit()
+        # ...but it does not actually exist:
+        elif thing_name_from_cmd_line not in thing_names:
+            print(f"\n\n\n{red}thing_name{reset} does not exist, pick from options:\n")
+            # Restart proccess
+            thing_name = None
+        # ...and it exists:
+        else:
+            # Exit loop
+            thing_name = thing_name_from_cmd_line
+            print(f"You have chosen to compile {blue}{thing_name_from_cmd_line}{reset}\n...")
+            keep_asking = False
+
+    return thing_name
 
 
 def compile_with_lualatex(thing_name: str):
@@ -113,7 +140,14 @@ def compile_with_lualatex(thing_name: str):
         if not os.path.exists(build_folder):
             os.makedirs(build_folder)
         result = subprocess.run(
-            ["lualatex", "-interaction=nonstopmode", f"-output-directory={build_folder}", "document.tex"],
+            [
+                "lualatex",
+                "--interaction=nonstopmode",
+                f"--job-name={thing_name}", # output file(s) name
+                f"--output-directory={build_folder}", # output directory of pdf file 
+                f"--aux-directory={'auxiliary_files/test'}",  # output directory of all other auxiliary files
+                "document.tex",
+            ],
             check=True,
             capture_output=True,
             text=True,
@@ -126,5 +160,4 @@ def compile_with_lualatex(thing_name: str):
 
 
 if __name__ == "__main__":
-
     main()
