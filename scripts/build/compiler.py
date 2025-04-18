@@ -33,7 +33,7 @@ def perform_build_steps(args: argparse.Namespace):
         # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
         create_build_directories()
 
-        print(f"\n🏗️ BUILD MODE: {blue}{args.mode}{reset}\n")
+        print(f"\n🏗️  BUILD MODE: {blue}{args.mode}{reset}\n")
         match args.mode:
             case BuildMode.full.value :
                 recipe__full(args, latex_doc_name)
