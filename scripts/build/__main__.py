@@ -14,7 +14,7 @@ from .functions import (
 
 from .compiler import perform_build_steps
 from .watch import watcher
-from .parameters import watch_frequency_seconds, file_types_to_watch
+from .parameters import watch_frequency_seconds, file_types_to_watch, paths_to_ignore
 
 def main():
     """Main function of script to compile an existing LaTeX document (article or portfolio) into a PDF."""
@@ -59,6 +59,7 @@ def main():
                 function_arguments=args,
                 path_to_watch=get_build_directory(args),
                 file_types= file_types_to_watch,
+                paths_to_ignore=paths_to_ignore,
                 frequency_sec= watch_frequency_seconds)
     else:
         # Single script run:
