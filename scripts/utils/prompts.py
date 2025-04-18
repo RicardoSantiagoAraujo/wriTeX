@@ -1,7 +1,7 @@
 import os
 from .style_console_text import red, green, blue, bold, reset
 from ..enums.ThingType import ThingType
-
+import shutil
 
 def first_prompt(custom_prompt: str = None) -> None:
     """Print first prompt when script is lauched.
@@ -11,24 +11,28 @@ def first_prompt(custom_prompt: str = None) -> None:
     """
     # clear terminal
     os.system("cls" if os.name == "nt" else "clear")
+    # get width of console in characters
+    console_w = shutil.get_terminal_size().columns
     print(
-        "\t****************************************************************************************************"
+        f"\t{'*' * (console_w - 8*2)}"
     )
-    print("\t" + bold + custom_prompt + reset)
+    print(f"\t{bold}{blue}{custom_prompt.center(console_w - 8*2)}{reset}")
     print(
-        f"\tScript works with shell languages: {blue+bold}zsh (MacOS){reset}, {blue+bold}Batch Scripting (windows){reset}"
+        f"\t{'*' * (console_w - 8*2)}\n"
     )
     print(
-        "\t****************************************************************************************************\n"
+        f"\t{f'Script works with shell languages: {blue+bold}zsh (MacOS){reset}, {blue+bold}Batch Scripting (windows){reset}'}"
     )
 
     print(
         (
-            f"File name convention: use only {bold+green}lowercase{reset}  characters and {bold+green}underscores{reset} for spaces (script performs automatic correction)."
+            f"\tFile name convention: use only {bold+green}lowercase{reset}  characters and {bold+green}underscores{reset} for spaces (script performs automatic correction)."
         )
     )
-    print((f'Type {bold+red}"q"{reset} or {bold+red}"quit"{reset} to exit program'))
-    print("")
+    print((f'\tType {bold+red}"q"{reset} or {bold+red}"quit"{reset} to exit program'))
+    print(
+        f"\t{'_' * (console_w - 8*2)}\n"
+    )
 
 
 def first_prompt__initiate_document(thing_type: ThingType) -> None:

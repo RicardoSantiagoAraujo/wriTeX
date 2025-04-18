@@ -1,42 +1,76 @@
 import subprocess
 import os
 from ..utils.style_console_text import red, green, blue, bold, reset
-from functions import (
-    dir_path,
-    create_build_directories,
-    trigger_biber,
-    trigger_biblatex,
+from .functions import (
+    create_build_directories, article_names, articles_dir_path, portfolio_names, portfolios_dir_path, build_message
 )
-from parameters import (
-    articles_directory,
-    portfolios_directory,
-    build_folder__aux_files,
-    build_folder__main_output,
-)
+from .proccesses import trigger_biber, trigger_lualatex
+
+from ..enums.BuildMode import BuildMode
+import argparse
+from datetime import datetime
 
 
-def perform_build_steps(thing_name: str):
-    """Compile a LaTeX document (article or portfolio) with lualaTeX.
+def recipe__full(args: argparse.Namespace, latex_doc_name: str):
+    """Recipe for full compilation: lualatex x1, biber x1, lualatex x2
 
     Args:
-        thing_name (str): name of an existing LaTeX document to compile.
+        args (argparse.Namespace): arguments object
+        latex_doc_name (str): name of main latex file to be used for compilation
     """
-    try:
-        # print( os.path.join(dir_path, thing_name + ".tex"))
-        # CHANGE DIRECTORY TO THING'S
-        os.chdir(os.path.join(dir_path, thing_name))
-        # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
-        create_build_directories()
+    thing_name = args.thing_name
+    verbose_bool = args.verbose
+    timer_bool = args.timer
 
-        trigger_biblatex(thing_name, printout=False)
-        trigger_biber(thing_name, printout=False)
-        trigger_biblatex(thing_name, printout=False)
-        trigger_biblatex(thing_name, printout=False)
+    step_counter = 0
+    time_start = datetime.now()
 
-        print(f"\n{green}Compilation finished{reset}")
+    time_prev, step_counter = build_message("start of compilation",step_counter, time_start, isTimer=timer_bool)
+    trigger_lualatex(thing_name, latex_doc_name,  printout=verbose_bool)
+    time_prev, step_counter  = build_message("end of lualatex compilation",step_counter, time_start, time_prev, isTimer=timer_bool)
+    trigger_biber(thing_name, latex_doc_name,  printout=verbose_bool)
+    time_prev, step_counter  = build_message("end of biber compilation", step_counter, time_start, time_prev, isTimer=timer_bool)
+    trigger_lualatex(thing_name, latex_doc_name,  printout=verbose_bool)
+    time_prev, step_counter  = build_message("end of lualatex compilation", step_counter, time_start, time_prev, isTimer=timer_bool)
+    trigger_lualatex(thing_name,latex_doc_name, printout=verbose_bool)
+    time_prev, step_counter  = build_message("end of lualatex compilation (LAST)",step_counter, time_start, time_prev, isTimer=timer_bool)
 
-    except subprocess.CalledProcessError as e:
-        print("Compilation log:")
-        print(e.stdout)
-        print(e.stderr)
-        print(f"{red}Compilation failed{reset}")
+
+def recipe__biber(args: argparse.Namespace, latex_doc_name: str):
+    """Recipe for compiling with biber x1
+
+    Args:
+        args (argparse.Namespace): arguments object
+        latex_doc_name (str): name of main latex file to be used for compilation
+    """
+    thing_name = args.thing_name
+    verbose_bool = args.verbose
+    timer_bool = args.timer
+
+    step_counter = 0
+    time_start = datetime.now()
+
+    time_prev, step_counter = build_message("start of compilation",step_counter, time_start, isTimer=timer_bool)
+    trigger_biber(thing_name, latex_doc_name,  printout=verbose_bool)
+    time_prev, step_counter  = build_message("end of biber compilation", step_counter, time_start, time_prev, isTimer=timer_bool)
+
+
+
+
+def recipe__lualatex(args: argparse.Namespace, latex_doc_name: str):
+    """Recipe for compiling with lualatex x1
+
+    Args:
+        args (argparse.Namespace): arguments object
+        latex_doc_name (str): name of main latex file to be used for compilation
+    """
+    thing_name = args.thing_name
+    verbose_bool = args.verbose
+    timer_bool = args.timer
+
+    step_counter = 0
+    time_start = datetime.now()
+
+    time_prev, step_counter = build_message("start of compilation",step_counter, time_start, isTimer=timer_bool)
+    trigger_lualatex(thing_name, latex_doc_name,  printout=verbose_bool)
+    time_prev, step_counter  = build_message("end of biber compilation", step_counter, time_start, time_prev, isTimer=timer_bool)

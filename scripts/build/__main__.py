@@ -3,18 +3,21 @@
 
 import argparse
 from ..utils.prompts import first_prompt
+from ..enums.BuildMode import BuildMode
+from ..utils.style_console_text import blue, reset
+
 from .functions import (
     thing_name_list_as_string,
     deal_with_user_input,
-    perform_build_steps,
 )
+
+from .compiler import perform_build_steps
 
 
 def main():
     """Main function of script to compile an existing LaTeX document (article or portfolio) into a PDF."""
 
-    first_prompt(
-        "Script for pdf compilation from existing document (article or portfolio)"
+    first_prompt("Script for pdf compilation from existing document (article or portfolio)"
     )
     # Create command line argument parser
     parser = argparse.ArgumentParser(description="arTeX compilation with biblatex.")
@@ -23,21 +26,31 @@ def main():
         "thing_name",
         nargs="?",
         type=str,
-        help=f"available options: {thing_name_list_as_string}",
+        help=f"Document to compile. Available options: {thing_name_list_as_string}.",
         default=None,
     )
-    # parser.add_argument('thing_type', type=str, help=f"available options: {thing_type_list_as_string}")
     parser.add_argument(
-        "--biber", type=bool, help="Whether to run biber too", default=True
+        "mode",
+        nargs="?",
+        type=str,
+        help=f"Compilation mode. Available options: {", ".join([f"{blue}{e.value}{reset}" for e in BuildMode])}.",
+        default=BuildMode.full.value,
+    )
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="prints compilation information to console"
+    )
+    parser.add_argument(
+        "-t", "--timer", action="store_true", help="logs compilation duration to console"
+    )
+    parser.add_argument(
+        "-w", "--watch", action="store_true", help="watch for changes and automatically recompile"
     )
     # Parse the arguments
     args = parser.parse_args()
 
-    args.thing_name = deal_with_user_input(args.thing_name)
+    args = deal_with_user_input(args)
 
-    thing_name = args.thing_name
-
-    perform_build_steps(thing_name)
+    perform_build_steps(args)
 
 
 if __name__ == "__main__":

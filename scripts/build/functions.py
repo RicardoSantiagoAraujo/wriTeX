@@ -1,16 +1,18 @@
-import subprocess
+
 import os
+import argparse
+from datetime import datetime
 from ..utils.helpers import list_existing_things
 from ..utils.style_console_text import red, green, blue, bold, reset
 from ..enums.ThingType import ThingType
 import enum
-import sys
 from .parameters import (
     articles_directory,
     portfolios_directory,
     build_folder__aux_files,
     build_folder__main_output,
 )
+from ..enums.BuildMode import BuildMode
 
 
 # get the directory of the current script
@@ -21,6 +23,7 @@ portfolios_dir_path = os.path.join(base_dir, portfolios_directory)
 article_names = list_existing_things(articles_dir_path, print_list=False)
 portfolio_names = list_existing_things(portfolios_dir_path, print_list=False)
 thing_names = article_names + portfolio_names
+
 
 
 def list_as_string(list: list[any]) -> str:
@@ -37,16 +40,27 @@ thing_name_list_as_string = list_as_string(thing_names)
 thing_type_list_as_string = enum_list_as_string(ThingType)
 
 
-def deal_with_user_input(thing_name_from_cmd_line: str) -> str:
-    """Manage user input by first checking whether it was passed directly in the terminal or must be collected with the input() command.
+def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespace:
+    """Manage user arguments passed through the command line, and collect missing ones through the input() command.
     Additionally, perform tests for availability, quit commands and index inputs.
 
     Args:
-        thing_name_from_cmd_line (str): user input thing (target document) as passed through the command line; may be empty in which case input is collected with the input() command
+        args__cmd_line (argparse.Namespace): user passed arguments through the command line
 
     Returns:
-        str: _description_
+        argparse.Namespace: Validated and updated arguments
     """
+
+    # If something has been provided in the command line as first argument but it is the build mode:
+    if args__cmd_line.thing_name in [e.value for e in BuildMode]:
+        # Pass it to the right arg and empty the thing_name arg
+        args__cmd_line.mode = args__cmd_line.thing_name
+        args__cmd_line.thing_name = None
+
+
+    # get and test user input thing (target document) as passed through the command line; may be empty in which case input is collected with the input() command
+    thing_name_from_cmd_line = args__cmd_line.thing_name
+
     keep_asking = True
     while keep_asking == True:
         # If no thing name has been provided in the command line directly, request it from the user
@@ -97,41 +111,9 @@ def deal_with_user_input(thing_name_from_cmd_line: str) -> str:
             )
             keep_asking = False
 
-    return thing_name
+    args__cmd_line.thing_name = thing_name
+    return args__cmd_line
 
-
-def perform_build_steps(thing_name: str):
-    """Compile a LaTeX document (article or portfolio) with lualaTeX.
-
-    Args:
-        thing_name (str): name of an existing LaTeX document to compile.
-    """
-    if thing_name in article_names:
-        dir_path = articles_dir_path
-        latex_doc_name = "document"
-    elif thing_name in portfolio_names:
-        dir_path = portfolios_dir_path
-        latex_doc_name = "portfolio_document"
-
-    try:
-        # print( os.path.join(dir_path, thing_name + ".tex"))
-        # CHANGE DIRECTORY TO THING'S
-        os.chdir(os.path.join(dir_path, thing_name))
-        # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
-        create_build_directories()
-
-        trigger_biblatex(thing_name, latex_doc_name,  printout=False)
-        trigger_biber(thing_name, latex_doc_name,  printout=False)
-        trigger_biblatex(thing_name, latex_doc_name,  printout=False)
-        trigger_biblatex(thing_name,latex_doc_name, printout=False)
-
-        print(f"\n{green}Compilation finished for {bold}{thing_name}{reset}")
-
-    except subprocess.CalledProcessError as e:
-        print("Compilation log:")
-        print(e.stdout)
-        print(e.stderr)
-        print(f"{red}Compilation failed{reset}")
 
 
 def create_build_directories() -> None:
@@ -144,42 +126,15 @@ def create_build_directories() -> None:
         os.makedirs(build_folder__aux_files)
 
 
-def trigger_biber(thing_name: str, latex_doc_name:str,  printout: bool = True) -> None:
-    """Trigger biber
-
-    Args:
-        thing_name (str): _description_
-        printout (bool, optional): _description_. Defaults to True.
-    """
-    result = subprocess.run(
-        ["biber", os.path.join(build_folder__aux_files, f"{latex_doc_name}")]
-    )
-
-    if printout:
-        print(result.stdout)
-    print(f"{blue}trigger_biber : DONE{reset}")
-
-
-def trigger_biblatex(thing_name: str, latex_doc_name: str, printout: bool = True) -> None:
-    """Trigger biblatex compilation
-
-    Args:
-        thing_name (str): _description_
-        printout (bool, optional): _description_. Defaults to True.
-    """
-    result = subprocess.run(
-        [
-            "lualatex",
-            "--interaction=nonstopmode",
-            f"--job-name={thing_name}",  # output file(s) name
-            f"--output-directory={build_folder__main_output}",  # output directory of pdf file
-            f"--aux-directory={build_folder__aux_files}",  # output directory of all other auxiliary files
-            f"{latex_doc_name}.tex",
-        ],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    if printout:
-        print(result.stdout)
-    print(f"{blue}trigger_biblatex : DONE{reset}")
+def build_message(msg: str, counter: int,time_start : datetime, time_prev: datetime | None = None, isTimer: bool = True) -> datetime:
+    counter+=1
+    print(f"{blue}{msg}{reset} (step {counter})")
+    if isTimer:
+        time_now = datetime.now()
+        delta_start = time_now - time_start
+        print(f"\t⏲ {"Elapsed time since beginning:":<30} {green}{round(delta_start.total_seconds(), 2)}{reset} seconds")
+        if time_prev != None:
+            delta_prev = time_now - time_prev
+            print(f"\t⏲ {"Elapsed time since prev. step:":<30} {green}{round(delta_prev.total_seconds(), 2)}{reset} seconds")
+        return (time_now, counter)
+    return (None, counter)
