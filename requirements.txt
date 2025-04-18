@@ -1,0 +1,2 @@
+pypandoc==1.15
+watchdog==6.0.0

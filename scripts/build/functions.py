@@ -93,7 +93,8 @@ def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespa
                 print(f"\n\n\n{red}Invalid choice{reset}, pick from options:\n")
                 continue
 
-            print(f"You have chosen to compile {blue}{thing_name}{reset}\n...")
+            args__cmd_line.thing_name = thing_name
+            print_choice_mesg(args__cmd_line)
             keep_asking = False
 
         # If thing name has been provided...
@@ -105,14 +106,49 @@ def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespa
         # ...and it exists:
         else:
             # Exit loop
-            thing_name = thing_name_from_cmd_line
-            print(
-                f"You have chosen to compile {blue}{thing_name_from_cmd_line}{reset}\n..."
-            )
+            args__cmd_line.thing_name = thing_name_from_cmd_line
+            print_choice_mesg(args__cmd_line)
             keep_asking = False
 
-    args__cmd_line.thing_name = thing_name
     return args__cmd_line
+
+
+def print_choice_mesg(args):
+    print(f"You have chosen to compile {blue}{args.thing_name}{reset} in {blue}{args.mode}{reset} mode\n...")
+
+def get_build_directory(args: argparse.Namespace) -> str:
+    """ determine directory where to perform build
+
+    Args:
+        args (argparse.Namespace): arguments passed by the user
+
+    Returns:
+        str: path to build directory
+    """
+    if args.thing_name in article_names:
+        dir_path = articles_dir_path
+    elif args.thing_name in portfolio_names:
+        dir_path = portfolios_dir_path
+    build_directory = os.path.join(dir_path, args.thing_name)
+    return build_directory
+
+
+
+def get_name_of_latex_main_file(args: argparse.Namespace) -> str:
+    """ determine name of latex .tex main file to be compiled.
+
+    Args:
+        args (argparse.Namespace): arguments passed by the user
+
+    Returns:
+        str: name of latex main file
+    """
+    if args.thing_name in article_names:
+        return  "document"
+    elif args.thing_name in portfolio_names:
+        return "portfolio_document"
+
+
 
 
 

@@ -4,15 +4,17 @@
 import argparse
 from ..utils.prompts import first_prompt
 from ..enums.BuildMode import BuildMode
-from ..utils.style_console_text import blue, reset
+from ..utils.style_console_text import blue,green, reset
 
 from .functions import (
     thing_name_list_as_string,
     deal_with_user_input,
+    get_build_directory
 )
 
 from .compiler import perform_build_steps
-
+from .watch import watcher
+from .parameters import watch_frequency_seconds, file_types_to_watch
 
 def main():
     """Main function of script to compile an existing LaTeX document (article or portfolio) into a PDF."""
@@ -50,7 +52,17 @@ def main():
 
     args = deal_with_user_input(args)
 
-    perform_build_steps(args)
+    if args.watch:
+        # Continuous atch for changes:
+        print(f"\n👀👀👀 {green}Watching for changes...{reset}\n")
+        watcher(function_to_trigger=perform_build_steps,
+                function_arguments=args,
+                path_to_watch=get_build_directory(args),
+                file_types= file_types_to_watch,
+                frequency_sec= watch_frequency_seconds)
+    else:
+        # Single script run:
+        perform_build_steps(args)
 
 
 if __name__ == "__main__":

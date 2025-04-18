@@ -2,7 +2,7 @@ import subprocess
 import os
 from ..utils.style_console_text import red, green, blue, bold, reset
 from .functions import (
-    create_build_directories, article_names, articles_dir_path, portfolio_names, portfolios_dir_path, build_message
+    create_build_directories, article_names, articles_dir_path, portfolio_names, portfolios_dir_path, build_message, get_build_directory, get_name_of_latex_main_file
 )
 from .parameters import (
     articles_directory,
@@ -23,18 +23,13 @@ def perform_build_steps(args: argparse.Namespace):
         args (argparse.Namespace): namespace with arguments parsed via command line.
     """
 
-
-    if args.thing_name in article_names:
-        dir_path = articles_dir_path
-        latex_doc_name = "document"
-    elif args.thing_name in portfolio_names:
-        dir_path = portfolios_dir_path
-        latex_doc_name = "portfolio_document"
+    build_directory = get_build_directory(args)
+    latex_doc_name = get_name_of_latex_main_file(args)
 
     try:
         # print( os.path.join(dir_path, thing_name + ".tex"))
         # CHANGE DIRECTORY TO THING'S
-        os.chdir(os.path.join(dir_path, args.thing_name))
+        os.chdir(build_directory)
         # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
         create_build_directories()
 
