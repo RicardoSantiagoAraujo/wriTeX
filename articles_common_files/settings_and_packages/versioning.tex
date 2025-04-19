@@ -201,14 +201,14 @@
 }%
 
 %%%% Shorthand to check if portfolio (yes) or article (no) document
-\newcommand{\isPortfolio}[2]{%
+\newcommand{\isPortfolio}[2]{% /!\ need to address the expanded version too
   \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}}
   {#1}
   {#2}
 }%
 
 %%%% Shorthand to check if article (yes) or portfolio (no) document
-\newcommand{\isArticle}[2]{%
+\newcommand{\isArticle}[2]{% /!\ need to address the expanded version too 
   \ifthenelse{\equal{\jobname}{\detokenize{document}}}
   {#1}
   {#2}

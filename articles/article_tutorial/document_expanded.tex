@@ -295,7 +295,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
 }%
 
 %
-\newcommand{\isPortfolio}[2]{%
+\newcommand{\isPortfolio}[2]{% /!\ need to address the expanded version too 
   \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}}
   {#1}
   {#2}
@@ -313,7 +313,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
   \ifthenelse{\boolean{isPrintVersion}}%
   {#1}%
   {#2}%
-}  
+}
 %
 %
 %
@@ -653,7 +653,7 @@ bibliography:source_template%
 
 \pagecolor{bgColor} %
 \color{textColor} %
- 
+
 
 %
 %
@@ -761,7 +761,7 @@ bibliography:source_template%
     {%
         \applyFonts{\mySubtitleFont}{\mySubtitleFontBackup}%
     }%
-}% 
+}%
 %
 
 %
@@ -840,7 +840,7 @@ binding offset:
 
 
 \usepackage{scrextend} %
- 
+
 %
 %
 %
@@ -963,7 +963,7 @@ binding offset:
 
 
 \fancyheadoffset{0cm}
- 
+
 %
 \usepackage{sectsty}
 \sectionfont{\centering} %
@@ -993,7 +993,7 @@ binding offset:
                         \hyperref[\mySectionTitleLinker]{\textbf{#1}}%
                         }
 }
- 
+
 
 
 
@@ -1079,7 +1079,7 @@ binding offset:
 %
 
 \begin{filecontents*}{temp.bib}
-% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE. 
+% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE.
 % MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
 
 % /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
@@ -1141,7 +1141,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 }
 
 
-        
+
 
 @myarticle{myarticle:article_tutorial:en,
 	title={tutorial title},
@@ -1714,7 +1714,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
     %
     \myCiteCommand[#3][#4]{#1}%
 }%
- 
+
 %
 \usepackage{tikz} %
 \usetikzlibrary{positioning} %
@@ -1732,7 +1732,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 \usetikzlibrary {shadows.blur}
 \usetikzlibrary{backgrounds}
 \usepackage{pgf-pie}
- 
+
 %
 %
 
@@ -1838,7 +1838,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
     \noindent\dotfill\\%
     }%
     }%
-} 
+}
 
 
 \usepackage[section]{placeins} %
@@ -2777,7 +2777,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 %
 \newcommand{\listTitleStyle}{%
     \color{myColorPrimary}\myContentsTextFont
-} 
+}
   %
 \ifthenelse{\boolean{isPrintVersion}}%
 {%
@@ -2823,7 +2823,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
         \pagestyle{styleDigital}
     }%
 }
- 
+
 
   %
 
@@ -2837,7 +2837,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
         \stepcounter{totalFootnotesAltogether}%
         \footnote{#1}%
     }{}%
-}% 
+}%
   %
 %
 %
@@ -2876,7 +2876,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 }{%
   \@latex@warning{Patching \string\@outputdblcol\space failed}%
 }
-\makeatother 
+\makeatother
 
   %
 \newcommand{\myArticleTitleLinker}{}
@@ -3662,7 +3662,7 @@ O{} %
   }
   #2\ \ref{\tabLabel{#1}}%
   \endgroup%
-} 
+}
   %
 
     %
@@ -3676,7 +3676,7 @@ O{} %
     %
     %
     %
- 
+
   %
 \ifthenelse{\boolean{isSplitInTwoColumns}}
 {
@@ -3844,7 +3844,7 @@ title={#2},
   %
   #2\ \ref{textbox:#1}%
   \endgroup%
-} 
+}
   %
 
 %
@@ -4052,7 +4052,7 @@ title={#2},
 }
 
 %
-\newcommand\abspagenumber{\inteval{\ReadonlyShipoutCounter+1}} 
+\newcommand\abspagenumber{\inteval{\ReadonlyShipoutCounter+1}}
   %
 \NewDocumentCommand{\myLogger}
 {
@@ -4068,7 +4068,7 @@ title={#2},
     \typeout{=============================================================================}%
     }%
     {}%
-}% 
+}%
   %
 \RequirePackage{l3benchmark}
 \ExplSyntaxOn
@@ -4079,7 +4079,7 @@ title={#2},
     %
     %
     \benchmark_tic:
-  } 
+  }
 
 %
 %
@@ -4517,7 +4517,7 @@ title={#2},
     }%
   }%
 }
- 
+
 
 %
 %
@@ -4609,7 +4609,7 @@ title={#2},
 %
 %
 %
- 
+
 %
 
 
@@ -4631,14 +4631,14 @@ title={#2},
     [jpg]
 
 \end{myFigEnv}
-\end{filecontents*} 
+\end{filecontents*}
 
 \begin{filecontents*}{appendix_b.tex}
                        \myAppendixTitle{Appendix Title B}[ref-b-appendix]
 
 
 \lipsum[1-2]
-\end{filecontents*} 
+\end{filecontents*}
 
 \NewDocumentCommand{\myAppendix}
 {
@@ -4755,7 +4755,7 @@ title={#2},
 %
 \newcommand{\autoAppendixTargetId}{%
     appendix:target:\thetotalAppendixItemsAltogether
-}  
+}
 %
 %
 
@@ -5166,7 +5166,7 @@ Using the \texttt{luacode} environment, you can count, as the following example 
 Import the contents of the markdown README.md file.
 \myInputREADME
 
-\end{filecontents*} 
+\end{filecontents*}
 
 \begin{document}
 %
@@ -5231,4 +5231,3 @@ Import the contents of the markdown README.md file.
 \myAppendix
 
 \end{document}
- 

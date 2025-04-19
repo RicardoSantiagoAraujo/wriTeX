@@ -303,7 +303,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
 
 %
 \newcommand{\isArticle}[2]{%
-  \ifthenelse{\equal{\jobname}{\detokenize{document}}} % /!\ need to address the expanded version too 
+  \ifthenelse{\equal{\jobname}{\detokenize{document}}} 
   {#1}
   {#2}
 }%
