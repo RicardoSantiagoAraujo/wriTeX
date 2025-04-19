@@ -296,14 +296,14 @@ myarticle:\myarticleKeyCore:\myLanguage%
 
 %
 \newcommand{\isPortfolio}[2]{%
-  \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}}
+  \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}} % /!\ need to address the expanded version too
   {#1}
   {#2}
 }%
 
 %
 \newcommand{\isArticle}[2]{%
-  \ifthenelse{\equal{\jobname}{\detokenize{document}}}
+  \ifthenelse{\equal{\jobname}{\detokenize{document}}} % /!\ need to address the expanded version too 
   {#1}
   {#2}
 }%
@@ -313,7 +313,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
   \ifthenelse{\boolean{isPrintVersion}}%
   {#1}%
   {#2}%
-}  
+}
 %
 %
 %
@@ -352,7 +352,7 @@ bibliography:source_template%
     appendix_a,%
     appendix_b%
 }
- 
+
 \setbool{isMinimal}{false} %
 \setbool{isDraft}{false} %
 \setbool{isPrintVersion}{false} %
@@ -649,7 +649,7 @@ bibliography:source_template%
 
 \pagecolor{bgColor} %
 \color{textColor} %
- 
+
 
 %
 %
@@ -757,7 +757,7 @@ bibliography:source_template%
     {%
         \applyFonts{\mySubtitleFont}{\mySubtitleFontBackup}%
     }%
-}% 
+}%
 %
 
 %
@@ -836,7 +836,7 @@ binding offset:
 
 
 \usepackage{scrextend} %
- 
+
 %
 %
 %
@@ -959,7 +959,7 @@ binding offset:
 
 
 \fancyheadoffset{0cm}
- 
+
 %
 \usepackage{sectsty}
 \sectionfont{\centering} %
@@ -989,7 +989,7 @@ binding offset:
                         \hyperref[\mySectionTitleLinker]{\textbf{#1}}%
                         }
 }
- 
+
 
 
 
@@ -1130,7 +1130,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 }
 
 
-        
+
 
 @myarticle{myarticle:article_tutorial:en,
 	title={tutorial title},
@@ -1164,7 +1164,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 % MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
 %
 % Add commas after each field, after last one it is ok too
-NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE. 
+NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE.
 % MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
 
 
@@ -1710,7 +1710,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
     %
     \myCiteCommand[#3][#4]{#1}%
 }%
- 
+
 %
 \usepackage{tikz} %
 \usetikzlibrary{positioning} %
@@ -1728,7 +1728,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
 \usetikzlibrary {shadows.blur}
 \usetikzlibrary{backgrounds}
 \usepackage{pgf-pie}
- 
+
 %
 %
 
@@ -1834,7 +1834,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
     \noindent\dotfill\\%
     }%
     }%
-} 
+}
 
 
 \usepackage[section]{placeins} %
@@ -2773,7 +2773,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
 %
 \newcommand{\listTitleStyle}{%
     \color{myColorPrimary}\myContentsTextFont
-} 
+}
   %
 \ifthenelse{\boolean{isPrintVersion}}%
 {%
@@ -2819,7 +2819,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
         \pagestyle{styleDigital}
     }%
 }
- 
+
 
   %
 
@@ -2833,7 +2833,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
         \stepcounter{totalFootnotesAltogether}%
         \footnote{#1}%
     }{}%
-}% 
+}%
   %
 %
 %
@@ -2872,7 +2872,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
 }{%
   \@latex@warning{Patching \string\@outputdblcol\space failed}%
 }
-\makeatother 
+\makeatother
 
   %
 \newcommand{\myArticleTitleLinker}{}
@@ -3658,7 +3658,7 @@ O{} %
   }
   #2\ \ref{\tabLabel{#1}}%
   \endgroup%
-} 
+}
   %
 
     %
@@ -3672,7 +3672,7 @@ O{} %
     %
     %
     %
- 
+
   %
 \ifthenelse{\boolean{isSplitInTwoColumns}}
 {
@@ -3840,7 +3840,7 @@ title={#2},
   %
   #2\ \ref{textbox:#1}%
   \endgroup%
-} 
+}
   %
 
 %
@@ -4048,7 +4048,7 @@ title={#2},
 }
 
 %
-\newcommand\abspagenumber{\inteval{\ReadonlyShipoutCounter+1}} 
+\newcommand\abspagenumber{\inteval{\ReadonlyShipoutCounter+1}}
   %
 \NewDocumentCommand{\myLogger}
 {
@@ -4064,7 +4064,7 @@ title={#2},
     \typeout{=============================================================================}%
     }%
     {}%
-}% 
+}%
   %
 \RequirePackage{l3benchmark}
 \ExplSyntaxOn
@@ -4075,7 +4075,7 @@ title={#2},
     %
     %
     \benchmark_tic:
-  } 
+  }
 
 %
 %
@@ -4513,7 +4513,7 @@ title={#2},
     }%
   }%
 }
- 
+
 
 %
 %
@@ -4605,7 +4605,7 @@ title={#2},
 %
 %
 %
- 
+
 %
 
 
@@ -4617,7 +4617,7 @@ title={#2},
 
 
 \lipsum[1-2]
-\end{filecontents*} 
+\end{filecontents*}
 
 \begin{filecontents*}{appendix_a.tex}
                        \myAppendixTitle{Appendix Title A}
@@ -4634,7 +4634,7 @@ title={#2},
     [jpg]
 
 \end{myFigEnv}
-\end{filecontents*} 
+\end{filecontents*}
 
 \NewDocumentCommand{\myAppendix}
 {
@@ -4751,7 +4751,7 @@ title={#2},
 %
 \newcommand{\autoAppendixTargetId}{%
     appendix:target:\thetotalAppendixItemsAltogether
-}  
+}
 %
 %
 
@@ -4815,7 +4815,7 @@ The \textcolor{myColorSuccess}{\textbf{Lead/Lede}} appears at the very start of 
 \myArticleSubsubsection{Subsubsection}
 \lipsum[3]
 
-\end{filecontents*} 
+\end{filecontents*}
 
 \begin{document}
 %
@@ -4880,4 +4880,3 @@ The \textcolor{myColorSuccess}{\textbf{Lead/Lede}} appears at the very start of 
 \myAppendix
 
 \end{document}
- 
