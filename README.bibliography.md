@@ -10,6 +10,12 @@
 }
 ```
 
+#### Running Biber
+Make sure to run it from directory where root tex file is located, and not to include file extension
+```
+biber path/to/output/files/without/extension
+```
+
 #### Clearing Biber cache:
 https://tex.stackexchange.com/questions/140814/biblatex-biber-fails-with-a-strange-error-about-missing-recode-data-xml-file
 

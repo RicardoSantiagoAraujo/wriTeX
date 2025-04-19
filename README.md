@@ -39,7 +39,6 @@ Ideally, you wouldn't touch any of the existing files... instead, you should add
 
 
 ### Troubleshooting compilation
-- Use lualatex to install
+- Use lualatex to compile
 - Ensure required fonts are installed on the computer (even if there is a fallback system in place)
 - Some packages might need to be installed, so ensure you have an internet connection
-
