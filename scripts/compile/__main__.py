@@ -2,7 +2,7 @@
 # However, it might be slow, so alternatively you can use this script which calls lualatex directly.
 
 import argparse
-from scripts.utils.prompts import first_prompt
+import scripts.utils.prompts as prompts
 from scripts.enums.BuildMode import BuildMode
 from scripts.utils.style_console_text import blue,green, reset
 
@@ -19,7 +19,7 @@ from scripts.compile.parameters import watch_frequency_seconds, file_types_to_wa
 def main():
     """Main function of script to compile an existing LaTeX document (article or portfolio) into a PDF."""
 
-    first_prompt("Script for pdf compilation from existing document (article or portfolio)"
+    prompts.first_prompt("Script for pdf compilation from existing document (article or portfolio)"
     )
     # Create command line argument parser
     parser = argparse.ArgumentParser(description="arTeX compilation with biblatex.")
