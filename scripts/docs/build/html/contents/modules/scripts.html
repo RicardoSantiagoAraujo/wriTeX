@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scripts package &#8212; arTeX scripts 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="scripts.compile package" href="scripts.compile.html" />
+    <link rel="prev" title="arTeX" href="modules.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="scripts-package">
+<h1>scripts package<a class="headerlink" href="#scripts-package" title="Link to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scripts.compile.html">scripts.compile package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#module-scripts.compile.compiler">scripts.compile.compiler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.compiler.perform_build_steps"><code class="docutils literal notranslate"><span class="pre">perform_build_steps()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#module-scripts.compile.functions">scripts.compile.functions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.build_message"><code class="docutils literal notranslate"><span class="pre">build_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.create_build_directories"><code class="docutils literal notranslate"><span class="pre">create_build_directories()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.deal_with_user_input"><code class="docutils literal notranslate"><span class="pre">deal_with_user_input()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.enum_list_as_string"><code class="docutils literal notranslate"><span class="pre">enum_list_as_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.get_build_directory"><code class="docutils literal notranslate"><span class="pre">get_build_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.get_name_of_latex_main_file"><code class="docutils literal notranslate"><span class="pre">get_name_of_latex_main_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.list_as_string"><code class="docutils literal notranslate"><span class="pre">list_as_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.functions.print_choice_mesg"><code class="docutils literal notranslate"><span class="pre">print_choice_mesg()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#module-scripts.compile.parameters">scripts.compile.parameters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#module-scripts.compile.proccesses">scripts.compile.proccesses module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.proccesses.trigger_biber"><code class="docutils literal notranslate"><span class="pre">trigger_biber()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.proccesses.trigger_lualatex"><code class="docutils literal notranslate"><span class="pre">trigger_lualatex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#module-scripts.compile.recipes">scripts.compile.recipes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.recipes.recipe__biber"><code class="docutils literal notranslate"><span class="pre">recipe__biber()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.recipes.recipe__full"><code class="docutils literal notranslate"><span class="pre">recipe__full()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.recipes.recipe__lualatex"><code class="docutils literal notranslate"><span class="pre">recipe__lualatex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#module-scripts.compile.watch">scripts.compile.watch module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.watch.MyHandler"><code class="docutils literal notranslate"><span class="pre">MyHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scripts.compile.html#scripts.compile.watch.MyHandler.on_created"><code class="docutils literal notranslate"><span class="pre">MyHandler.on_created()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.compile.html#scripts.compile.watch.MyHandler.on_deleted"><code class="docutils literal notranslate"><span class="pre">MyHandler.on_deleted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.compile.html#scripts.compile.watch.MyHandler.on_generic"><code class="docutils literal notranslate"><span class="pre">MyHandler.on_generic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.compile.html#scripts.compile.watch.MyHandler.on_modified"><code class="docutils literal notranslate"><span class="pre">MyHandler.on_modified()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.watch.slow_type"><code class="docutils literal notranslate"><span class="pre">slow_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.compile.html#scripts.compile.watch.watcher"><code class="docutils literal notranslate"><span class="pre">watcher()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.compile.html#module-scripts.compile">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.utils.html">scripts.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.utils.html#module-scripts.utils.helpers">scripts.utils.helpers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.check_if_successful"><code class="docutils literal notranslate"><span class="pre">check_if_successful()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.create_new_folder_with_files"><code class="docutils literal notranslate"><span class="pre">create_new_folder_with_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.delete_build"><code class="docutils literal notranslate"><span class="pre">delete_build()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.delete_expanded"><code class="docutils literal notranslate"><span class="pre">delete_expanded()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.delete_md_aux"><code class="docutils literal notranslate"><span class="pre">delete_md_aux()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.final_message"><code class="docutils literal notranslate"><span class="pre">final_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.list_existing_things"><code class="docutils literal notranslate"><span class="pre">list_existing_things()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.print_progress_msg"><code class="docutils literal notranslate"><span class="pre">print_progress_msg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.rename_file"><code class="docutils literal notranslate"><span class="pre">rename_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.replace_string_in_tex_file"><code class="docutils literal notranslate"><span class="pre">replace_string_in_tex_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.helpers.request_name"><code class="docutils literal notranslate"><span class="pre">request_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.utils.html#module-scripts.utils.prompts">scripts.utils.prompts module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.prompts.first_prompt"><code class="docutils literal notranslate"><span class="pre">first_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.utils.html#scripts.utils.prompts.first_prompt__initiate_document"><code class="docutils literal notranslate"><span class="pre">first_prompt__initiate_document()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.utils.html#module-scripts.utils.style_console_text">scripts.utils.style_console_text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.utils.html#module-scripts.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.init.html">scripts.init package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.init.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.init.html#module-scripts.init.article">scripts.init.article module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.init.html#scripts.init.article.create_new_bib_entry"><code class="docutils literal notranslate"><span class="pre">create_new_bib_entry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.init.html#scripts.init.article.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.init.html#scripts.init.article.update_biblatex_file"><code class="docutils literal notranslate"><span class="pre">update_biblatex_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.init.html#module-scripts.init.portfolio">scripts.init.portfolio module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.init.html#scripts.init.portfolio.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.init.html#module-scripts.init">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.expand.html">scripts.expand package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.expand.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.expand.html#module-scripts.expand.article">scripts.expand.article module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.add_appendix_contents"><code class="docutils literal notranslate"><span class="pre">add_appendix_contents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.add_article_body_contents"><code class="docutils literal notranslate"><span class="pre">add_article_body_contents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.fuse_files"><code class="docutils literal notranslate"><span class="pre">fuse_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.handle_biblatex_bug"><code class="docutils literal notranslate"><span class="pre">handle_biblatex_bug()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.replace_content_in_file"><code class="docutils literal notranslate"><span class="pre">replace_content_in_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.expand.html#module-scripts.expand">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.enums.html">scripts.enums package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.enums.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.enums.html#module-scripts.enums.BuildMode">scripts.enums.BuildMode module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.enums.html#scripts.enums.BuildMode.BuildMode"><code class="docutils literal notranslate"><span class="pre">BuildMode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scripts.enums.html#scripts.enums.BuildMode.BuildMode.biber"><code class="docutils literal notranslate"><span class="pre">BuildMode.biber</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.enums.html#scripts.enums.BuildMode.BuildMode.full"><code class="docutils literal notranslate"><span class="pre">BuildMode.full</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.enums.html#scripts.enums.BuildMode.BuildMode.lualatex"><code class="docutils literal notranslate"><span class="pre">BuildMode.lualatex</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.enums.html#module-scripts.enums.ThingType">scripts.enums.ThingType module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.enums.html#scripts.enums.ThingType.ThingType"><code class="docutils literal notranslate"><span class="pre">ThingType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scripts.enums.html#scripts.enums.ThingType.ThingType.Article"><code class="docutils literal notranslate"><span class="pre">ThingType.Article</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.enums.html#scripts.enums.ThingType.ThingType.Portfolio"><code class="docutils literal notranslate"><span class="pre">ThingType.Portfolio</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.enums.html#module-scripts.enums">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.convert.html">scripts.convert package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.convert.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.convert.html#module-scripts.convert.generate_html_body">scripts.convert.generate_html_body module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.GenericTag"><code class="docutils literal notranslate"><span class="pre">GenericTag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.GenericTag.appendHTMLClass"><code class="docutils literal notranslate"><span class="pre">GenericTag.appendHTMLClass()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h1"><code class="docutils literal notranslate"><span class="pre">Tag_h1</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h1.html_pttrn"><code class="docutils literal notranslate"><span class="pre">Tag_h1.html_pttrn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h1.latex_pttrn"><code class="docutils literal notranslate"><span class="pre">Tag_h1.latex_pttrn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h1.showCustomInfo"><code class="docutils literal notranslate"><span class="pre">Tag_h1.showCustomInfo()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h2"><code class="docutils literal notranslate"><span class="pre">Tag_h2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h2.html_pttrn"><code class="docutils literal notranslate"><span class="pre">Tag_h2.html_pttrn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h2.latex_pttrn"><code class="docutils literal notranslate"><span class="pre">Tag_h2.latex_pttrn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.Tag_h2.showCustomInfo"><code class="docutils literal notranslate"><span class="pre">Tag_h2.showCustomInfo()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.convert.html#scripts.convert.generate_html_body.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.convert.html#module-scripts.convert">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.expand.html">scripts.expand package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.expand.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.expand.html#module-scripts.expand.article">scripts.expand.article module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.add_appendix_contents"><code class="docutils literal notranslate"><span class="pre">add_appendix_contents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.add_article_body_contents"><code class="docutils literal notranslate"><span class="pre">add_article_body_contents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.fuse_files"><code class="docutils literal notranslate"><span class="pre">fuse_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.handle_biblatex_bug"><code class="docutils literal notranslate"><span class="pre">handle_biblatex_bug()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scripts.expand.html#scripts.expand.article.replace_content_in_file"><code class="docutils literal notranslate"><span class="pre">replace_content_in_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.expand.html#module-scripts.expand">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-scripts">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scripts" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">arTeX scripts</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">arTeX</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">scripts package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">arTeX</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">arTeX</a></li>
+      <li>Next: <a href="scripts.compile.html" title="next chapter">scripts.compile package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Ricardo Santiago Araújo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/contents/modules/scripts.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
