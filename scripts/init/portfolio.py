@@ -19,6 +19,8 @@ dir_path = os.path.join(base_dir, portfolio_versions_directory)
 
 
 def main():
+    """Main function to initialise an empty portfolio version.
+    """
     ### MAIN PROGRAM ###
     # Print initial prompt
     first_prompt__initiate_document(ThingType("Portfolio"))

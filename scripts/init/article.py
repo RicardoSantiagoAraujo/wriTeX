@@ -48,6 +48,8 @@ dir_path = os.path.join(base_dir, articles_directory)
 
 
 def main():
+    """Main function to initialise an empty article and optionally create a bib entry for it.
+    """
     ### MAIN PROGRAM ###
     # Print initial prompt
     first_prompt__initiate_document(ThingType("Article").value)
@@ -121,6 +123,12 @@ def main():
 
 
 def update_biblatex_file(new_article_name: str) -> None:
+    """Add new entry for initialised article into the bibliography .bib file by collecting entry fields from the user.
+
+    Args:
+        new_article_name (str): name of the initialised article to be used in bib.
+    """
+
     print(f"{blue}English (en) version by default 🇬🇧🇬🇧🇬🇧{reset}")
     # Open the file in append mode ('a') so that new content is added at the end
     rel_path = os.path.join(
@@ -150,6 +158,14 @@ def update_biblatex_file(new_article_name: str) -> None:
 def create_new_bib_entry(
     new_thing_name: str, old_thing_name: str, new_folder: str
 ) -> None:
+    """Prompt for the optional creation of a new bibliography entry for the initialised article.
+
+    Args:
+        new_thing_name (str): name of the initialised article to be used in bib.
+        old_thing_name (str): name of the reference article to be used as base for new entry.
+        new_folder (str): folder containing the new article.
+    """
+
     print("\n\n📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚📚")
     print(
         f"Would you also like to create a new {blue}biblatex{reset} entry for {green+bold}{new_thing_name}{reset} ?"

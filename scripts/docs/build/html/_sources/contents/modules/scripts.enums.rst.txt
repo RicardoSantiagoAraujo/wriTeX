@@ -4,10 +4,10 @@ scripts.enums package
 Submodules
 ----------
 
-scripts.enums.BuildMode module
+scripts.enums.Recipe module
 ------------------------------
 
-.. automodule:: scripts.enums.BuildMode
+.. automodule:: scripts.enums.Recipe
    :members:
    :show-inheritance:
    :undoc-members:

@@ -38,7 +38,7 @@ Compilation of an existing article or portfolio version.
 
 ### Usage:
 ```
-python -m scripts.compile [document name] [compilation mode] [--watch] [--timer] [--help] [--verbose]
+python -m scripts.compile [document name] [compilation recipe] [--watch] [--timer] [--help] [--verbose]
 ```
 
 

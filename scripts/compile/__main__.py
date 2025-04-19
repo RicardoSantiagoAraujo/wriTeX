@@ -3,7 +3,7 @@
 
 import argparse
 import scripts.utils.prompts as prompts
-from scripts.enums.BuildMode import BuildMode
+from scripts.enums.Recipe import Recipe
 from scripts.utils.style_console_text import blue,green, reset
 
 from .functions import (
@@ -32,11 +32,11 @@ def main():
         default=None,
     )
     parser.add_argument(
-        "mode",
+        "recipe",
         nargs="?",
         type=str,
-        help=f"Compilation mode. Available options: {", ".join([f"{blue}{e.value}{reset}" for e in BuildMode])}.",
-        default=BuildMode.full.value,
+        help=f"Compilation recipe. Available options: {", ".join([f"{blue}{e.value}{reset}" for e in Recipe])}.",
+        default=Recipe.full.value,
     )
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="prints compilation information to console"

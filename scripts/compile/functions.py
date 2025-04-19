@@ -12,7 +12,7 @@ from scripts.compile.parameters import (
     build_folder__aux_files,
     build_folder__main_output,
 )
-from scripts.enums.BuildMode import BuildMode
+from scripts.enums.Recipe import Recipe
 
 
 # get the directory of the current script
@@ -26,12 +26,30 @@ thing_names = article_names + portfolio_names
 
 
 
-def list_as_string(list: list[any]) -> str:
-    return ", ".join([f"{blue}{e}{reset}" for e in list])
+def list_as_string(list: list[any], sep:str=", ") -> str:
+    """create a string out of a python list.
+
+    Args:
+        list (list[any]): list from which to create a string
+        sep (str, optional): Separator between list items. Defaults to ", ".
+
+    Returns:
+        str: A string made out of the list items.
+    """
+    return sep.join([f"{blue}{e}{reset}" for e in list])
 
 
-def enum_list_as_string(enumName: enum.Enum) -> str:
-    return ", ".join([f"{blue}{e.value}{reset}" for e in enumName])
+def enum_list_as_string(enumName: enum.Enum, sep:str=", ") -> str:
+    """create a string out of a python Enum.
+
+    Args:
+        enumName (enum.Enum): Enum from which to create a string
+        sep (str, optional): Separator between Enum items. Defaults to ", ".
+
+    Returns:
+        str: A sring made out of the Enum options.
+    """
+    return sep.join([f"{blue}{e.value}{reset}" for e in enumName])
 
 
 article_list_as_string = list_as_string(article_names)
@@ -51,10 +69,10 @@ def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespa
         argparse.Namespace: Validated and updated arguments
     """
 
-    # If something has been provided in the command line as first argument but it is the build mode:
-    if args__cmd_line.thing_name in [e.value for e in BuildMode]:
+    # If something has been provided in the command line as first argument but it is the build recipe:
+    if args__cmd_line.thing_name in [e.value for e in Recipe]:
         # Pass it to the right arg and empty the thing_name arg
-        args__cmd_line.mode = args__cmd_line.thing_name
+        args__cmd_line.recipe = args__cmd_line.thing_name
         args__cmd_line.thing_name = None
 
 
@@ -113,8 +131,15 @@ def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespa
     return args__cmd_line
 
 
-def print_choice_mesg(args):
-    print(f"You have chosen to compile {blue}{args.thing_name}{reset} in {blue}{args.mode}{reset} mode\n...")
+def print_choice_mesg(args:argparse.Namespace) -> None:
+    """print a string announcing the document chosen by the user.
+
+    Args:
+        args (argparse.Namespace): an argument namespace.
+    """
+    print(f"You have chosen to compile {blue}{args.thing_name}{reset} in {blue}{args.recipe}{reset} recipe\n...")
+
+
 
 def get_build_directory(args: argparse.Namespace) -> str:
     """ determine directory where to perform build
@@ -163,6 +188,18 @@ def create_build_directories() -> None:
 
 
 def build_message(msg: str, counter: int,time_start : datetime, time_prev: datetime | None = None, isTimer: bool = True) -> datetime:
+    """Print message reporting the compilation progress.
+
+    Args:
+        msg (str): Message to be printed to console.
+        counter (int): A counter to be incremented with each call of the function.
+        time_start (datetime): Time corresponding to the beginning of the compilation process (T0)
+        time_prev (datetime | None, optional): Time corresponding to the previous compilation step (Tn-1). Defaults to None.
+        isTimer (bool, optional): Whether to print the messages or only increment the counter. Defaults to True.
+
+    Returns:
+        datetime: _description_
+    """
     counter+=1
     print(f"{blue}{msg}{reset} (step {counter})")
     if isTimer:

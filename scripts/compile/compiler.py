@@ -11,7 +11,7 @@ from .parameters import (
     build_folder__main_output,
 )
 from scripts.compile.recipes import recipe__biber, recipe__full, recipe__lualatex
-from scripts.enums.BuildMode import BuildMode
+from scripts.enums.Recipe import Recipe
 import argparse
 from datetime import datetime
 
@@ -33,19 +33,19 @@ def perform_build_steps(args: argparse.Namespace):
         # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
         create_build_directories()
 
-        print(f"\n🏗️  BUILD MODE: {blue}{args.mode}{reset}\n")
-        match args.mode:
-            case BuildMode.full.value :
+        print(f"\n🏗️  RECIPE FOR BUILD: {blue}{args.recipe}{reset}\n")
+        match args.recipe:
+            case Recipe.full.value :
                 recipe__full(args, latex_doc_name)
-            case BuildMode.lualatex.value:
+            case Recipe.lualatex.value:
                 recipe__lualatex(args, latex_doc_name)
-            case BuildMode.biber.value :
+            case Recipe.biber.value :
                 recipe__biber(args, latex_doc_name)
             case _:
-                print(f"{red}CHOSEN COMPILATION MODE ({args.mode}) DOES NOT EXIST {reset}")
+                print(f"{red}CHOSEN COMPILATION RECIPE ({args.recipe}) DOES NOT EXIST {reset}")
                 exit()
 
-        print(f"\n✅ {green}Compilation in {bold}{args.mode}{reset}{green} mode finished for {bold}{args.thing_name}{reset} \n")
+        print(f"\n✅ {green}Compilation in {bold}{args.recipe}{reset}{green} recipe finished for {bold}{args.thing_name}{reset} \n")
 
     except subprocess.CalledProcessError as e:
         print("Compilation log:")

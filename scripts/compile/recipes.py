@@ -6,7 +6,7 @@ from scripts.compile.functions import (
 )
 from scripts.compile.proccesses import trigger_biber, trigger_lualatex
 
-from scripts.enums.BuildMode import BuildMode
+from scripts.enums.Recipe import Recipe
 import argparse
 from datetime import datetime
 

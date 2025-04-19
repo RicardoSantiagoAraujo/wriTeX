@@ -40,6 +40,13 @@ def print_progress_msg(msg_content: str) -> None:
 def check_if_successful(
     function_name: str, exit_code: int, folder_path: str = None
 ) -> None:
+    """check if a step was successful based on its exit code.
+
+    Args:
+        function_name (str): name of the function whose result is being tested.
+        exit_code (int): exit code from the function
+        folder_path (str, optional): Path to folder in case it needs to be deleted after the step fails. Defaults to None.
+    """
     global progress_cnt
     print(f"\nStep {progress_cnt}:{blue} {function_name}{reset}...")
     if exit_code == 0:
@@ -54,6 +61,13 @@ def check_if_successful(
 
 
 def rename_file(folder_path: str, old_name: str, new_name: str) -> None:
+    """Rename a file with a new name
+
+    Args:
+        folder_path (str): path to folder where file to rename is located
+        old_name (str): old file name
+        new_name (str): new file name
+    """
     if os.name == "posix":  # if Unix-like OS (e.g., Linux, MacOS)
         old_path = folder_path + f"/{old_name}.tex"
         new_path = folder_path + "/" + new_name + ".tex"
@@ -66,6 +80,11 @@ def rename_file(folder_path: str, old_name: str, new_name: str) -> None:
 
 
 def delete_build(folder_path: str) -> None:
+    """Delete compilation outputs from the file system
+
+    Args:
+        folder_path (str): path to build to be deleted
+    """
     try:
         shutil.rmtree(os.path.join(folder_path, build_folder))
     except:
@@ -76,6 +95,11 @@ def delete_build(folder_path: str) -> None:
 
 
 def delete_md_aux(folder_path: str) -> None:
+    """Delete Markdown outputs from the file system
+
+    Args:
+        folder_path (str): path to markdown folder to be deleted
+    """
     # Create the path for the target folder using a wildcard
     pattern = os.path.join(folder_path, "_markdown*")
     # Use glob to find all directories that partially match "_markdown"
@@ -91,6 +115,12 @@ def delete_md_aux(folder_path: str) -> None:
 
 
 def delete_expanded(thing_type: ThingType, folder_path: str) -> None:
+    """Deleted expanded document from file system
+
+    Args:
+        thing_type (ThingType): type of document to be deleted
+        folder_path (str): Path to expanded file to be deleted
+    """
     try:
         if thing_type == ThingType("Article").value:
             file_path = os.path.join(folder_path, "document_expanded.tex")
@@ -113,6 +143,14 @@ replace_str_cnt = 1
 def replace_string_in_tex_file(
     new_folder: str, file_name: str, old_word: str, new_word: str
 ) -> None:
+    """Replace a given string inside a tex file
+
+    Args:
+        new_folder (str): location of tex file
+        file_name (str): name of tex file
+        old_word (str): string to be replaced
+        new_word (str): string to replace with
+    """
     global replace_str_cnt
     # Open the .tex file and read the contents
     try:
@@ -169,6 +207,15 @@ def list_existing_things(
 
 
 def request_name(thing_type: ThingType, existing_names: list[str]) -> str:
+    """Ask user to name new document
+
+    Args:
+        thing_type (ThingType): type of document to create
+        existing_names (list[str]): existing names no longer available
+
+    Returns:
+        str: name for new document chosen by user
+    """
     new_name = input(f"Write filename for new {thing_type}: ").lower().replace(" ", "_")
     # check if thing already exists and keep requesting name until original name is given or user quits:
     while new_name in existing_names:
@@ -188,6 +235,16 @@ def request_name(thing_type: ThingType, existing_names: list[str]) -> str:
 def create_new_folder_with_files(
     new_name: str, template_name: str, dir_path: str
 ) -> str:
+    """Copy a template folder structure to be used as starting point.
+
+    Args:
+        new_name (str): name to be used for new folder
+        template_name (str): name of template to be copied
+        dir_path (str): path to template/new folder.
+
+    Returns:
+        str: _description_
+    """
     if new_name != "q" and new_name != "quit":
         new_folder = dir_path + "/" + new_name
         try:

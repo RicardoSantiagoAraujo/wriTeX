@@ -17,6 +17,8 @@ base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
 
 
 def main():
+    """Script to generated an expanded version of an article, i.e. a .tex file where all input files are included directly instead of taken from dependencies so as to reduce everything to as few separate files as possible.
+    """
     ### MAIN PROGRAM ###
     # Print initial prompt
     print(
@@ -103,7 +105,16 @@ def main():
 # ===========================HELPER FUNCTIONS=================================
 
 
-def fuse_files(directory, output_file):
+def fuse_files(directory:str, output_file:str)-> str:
+    """Fuse multiple files into a single one.
+
+    Args:
+        directory (str): base directory where files to be fused are located
+        output_file (str): fused output file path
+
+    Returns:
+        str: _description_
+    """
     with open(output_file, "w", encoding="utf-8") as outfile:
         for filename in os.listdir(directory):
             filepath = os.path.join(directory, filename)
@@ -115,7 +126,14 @@ def fuse_files(directory, output_file):
     return output_file
 
 
-def replace_content_in_file(file_path, old_string, new_string):
+def replace_content_in_file(file_path:str, old_string:str, new_string:str) -> None:
+    """Replace every occurence of a specific string in a target file.
+
+    Args:
+        file_path (str): path to target file
+        old_string (str): old string that is to be replaced
+        new_string (str): new string to use for replacement
+    """
     # Read the file
     with open(file_path, "r", encoding="utf-8") as file:
         content = file.read()
@@ -128,7 +146,13 @@ def replace_content_in_file(file_path, old_string, new_string):
         file.write(content)
 
 
-def handle_biblatex_bug(extended_thing_path):
+def handle_biblatex_bug(extended_thing_path:str) -> None:
+    """Deal with bug caused by biblatex by removing code that causes it.
+
+    Args:
+        file_path (str): path to buggy extended document.
+    """
+
     print(
         f"\n⚠️ To get the bibliography to work, one must add a new line {blue}\\addbibresource{{temp_bib_file}}{reset} to the generated file {blue}{expanded_file_name}{reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {blue}latexpand flags{reset}"
     )
@@ -162,7 +186,16 @@ def handle_biblatex_bug(extended_thing_path):
     )
 
 
-def add_article_body_contents(lang, thing_dir, extended_thing_path):
+def add_article_body_contents(lang:str, thing_dir:str, extended_thing_path:str)-> None:
+    """Add contents of article body into extended file.
+
+    Args:
+        lang (str): language version of the body.
+        thing_dir (str): directory of the target document.
+        extended_thing_path (str): path to extended document that is missing body contents.
+    """
+
+
     print(
         f"\n⚠️ To get the body contents into the file they are injected into the expanded_file. Otherwise latexpand only really deals with standard simple \\inputs, such as for setting files. Changed to macro may disturb functionality."
     )
@@ -192,7 +225,14 @@ def add_article_body_contents(lang, thing_dir, extended_thing_path):
     )
 
 
-def add_appendix_contents(thing_dir, extended_thing_path):
+def add_appendix_contents(thing_dir:str, extended_thing_path:str) -> None:
+    """Add contents of appendix items into extended file.
+
+    Args:
+        thing_dir (str): directory of the target document.
+        extended_thing_path (str): path to extended document that is missing body contents.
+    """
+
     print(
         f"\n⚠️ To get the appendix files to work, one must add a new line, they are injected into the expanded_file above the appendix macro. Changed to macro may disturb functionality."
     )
