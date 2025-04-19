@@ -1,6 +1,6 @@
 import os
-from .style_console_text import red, green, blue, bold, reset
-from ..enums.ThingType import ThingType
+from scripts.utils.style_console_text import red, green, blue, bold, reset
+from scripts.enums.ThingType import ThingType
 import shutil
 
 def first_prompt(custom_prompt: str = None) -> None:

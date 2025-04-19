@@ -1,8 +1,8 @@
 import os
 import glob
 import shutil
-from .style_console_text import red, green, blue, bold, reset
-from ..enums.ThingType import ThingType
+from scripts.utils.style_console_text import red, green, blue, bold, reset
+from scripts.enums.ThingType import ThingType
 
 
 build_folder = "auxiliary_files"  # folder name where the LaTeX build compilation outputs are placed

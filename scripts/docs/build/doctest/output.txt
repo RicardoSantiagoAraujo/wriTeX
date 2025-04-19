@@ -1,0 +1,29 @@
+Results of doctest builder run on 2025-04-19 12:39:30
+=====================================================
+
+Document: usage
+---------------
+**********************************************************************
+File "usage.rst", line 20, in default
+Failed example:
+    scripts.compile.compiler.perform_build_steps()
+Exception raised:
+    Traceback (most recent call last):
+      File "/opt/homebrew/Cellar/python@3.12/3.12.3/Frameworks/Python.framework/Versions/3.12/lib/python3.12/doctest.py", line 1361, in __run
+        exec(compile(example.source, filename, "single",
+      File "<doctest default[1]>", line 1, in <module>
+        scripts.compile.compiler.perform_build_steps()
+    TypeError: perform_build_steps() missing 1 required positional argument: 'args'
+**********************************************************************
+1 items had failures:
+   1 of   2 in default
+2 tests in 1 items.
+1 passed and 1 failed.
+***Test Failed*** 1 failures.
+
+Doctest summary
+===============
+    2 tests
+    1 failure in tests
+    0 failures in setup code
+    0 failures in cleanup code
