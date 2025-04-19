@@ -339,7 +339,6 @@ bibliography:source_template%
  %
 %
 
-
 %
 %
 \newcommand{\filesToAdd}{
@@ -347,15 +346,13 @@ bibliography:source_template%
   body
 }
 
-
-
 %
 \newcommand{\appendixList}
 {%
     appendix_a,%
     appendix_b%
 }
-
+ 
 \setbool{isMinimal}{false} %
 \setbool{isDraft}{false} %
 \setbool{isPrintVersion}{false} %
@@ -1078,9 +1075,6 @@ binding offset:
 %
 
 \begin{filecontents*}{temp.bib}
-% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE. 
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
-
 % /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
 
 @article{bibliography:source_template,
@@ -1099,11 +1093,7 @@ binding offset:
 	file = {template},
 	abstract = {template}
 }
-% ADD YOUR ARTICLE ENTRIES INTO THIS FILE.
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
-%
-% Add commas after each field, after last one it is ok too
-NAME FIELDS: name, forename AND name, forename AND name, forename% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
+% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
 
 % Add commas after each field, after last one it is ok too
 NAME FIELDS: name, forename AND name, forename AND name, forename
@@ -1170,7 +1160,14 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 	discipline={tutorial},
 	copyright={},
 	mainSource={},
-}
+}% ADD YOUR ARTICLE ENTRIES INTO THIS FILE.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+%
+% Add commas after each field, after last one it is ok too
+NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE. 
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+
+
 \end{filecontents*}
 
 \addbibresource{temp.bib}
@@ -4615,6 +4612,13 @@ title={#2},
 
 
 
+\begin{filecontents*}{appendix_b.tex}
+                       \myAppendixTitle{Appendix Title B}[ref-b-appendix]
+
+
+\lipsum[1-2]
+\end{filecontents*} 
+
 \begin{filecontents*}{appendix_a.tex}
                        \myAppendixTitle{Appendix Title A}
 
@@ -4630,13 +4634,6 @@ title={#2},
     [jpg]
 
 \end{myFigEnv}
-\end{filecontents*} 
-
-\begin{filecontents*}{appendix_b.tex}
-                       \myAppendixTitle{Appendix Title B}[ref-b-appendix]
-
-
-\lipsum[1-2]
 \end{filecontents*} 
 
 \NewDocumentCommand{\myAppendix}
