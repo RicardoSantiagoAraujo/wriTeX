@@ -1,7 +1,6 @@
 # artTeX scripts
 
-This projects includes a bunch of functionalities incapsulated in the scripts module. These range from practical QOL features to powerful tools.
-You can run any of the
+This projects includes a bunch of functionalities incapsulated in the scripts module. These range from practical QOL features to powerful tools. 
 The scripts module is divided into submodules, which you can run from the project root directory. Documentation for the scripts module is found inside the scripts/documentation directory.
 
 ## INIT
