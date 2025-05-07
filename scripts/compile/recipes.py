@@ -73,4 +73,4 @@ def recipe__lualatex(args: argparse.Namespace, latex_doc_name: str):
 
     time_prev, step_counter = build_message("start of compilation",step_counter, time_start, isTimer=timer_bool)
     trigger_lualatex(thing_name, latex_doc_name,  printout=verbose_bool)
-    time_prev, step_counter  = build_message("end of biber compilation", step_counter, time_start, time_prev, isTimer=timer_bool)
+    time_prev, step_counter  = build_message("end of lualatex compilation", step_counter, time_start, time_prev, isTimer=timer_bool)
