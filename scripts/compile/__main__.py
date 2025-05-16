@@ -22,7 +22,9 @@ def main():
     prompts.first_prompt("Script for pdf compilation from existing document (article or portfolio)"
     )
     # Create command line argument parser
-    parser = argparse.ArgumentParser(description="arTeX compilation with latex recipes.")
+    parser = argparse.ArgumentParser(
+        prog=f'{sty.green}python -m scripts.compile{sty.reset}',
+        description="arTeX compilation with latex recipes.")
     # Add arguments
     parser.add_argument(
         "thing_name",

@@ -32,12 +32,12 @@ python -m scripts.expand.article
 
 ## COMPILE
 
-Compilation of an existing article or portfolio version.
+Compilation of an existing article or portfolio version using a chosen recipe.
 
 
 ### Usage:
-```
-python -m scripts.compile [document name] [compilation recipe] [--watch] [--timer] [--help] [--verbose]
+``` 
+python -m scripts.compile [-h | --help] [-v | --verbose] [-t | --timer] [-w | --watch] [document name] [compilation recipe]
 ```
 
 
