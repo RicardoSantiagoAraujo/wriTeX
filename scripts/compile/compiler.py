@@ -1,6 +1,6 @@
 import subprocess
 import os
-from scripts.utils.style_console_text import red, green, blue, bold, reset
+import scripts.utils.style_console_text as sty
 from scripts.compile.functions import (
     create_build_directories, article_names, articles_dir_path, portfolio_names, portfolios_dir_path, build_message, get_build_directory, get_name_of_latex_main_file
 )
@@ -33,22 +33,24 @@ def perform_build_steps(args: argparse.Namespace):
         # CREATE BUILD FOLDERS IF IT DOES NOT EXIST
         create_build_directories()
 
-        print(f"\n🏗️  RECIPE FOR BUILD: {blue}{args.recipe}{reset}\n")
-        match args.recipe:
-            case Recipe.full.value :
-                recipe__full(args, latex_doc_name)
-            case Recipe.lualatex.value:
-                recipe__lualatex(args, latex_doc_name)
-            case Recipe.biber.value :
-                recipe__biber(args, latex_doc_name)
-            case _:
-                print(f"{red}CHOSEN COMPILATION RECIPE ({args.recipe}) DOES NOT EXIST {reset}")
-                exit()
+        print(f"\n🏗️  RECIPE FOR BUILD: {sty.magenta+sty.bold}{args.recipe}{sty.reset}\n")
+        # use dispatch to call the correct recipe instead of match case to be compatible with python <3.10
+        recipe_dispatch = {
+            Recipe.full.value: recipe__full,
+            Recipe.lualatex.value: recipe__lualatex,
+            Recipe.biber.value: recipe__biber,
+        }
 
-        print(f"\n✅ {green}Compilation in {bold}{args.recipe}{reset}{green} recipe finished for {bold}{args.thing_name}{reset} \n")
+        if args.recipe in recipe_dispatch:
+            recipe_dispatch[args.recipe](args, latex_doc_name)
+        else:
+            print(f"{sty.red}CHOSEN COMPILATION RECIPE ({args.recipe}) DOES NOT EXIST{sty.reset}")
+            exit()
+
+        print(f"\n✅ {sty.green}Compilation in {sty.bold}{args.recipe}{sty.reset}{sty.green} recipe finished for {sty.bold}{args.thing_name}{sty.reset} \n")
 
     except subprocess.CalledProcessError as e:
         print("Compilation log:")
         print(e.stdout)
         print(e.stderr)
-        print(f"{red}Compilation failed{reset}")
+        print(f"{sty.red}Compilation failed{sty.reset}")

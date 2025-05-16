@@ -1,7 +1,7 @@
 import os
 import glob
 import shutil
-from scripts.utils.style_console_text import red, green, blue, bold, reset
+import scripts.utils.style_console_text as sty
 from scripts.enums.ThingType import ThingType
 
 
@@ -16,11 +16,9 @@ def final_message(thing_type: ThingType, new_thing_name: str) -> None:
         new_thing_name (str): Name to use for the new object.
     """
     print(
-        f"\n\n 😁😁😁 {thing_type} successfully created with name: {bold+green}{new_thing_name}{reset} 😁😁😁"
+        f"\n\n 😁😁😁 {thing_type} successfully created with name: {sty.bold+sty.green}{new_thing_name}{sty.reset} 😁😁😁"
     )
-    print(
-        f"\n You can now edit the files directly in the {bold+green}{new_thing_name}{reset} folder \n"
-    )
+    print(f"\n You can now edit the files directly in the {sty.bold+sty.green}{new_thing_name}{sty.reset} folder \n")
 
 
 progress_cnt = 1
@@ -33,13 +31,11 @@ def print_progress_msg(msg_content: str) -> None:
         msg_content (str): Content of the progress message.
     """
     global progress_cnt
-    print(f"✅✅✅ {bold}({progress_cnt}){reset} {msg_content}")
+    print(f"✅✅✅ {sty.bold}({progress_cnt}){sty.reset} {msg_content}")
     progress_cnt += 1
 
 
-def check_if_successful(
-    function_name: str, exit_code: int, folder_path: str = None
-) -> None:
+def check_if_successful(function_name: str, exit_code: int, folder_path: str = None) -> None:
     """check if a step was successful based on its exit code.
 
     Args:
@@ -48,11 +44,11 @@ def check_if_successful(
         folder_path (str, optional): Path to folder in case it needs to be deleted after the step fails. Defaults to None.
     """
     global progress_cnt
-    print(f"\nStep {progress_cnt}:{blue} {function_name}{reset}...")
+    print(f"\nStep {progress_cnt}:{sty.blue} {function_name}{sty.reset}...")
     if exit_code == 0:
         return
     elif exit_code != 0:
-        print(f"❌❌❌ ({progress_cnt}) {red} STEP FAILED. CANCEL CREATION. {reset}")
+        print(f"❌❌❌ ({progress_cnt}) {sty.red} STEP FAILED. CANCEL CREATION. {sty.reset}")
         if folder_path != None:
             # Delete created thing
             shutil.rmtree(folder_path)
@@ -140,9 +136,7 @@ def delete_expanded(thing_type: ThingType, folder_path: str) -> None:
 replace_str_cnt = 1
 
 
-def replace_string_in_tex_file(
-    new_folder: str, file_name: str, old_word: str, new_word: str
-) -> None:
+def replace_string_in_tex_file(new_folder: str, file_name: str, old_word: str, new_word: str) -> None:
     """Replace a given string inside a tex file
 
     Args:
@@ -175,9 +169,7 @@ def replace_string_in_tex_file(
     replace_str_cnt += 1
 
 
-def list_existing_things(
-    dir_path: str, print_list: bool = True, header_message: str = None, cnt_start=0
-) -> list[str]:
+def list_existing_things(dir_path: str, print_list: bool = True, header_message: str = None, cnt_start=0) -> list[str]:
     """list all things all things in a given directory
 
     Args:
@@ -199,9 +191,9 @@ def list_existing_things(
 
     if print_list:
         if header_message != None:
-            print(bold + header_message + reset)
+            print(sty.bold + header_message + sty.reset)
         for i, name in enumerate(names, 1):
-            print(f"{i + cnt_start} - {name}")
+            print(f"{i + cnt_start} - {sty.bright_blue}{name}{sty.reset}")
         print("")
     return names
 
@@ -220,21 +212,15 @@ def request_name(thing_type: ThingType, existing_names: list[str]) -> str:
     # check if thing already exists and keep requesting name until original name is given or user quits:
     while new_name in existing_names:
         if new_name != "q" and new_name != "quit":
-            print(
-                f"{red}{thing_type} already exists.{reset} Please pick a new name or quit.\n"
-            )
+            print(f"{sty.red}{thing_type} already exists.{sty.reset} Please pick a new name or quit.\n")
             new_name = request_name(thing_type, existing_names)
         else:
-            print(
-                f"\n💀💀💀 {red}Program quit without creation of new {thing_type}.{reset}"
-            )
+            print(f"\n💀💀💀 {sty.red}Program quit without creation of new {thing_type}.{sty.reset}")
             exit()
     return new_name
 
 
-def create_new_folder_with_files(
-    new_name: str, template_name: str, dir_path: str
-) -> str:
+def create_new_folder_with_files(new_name: str, template_name: str, dir_path: str) -> str:
     """Copy a template folder structure to be used as starting point.
 
     Args:
@@ -254,10 +240,8 @@ def create_new_folder_with_files(
         else:
             exit_code = 0
         check_if_successful(create_new_folder_with_files.__name__, exit_code)
-        print_progress_msg(
-            f"Created new folder with contents from {bold+green}{template_name}{reset} "
-        )
+        print_progress_msg(f"Created new folder with contents from {sty.bold+sty.green}{template_name}{sty.reset} ")
     else:
-        print(f"\n💀💀💀 {red}Program quit without creation of new folder.{reset}")
+        print(f"\n💀💀💀 {sty.red}Program quit without creation of new folder.{sty.reset}")
         exit()
     return new_folder

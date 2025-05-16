@@ -1,14 +1,12 @@
 import os
 import subprocess
 from scripts.utils.helpers import *
-from scripts.utils.style_console_text import red, green, blue, bold, reset
+import scripts.utils.style_console_text as sty
 
 articles_directory = "./../../articles/"  # relative to script location
 expanded_file_name = "document_expanded.tex"
 expanded_file_folder = ""  # /!\ leave empty until all the file imports are managed as I have done for appendix and body
-bib_dir = (
-    "./../../articles_common_files/biblatex_files/"  # relative to script location"
-)
+bib_dir = "./../../articles_common_files/biblatex_files/"  # relative to script location"
 temp_bib_file = "temp.bib"
 language = "en"
 
@@ -17,24 +15,21 @@ base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
 
 
 def main():
-    """Script to generated an expanded version of an article, i.e. a .tex file where all input files are included directly instead of taken from dependencies so as to reduce everything to as few separate files as possible.
-    """
+    """Script to generated an expanded version of an article, i.e. a .tex file where all input files are included directly instead of taken from dependencies so as to reduce everything to as few separate files as possible."""
     ### MAIN PROGRAM ###
     # Print initial prompt
-    print(
-        f"\n Which article would you like to expand ? (Write full name or pick by number)"
-    )
+    print(f"\n Which article would you like to expand ? (Write full name or pick by number)")
     article_names = list_existing_things(
         os.path.join(base_dir, articles_directory),
-        header_message="Articles that can be expanded:",
+        header_message="\nArticles that can be expanded:",
     )
     article_indexes = list(range(1, len(article_names) + 1))
-    choice = input(f"{blue}Pick one:{reset}")
+    choice = input(f"{sty.blue}Pick one:{sty.reset}")
     if choice in ["q", "quit"]:
-        print(f"\n💀💀💀 {red}Program quit without expanding an article.{reset}")
+        print(f"\n💀💀💀 {sty.red}Program quit without expanding an article.{sty.reset}")
         exit()
     elif (choice not in article_names) & (int(choice) not in article_indexes):
-        print(f"{red}INVALID CHOICE: must pick from existing list{reset}")
+        print(f"{sty.red}INVALID CHOICE: must pick from existing list{sty.reset}")
         # Restart proccess
         main()
     else:
@@ -44,19 +39,15 @@ def main():
         # if used wrote the article name:
         else:
             thing_name = choice
-        print(f"\n{blue} Your pick: {green}{thing_name}{reset}\n")
+        print(f"\n{sty.blue} Your pick: {sty.green}{thing_name}{sty.reset}\n")
         thing_dir = os.path.join(base_dir, articles_directory, thing_name)
-        extended_thing_path = os.path.join(
-            thing_dir, expanded_file_folder, expanded_file_name
-        )
+        extended_thing_path = os.path.join(thing_dir, expanded_file_folder, expanded_file_name)
 
         # Create folder for expanded output
         os.makedirs(os.path.join(thing_dir, expanded_file_folder), exist_ok=True)
 
         # create single temporary bib file
-        tmp_bib_path = fuse_files(
-            os.path.join(base_dir, bib_dir), os.path.join(thing_dir, temp_bib_file)
-        )
+        tmp_bib_path = fuse_files(os.path.join(base_dir, bib_dir), os.path.join(thing_dir, temp_bib_file))
 
         subprocess.run(
             # latexpand --verbose --output document_expanded.tex document.tex
@@ -94,9 +85,7 @@ def main():
 
         add_appendix_contents(thing_dir, extended_thing_path)
 
-        print(
-            f"\n\n 😁😁😁 Successfully expanded article {bold+green}{thing_name}{reset} 😁😁😁"
-        )
+        print(f"\n\n 😁😁😁 Successfully expanded article {sty.bold+sty.green}{thing_name}{sty.reset} 😁😁😁")
 
 
 # =============================================================================
@@ -105,7 +94,7 @@ def main():
 # ===========================HELPER FUNCTIONS=================================
 
 
-def fuse_files(directory:str, output_file:str)-> str:
+def fuse_files(directory: str, output_file: str) -> str:
     """Fuse multiple files into a single one.
 
     Args:
@@ -126,7 +115,7 @@ def fuse_files(directory:str, output_file:str)-> str:
     return output_file
 
 
-def replace_content_in_file(file_path:str, old_string:str, new_string:str) -> None:
+def replace_content_in_file(file_path: str, old_string: str, new_string: str) -> None:
     """Replace every occurence of a specific string in a target file.
 
     Args:
@@ -146,7 +135,7 @@ def replace_content_in_file(file_path:str, old_string:str, new_string:str) -> No
         file.write(content)
 
 
-def handle_biblatex_bug(extended_thing_path:str) -> None:
+def handle_biblatex_bug(extended_thing_path: str) -> None:
     """Deal with bug caused by biblatex by removing code that causes it.
 
     Args:
@@ -154,7 +143,7 @@ def handle_biblatex_bug(extended_thing_path:str) -> None:
     """
 
     print(
-        f"\n⚠️ To get the bibliography to work, one must add a new line {blue}\\addbibresource{{temp_bib_file}}{reset} to the generated file {blue}{expanded_file_name}{reset} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affecte by changed to {blue}latexpand flags{reset}"
+        f"\n⚠️{sty.dim} To get the bibliography to work, one must add a new line {sty.blue}\\addbibresource{{temp_bib_file}}{sty.reset+sty.dim} to the generated file {sty.blue}{expanded_file_name}{sty.reset+sty.dim} as well as remove the included @articles out of the surrounding macro. This can either be done manually or, as in this function, programatically but it is a finicky solution so beware. Will probably be affected by changes to {sty.blue}latexpand flags{sty.reset}"
     )
 
     replace_content_in_file(
@@ -186,7 +175,7 @@ def handle_biblatex_bug(extended_thing_path:str) -> None:
     )
 
 
-def add_article_body_contents(lang:str, thing_dir:str, extended_thing_path:str)-> None:
+def add_article_body_contents(lang: str, thing_dir: str, extended_thing_path: str) -> None:
     """Add contents of article body into extended file.
 
     Args:
@@ -195,9 +184,8 @@ def add_article_body_contents(lang:str, thing_dir:str, extended_thing_path:str)-
         extended_thing_path (str): path to extended document that is missing body contents.
     """
 
-
     print(
-        f"\n⚠️ To get the body contents into the file they are injected into the expanded_file. Otherwise latexpand only really deals with standard simple \\inputs, such as for setting files. Changed to macro may disturb functionality."
+        f"\n⚠️{sty.dim} To get the body contents into the file they are injected into the expanded_file. Otherwise latexpand only really deals with standard simple \\inputs, such as for setting files. Changed to macro may disturb functionality.{sty.reset}"
     )
 
     body_folder = os.path.join(thing_dir, "elements/body/")
@@ -225,7 +213,7 @@ def add_article_body_contents(lang:str, thing_dir:str, extended_thing_path:str)-
     )
 
 
-def add_appendix_contents(thing_dir:str, extended_thing_path:str) -> None:
+def add_appendix_contents(thing_dir: str, extended_thing_path: str) -> None:
     """Add contents of appendix items into extended file.
 
     Args:
@@ -234,16 +222,12 @@ def add_appendix_contents(thing_dir:str, extended_thing_path:str) -> None:
     """
 
     print(
-        f"\n⚠️ To get the appendix files to work, one must add a new line, they are injected into the expanded_file above the appendix macro. Changed to macro may disturb functionality."
+        f"\n⚠️{sty.dim} To get the appendix files to work, one must add a new line, they are injected into the expanded_file above the appendix macro. Changed to macro may disturb functionality.{sty.reset}"
     )
 
     appendix_folder = os.path.join(thing_dir, "elements/appendix/")
     # List of folder names
-    appendix_list = [
-        name
-        for name in os.listdir(appendix_folder)
-        if os.path.isdir(os.path.join(appendix_folder, name))
-    ]
+    appendix_list = [name for name in os.listdir(appendix_folder) if os.path.isdir(os.path.join(appendix_folder, name))]
 
     for appendix in appendix_list:
         # Open and read the entire content of the file

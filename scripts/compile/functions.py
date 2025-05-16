@@ -2,8 +2,8 @@
 import os
 import argparse
 from datetime import datetime
-from scripts.utils.helpers import list_existing_things
-from scripts.utils.style_console_text import red, green, blue, bold, reset
+from scripts.utils.helpers import list_existing_things 
+import scripts.utils.style_console_text as sty
 from scripts.enums.ThingType import ThingType
 import enum
 from scripts.compile.parameters import (
@@ -13,7 +13,7 @@ from scripts.compile.parameters import (
     build_folder__main_output,
 )
 from scripts.enums.Recipe import Recipe
-
+from typing import Optional
 
 # get the directory of the current script
 base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
@@ -36,7 +36,7 @@ def list_as_string(list: list[any], sep:str=", ") -> str:
     Returns:
         str: A string made out of the list items.
     """
-    return sep.join([f"{blue}{e}{reset}" for e in list])
+    return sep.join([f"{sty.blue}{e}{sty.reset}" for e in list])
 
 
 def enum_list_as_string(enumName: enum.Enum, sep:str=", ") -> str:
@@ -49,7 +49,7 @@ def enum_list_as_string(enumName: enum.Enum, sep:str=", ") -> str:
     Returns:
         str: A sring made out of the Enum options.
     """
-    return sep.join([f"{blue}{e.value}{reset}" for e in enumName])
+    return sep.join([f"{sty.blue}{e.value}{sty.reset}" for e in enumName])
 
 
 article_list_as_string = list_as_string(article_names)
@@ -94,11 +94,11 @@ def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespa
             all_names = art_names + prt_names
             indexes = list(range(1, len(all_names) + 1))
             choice = input(
-                f"Which do you want to compile? ({blue}choose from options above{reset}): "
+                f"Which do you want to compile? ({sty.blue}choose from options above{sty.reset}): "
             )
             #  if user passed an instruction to quit the program:
             if choice in ["q", "quit"]:
-                print(f"\n💀💀💀 {red}Program quit without compiling anything.{reset}")
+                print(f"\n💀💀💀 {sty.red}Program quit without compiling anything.{sty.reset}")
                 exit()
             # if user picked a valid index (number):
             elif choice.isdigit() and int(choice) in indexes:
@@ -108,7 +108,7 @@ def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespa
                 thing_name = choice
             # if invalid choice (non existing name or index):
             else:
-                print(f"\n\n\n{red}Invalid choice{reset}, pick from options:\n")
+                print(f"\n\n\n{sty.red}Invalid choice{sty.reset}, pick from options:\n")
                 continue
 
             args__cmd_line.thing_name = thing_name
@@ -118,7 +118,7 @@ def deal_with_user_input(args__cmd_line: argparse.Namespace) -> argparse.Namespa
         # If thing name has been provided...
         # ...but it does not actually exist:
         elif thing_name_from_cmd_line not in thing_names:
-            print(f"\n\n\n{red}thing_name{reset} does not exist, pick from options:\n")
+            print(f"\n\n\n{sty.red}thing_name{sty.reset} does not exist, pick from options:\n")
             # Restart proccess
             thing_name = None
         # ...and it exists:
@@ -137,7 +137,7 @@ def print_choice_mesg(args:argparse.Namespace) -> None:
     Args:
         args (argparse.Namespace): an argument namespace.
     """
-    print(f"You have chosen to compile {blue}{args.thing_name}{reset} in {blue}{args.recipe}{reset} recipe\n...")
+    print(f"You have chosen to compile {sty.blue}{args.thing_name}{sty.reset} in {sty.blue}{args.recipe}{sty.reset} recipe\n...")
 
 
 
@@ -187,7 +187,7 @@ def create_build_directories() -> None:
         os.makedirs(build_folder__aux_files)
 
 
-def build_message(msg: str, counter: int,time_start : datetime, time_prev: datetime | None = None, isTimer: bool = True) -> datetime:
+def build_message(msg: str, counter: int,time_start : datetime, time_prev: Optional[datetime] = None, isTimer: bool = True) -> datetime:
     """Print message reporting the compilation progress.
 
     Args:
@@ -201,13 +201,13 @@ def build_message(msg: str, counter: int,time_start : datetime, time_prev: datet
         datetime: _description_
     """
     counter+=1
-    print(f"{blue}{msg}{reset} (step {counter})")
+    print(f"{sty.blue}{msg}{sty.reset} (step {counter})")
     if isTimer:
         time_now = datetime.now()
         delta_start = time_now - time_start
-        print(f"\t⏲ {"Elapsed time since beginning:":<30} {green}{round(delta_start.total_seconds(), 2)}{reset} seconds")
+        print(f"\t⏲ {'Elapsed time since beginning:':<30} {sty.green}{round(delta_start.total_seconds(), 2)}{sty.reset} seconds")
         if time_prev != None:
             delta_prev = time_now - time_prev
-            print(f"\t⏲ {"Elapsed time since prev. step:":<30} {green}{round(delta_prev.total_seconds(), 2)}{reset} seconds")
+            print(f"\t⏲ {'Elapsed time since prev. step:':<30} {sty.green}{round(delta_prev.total_seconds(), 2)}{sty.reset} seconds")
         return (time_now, counter)
     return (None, counter)
