@@ -6,7 +6,7 @@ Usage
 Installation
 ------------
 
-To use arTeX, first install it using pip:
+To use wriTeX, first install it using pip:
 
 .. code-block:: console
 

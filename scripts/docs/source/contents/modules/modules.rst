@@ -1,4 +1,4 @@
-arTeX
+wriTeX
 =====
 
 .. toctree::

@@ -7,14 +7,14 @@
     <meta name="dtb:maxPageNumber" content="0"/>
   </head>
   <docTitle>
-    <text>arTeX scripts</text>
+    <text>wriTeX scripts</text>
   </docTitle>
-  <navMap>    
+  <navMap>
     <navPoint id="navPoint1" playOrder="1">
       <navLabel>
-        <text>arTeX scripts documentation</text>
+        <text>wriTeX scripts documentation</text>
       </navLabel>
-      <content src="index.xhtml" />  
+      <content src="index.xhtml" />
     </navPoint>
   </navMap>
 </ncx>

@@ -24,7 +24,7 @@ def main():
     # Create command line argument parser
     parser = argparse.ArgumentParser(
         prog=f'{sty.green}python -m scripts.compile{sty.reset}',
-        description="arTeX compilation with latex recipes.")
+        description="wriTeX compilation with latex recipes.")
     # Add arguments
     parser.add_argument(
         "thing_name",

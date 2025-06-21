@@ -303,7 +303,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
 
 %
 \newcommand{\isArticle}[2]{%
-  \ifthenelse{\equal{\jobname}{\detokenize{document}}} 
+  \ifthenelse{\equal{\jobname}{\detokenize{document}}}
   {#1}
   {#2}
 }%
@@ -1075,7 +1075,7 @@ binding offset:
 %
 
 \begin{filecontents*}{temp.bib}
-% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
+% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM WRITEX
 
 @article{bibliography:source_template,
 	title = {template},
@@ -1093,7 +1093,7 @@ binding offset:
 	file = {template},
 	abstract = {template}
 }
-% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
+% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM WRITEX
 
 % Add commas after each field, after last one it is ok too
 NAME FIELDS: name, forename AND name, forename AND name, forename
@@ -1161,11 +1161,11 @@ NAME FIELDS: name, forename AND name, forename AND name, forename
 	copyright={},
 	mainSource={},
 }% ADD YOUR ARTICLE ENTRIES INTO THIS FILE.
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM WRITEX.
 %
 % Add commas after each field, after last one it is ok too
 NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE.
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM WRITEX.
 
 
 \end{filecontents*}
@@ -4059,7 +4059,7 @@ title={#2},
     \ifthenelse{\boolean{isPrintLogs}}%
     {%
     \typeout{}%
-    \typeout{================================= ARTEX-LOG =================================}%
+    \typeout{================================= WRITEX-LOG =================================}%
     \typeout{LOG #1: #2}%
     \typeout{=============================================================================}%
     }%

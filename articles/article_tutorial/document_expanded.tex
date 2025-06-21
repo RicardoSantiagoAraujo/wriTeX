@@ -295,7 +295,7 @@ myarticle:\myarticleKeyCore:\myLanguage%
 }%
 
 %
-\newcommand{\isPortfolio}[2]{% /!\ need to address the expanded version too 
+\newcommand{\isPortfolio}[2]{% /!\ need to address the expanded version too
   \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}}
   {#1}
   {#2}
@@ -1080,9 +1080,9 @@ binding offset:
 
 \begin{filecontents*}{temp.bib}
 % ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE.
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM WRITEX.
 
-% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
+% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM WRITEX
 
 @article{bibliography:source_template,
 	title = {template},
@@ -1101,10 +1101,10 @@ binding offset:
 	abstract = {template}
 }
 % ADD YOUR ARTICLE ENTRIES INTO THIS FILE.
-% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM ARTEX.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM WRITEX.
 %
 % Add commas after each field, after last one it is ok too
-NAME FIELDS: name, forename AND name, forename AND name, forename% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM ARTEX
+NAME FIELDS: name, forename AND name, forename AND name, forename% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM WRITEX
 
 % Add commas after each field, after last one it is ok too
 NAME FIELDS: name, forename AND name, forename AND name, forename
@@ -4063,7 +4063,7 @@ title={#2},
     \ifthenelse{\boolean{isPrintLogs}}%
     {%
     \typeout{}%
-    \typeout{================================= ARTEX-LOG =================================}%
+    \typeout{================================= WRITEX-LOG =================================}%
     \typeout{LOG #1: #2}%
     \typeout{=============================================================================}%
     }%

@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'arTeX scripts'
+project = 'wriTeX scripts'
 copyright = '2025, Ricardo Santiago Araújo'
 author = 'Ricardo Santiago Araújo'
 release = '0.1'
