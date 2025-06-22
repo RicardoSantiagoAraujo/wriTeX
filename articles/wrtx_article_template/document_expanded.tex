@@ -1387,7 +1387,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
 }
 
 \newboolean{wrtxHighlight}
-\newcommand{\setMyHighlight}[1]{%
+\newcommand{\setwritexHighlight}[1]{%
   \begingroup%
       %
       %
@@ -1404,7 +1404,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
     %
     \ifthenelse{\value{listcount}=1}
     {%
-      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setwritexHighlight{%
         %
         \chooseNameFormat%
         }}{%
@@ -1413,7 +1413,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
       }}%
       %
     }{\ifnumless{\value{listcount}}{\value{liststop}}
-      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setwritexHighlight{%
         %
         \addcomma\addspace\chooseNameFormat%
         }}{%
@@ -1422,7 +1422,7 @@ NAME FIELDS: name, forename AND name, forename AND name, forename% ADD YOUR BIBL
       }}%
       %
       {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{and\addspace
-      \setMyHighlight{%
+      \setwritexHighlight{%
         %
         \chooseNameFormat%
       }}{%

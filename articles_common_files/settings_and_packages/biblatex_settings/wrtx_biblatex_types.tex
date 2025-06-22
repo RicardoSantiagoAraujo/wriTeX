@@ -185,7 +185,7 @@
 }
 
 \newboolean{wrtxHighlight}
-\newcommand{\setMyHighlight}[1]{%
+\newcommand{\setwritexHighlight}[1]{%
   \begingroup%
       % \mkbibbold{%
       % \color{wrtxColorSecondary}%
@@ -202,7 +202,7 @@
     %%%%%········· FIRST ENTRY
     \ifthenelse{\value{listcount}=1}
     {%
-      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setwritexHighlight{%
         %%% ENTRY
         \chooseNameFormat%
         }}{%
@@ -211,7 +211,7 @@
       }}%
       %%%%%········· MIDDLE ENTRIES
     }{\ifnumless{\value{listcount}}{\value{liststop}}
-      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setwritexHighlight{%
         %%% ENTRY
         \addcomma\addspace\chooseNameFormat%
         }}{%
@@ -220,7 +220,7 @@
       }}%
       %%%%%········· LAST ENTRY
       {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{and\addspace
-      \setMyHighlight{%
+      \setwritexHighlight{%
         %%% ENTRY
         \chooseNameFormat%
       }}{%
