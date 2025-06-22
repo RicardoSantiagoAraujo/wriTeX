@@ -17,7 +17,7 @@
 
 \AtBeginDocument{%
   \newwrite\writeenditems
-  \immediate\openout\writeenditems=myfile.tmp
+  \immediate\openout\writeenditems=wrtxfile.tmp
   }
 
 
@@ -25,10 +25,10 @@
 {
     \immediate\closeout\writeenditems
 
-    % This branch may need some tests s.a. \IfFileExists{myfile.tmp}{True}{False}
+    % This branch may need some tests s.a. \IfFileExists{wrtxfile.tmp}{True}{False}
     \clearpage
     \newread\readenditems
-    \immediate\openin\readenditems=myfile.tmp
+    \immediate\openin\readenditems=wrtxfile.tmp
     \loop
     \immediate\read\readenditems to\linein
     \linein
@@ -44,8 +44,8 @@
 
 % To print where this command is placed
 \newcommand{\postponeTextBoxPrintTillHere}{%
-    \noindent\isDraftDebugger{\myBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (start)}}{}% visually mark float barrier in pdf
-    \FloatBarrier % Do not let floats past here UNCONDITIONALLY (do not use myFloatBarrier)
+    \noindent\isDraftDebugger{\wrtxBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (start)}}{}% visually mark float barrier in pdf
+    \FloatBarrier % Do not let floats past here UNCONDITIONALLY (do not use wrtxFloatBarrier)
     %
     %
     \ifthenelse{\boolean{isMoveTextBoxesToEndOfArticle}}
@@ -56,5 +56,5 @@
     %
     %
     \FloatBarrier % Do not let floats past here UNCONDITIONALLY
-    \noindent\isDraftDebugger{\myBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (finish)}}{}%
+    \noindent\isDraftDebugger{\wrtxBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (finish)}}{}%
 }

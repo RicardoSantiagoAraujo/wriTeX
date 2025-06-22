@@ -10,7 +10,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CHOSEN ARTICLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\chosenArticle}{article_template} % /!\ UPDATE HERE
+\newcommand{\chosenArticle}{wrtx_article_template} % /!\ UPDATE HERE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % define relative paths to common files/settings from article to be used by \input command; multiple such paths can be added akin to \graphicspath
@@ -58,9 +58,9 @@
 %
 % LOAD NECESSARY BIB FILES
 \loadBibIfExists{./../../biblatex_files/bibliography_template.bib}
-\loadBibIfExists{./../../biblatex_files/myArticles_template.bib}
+\loadBibIfExists{./../../biblatex_files/wrtxArticles_template.bib}
 \loadBibIfExists{./../../biblatex_files/bibliography.bib}
-\loadBibIfExists{./../../biblatex_files/myArticles.bib}
+\loadBibIfExists{./../../biblatex_files/wrtxArticles.bib}
 %
 %
 %
@@ -73,14 +73,14 @@
 \newcommand{\FontFamilies}
     {% empty items get ignored (e.g. trailing commas)
         %%% TEST USER DEFINED FONTS IN ARTICLES
-        \myMainFont/Main font,
-        \myMainFontBackup/Main backup font,
-        % \myDraftFont/Draft font,
-        % \myDraftFontBackup/Draft backup font,
-        % \myTitleFont/Title font,
-        % \myTitleFontBackup/Title backup font,
-        % \mySubtitleFont/Subtitle font,
-        % \mySubtitleFontBackup/Subtitle backup font,
+        \wrtxMainFont/Main font,
+        \wrtxMainFontBackup/Main backup font,
+        % \wrtxDraftFont/Draft font,
+        % \wrtxDraftFontBackup/Draft backup font,
+        % \wrtxTitleFont/Title font,
+        % \wrtxTitleFontBackup/Title backup font,
+        % \wrtxSubtitleFont/Subtitle font,
+        % \wrtxSubtitleFontBackup/Subtitle backup font,
         %%% TEST FONTS DIRECTLY (case insensitive)
         % Comic Sans MS/,
         % Chalkboard/,
@@ -143,7 +143,7 @@
 %%%%%%%%%%% PICK TEXT TO BE DISPLAYED WITH FONTS
 \newcommand{\fontDemoText}{%
     % Demonstration text%
-    \myCiteEntry{\myarticleKey}{title}
+    \wrtxCiteEntry{\wrtxarticleKey}{title}
     %
     %%% PANGRAMS
     % The quick brown fox jumps over a lazy dog. % pangram english
@@ -207,21 +207,21 @@
     \singlespacing
 
     %%%%%%%%%%%% INCLUDED FONTS
-    \noindent\textcolor{myColorSuccess!50!black}{Available fonts} :% label
+    \noindent\textcolor{wrtxColorSuccess!50!black}{Available fonts} :% label
     \ \directlua{printFamiliesIncluded()}% elements
     \ (\directlua{fontFamiliesIncludedLength()})% list length
 
     %%%%%%%%%%%% EXCLUDED FONTS
-    \noindent\textcolor{myColorDanger!50!black}{Unavailable fonts} :% label
+    \noindent\textcolor{wrtxColorDanger!50!black}{Unavailable fonts} :% label
     \ \directlua{printFamiliesExcluded()}% elements
     \ (\directlua{fontFamiliesExcludedLength()})% list length
 
 
     \iftrue
     %Loop structure:
-    \noindent\aLoopHeadI \myLabel{\ (outer loop)}\\
-    $\rightarrow$ \bLoopHeadI \myLabel{\ (middle loop)}\\
-    ---$\rightarrow$bLoopHeadI \myLabel{\ (inner loop)}\\
+    \noindent\aLoopHeadI \wrtxLabel{\ (outer loop)}\\
+    $\rightarrow$ \bLoopHeadI \wrtxLabel{\ (middle loop)}\\
+    ---$\rightarrow$bLoopHeadI \wrtxLabel{\ (inner loop)}\\
     %
     %
     %
@@ -238,8 +238,8 @@
         {}
         {%
         \subsection*{%
-        \myLabel{\aLoopHeadII:} \itemA
-        \ \myLabel{%
+        \wrtxLabel{\aLoopHeadII:} \itemA
+        \ \wrtxLabel{%
             (\ifthenelse{\equal{\labelA}{}}{}{\labelA,\ }% label
             \nA\ out of \theaListLength) % current position in loop
         }%
@@ -254,13 +254,13 @@
             {%
             \paragraph*{%
                 \dotfill%
-                \myLabel{\bLoopHeadII:} \itemB%
+                \wrtxLabel{\bLoopHeadII:} \itemB%
                 \ifthenelse{\equal{\labelB}{}}{}
-                    {\myLabel{\ (\labelB)}}%
+                    {\wrtxLabel{\ (\labelB)}}%
                 \dotfill%
             }%
             %
-            \begin{myListMeta}[
+            \begin{wrtxListMeta}[
                 leftmargin=0pt,
                 labelsep=0pt
                 ]
@@ -268,16 +268,16 @@
                 \item[] %
                     % First head
                     \makebox[\widthHeadI][r]{
-                        \myLabel{\cLoopHeadI}%
+                        \wrtxLabel{\cLoopHeadI}%
                     }%
                     % Second head
                     \makebox[\widthHeadII][r]{
-                        \myLabel{\cLoopHeadII}%
+                        \wrtxLabel{\cLoopHeadII}%
                     }%
                     \makebox[\widthHeadGap]{}% GAP
                     % Third head
-                    \myLabel{\cLoopHeadIII}%
-                    \myLabel{\hrule}
+                    \wrtxLabel{\cLoopHeadIII}%
+                    \wrtxLabel{\hrule}
                 %------------------- INNER LOOP
                 \foreach \itemC/\labelC [count=\nC] in \cLoop
                 {%
@@ -288,7 +288,7 @@
                     %%%%%% FIRST COLUMN
                     \makebox[\widthHeadI][r]{%
                         \ifthenelse{\equal{\labelC}{}}{}
-                        {\myLabel{\labelC}}%
+                        {\wrtxLabel{\labelC}}%
                     }%
                     %%%%%% SECOND COLUMN
                     \makebox[\widthHeadII][r]{%
@@ -305,7 +305,7 @@
                     }}
                     }
                 }%end of innerloop
-            \end{myListMeta}%
+            \end{wrtxListMeta}%
             }
         }}% end of middle loop
         \vspace{1cm}

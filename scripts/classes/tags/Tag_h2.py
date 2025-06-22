@@ -1,7 +1,7 @@
 from scripts.classes.tags.GenericTag import GenericTag
 
 class Tag_h2(GenericTag):
-    latex_pttrn = r"\\myArticleSubsection\{(.*?)\}"
+    latex_pttrn = r"\\wrtxArticleSubsection\{(.*?)\}"
     html_pttrn = [r"<h2>", r"(.*?)", r"</h2>"]
 
     def __init__(self, innerHTML, id, HTMLClass, customAttribute):

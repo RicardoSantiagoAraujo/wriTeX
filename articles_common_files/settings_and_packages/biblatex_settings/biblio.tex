@@ -4,12 +4,12 @@
 
 \ifthenelse{\boolean{isIncludeCitationsInFootnotes}}
 {%
-    \newcommand{\myCiteStyle}{authoryear}%
-    \newcommand{\myBibStyle}{authoryear}%
+    \newcommand{\wrtxCiteStyle}{authoryear}%
+    \newcommand{\wrtxBibStyle}{authoryear}%
 }
 {%
-    \newcommand{\myCiteStyle}{numeric}%
-    \newcommand{\myBibStyle}{numeric}%
+    \newcommand{\wrtxCiteStyle}{numeric}%
+    \newcommand{\wrtxBibStyle}{numeric}%
 }%
 
 
@@ -20,10 +20,10 @@
     %%% CITATION STYLES: "style applies to both citations in text and display in printed bibliography, citestyle and bibstyles splits
     % Style option examples: numeric, authoryear, authortitle, verbose
     % style=authoryear,
-    citestyle=\myCiteStyle,%
-    bibstyle=\myBibStyle,%
+    citestyle=\wrtxCiteStyle,%
+    bibstyle=\wrtxBibStyle,%
     backend=biber,%
-    datamodel=mydatamodels,%
+    datamodel=wrtxdatamodels,%
     doi=false,%
     isbn=false,%
     url=false,%
@@ -53,8 +53,8 @@
 }%
 
 
-\DeclareBibliographyCategory{myMediationArticles}
-\addtocategory{myMediationArticles}{\myarticleKey}
+\DeclareBibliographyCategory{wrtxMediationArticles}
+\addtocategory{wrtxMediationArticles}{\wrtxarticleKey}
 
 
 %%% Include all biblatex items in bibliography, even if not cited in the text
@@ -63,11 +63,11 @@
 %%% MY OWN TYPE AND RESPECTIVE FIELDS
 \isPortfolio%
 {%
-    \input{../../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}%
+    \input{../../../articles_common_files/settings_and_packages/biblatex_settings/wrtx_biblatex_types.tex}%
 }%
 {%
     \isArticle{%%% make sure it really is an article, and not e.g. a standalone file
-    \input{../../articles_common_files/settings_and_packages/biblatex_settings/my_biblatex_types.tex}%% FOR SINGLE ARTICLES
+    \input{../../articles_common_files/settings_and_packages/biblatex_settings/wrtx_biblatex_types.tex}%% FOR SINGLE ARTICLES
     }{}
 }%
 
@@ -83,26 +83,26 @@
 % Command to add bibliography section
 \newcommand{\addBibliography}{
     \isPortfolio{%
-    \newcommand{\myCitationCounter}{1} %%% Print in ANY case since 1<>0
+    \newcommand{\wrtxCitationCounter}{1} %%% Print in ANY case since 1<>0
     }
     {
-    \newcommand{\myCitationCounter}{%
+    \newcommand{\wrtxCitationCounter}{%
         \totvalue%
-        {totalCitationsInArticle:\myarticleKeyCore}%
+        {totalCitationsInArticle:\wrtxarticleKeyCore}%
         }
     }
 
-    \ifthenelse{\boolean{isIncludeBiblio} \and \myCitationCounter>0}{
+    \ifthenelse{\boolean{isIncludeBiblio} \and \wrtxCitationCounter>0}{
         \newpage
         \begin{SplitColumnsInTwo}%[true]
         \updateRibbons{\textbf{\TEXTbibliography}}{}
-        \mySectionTitle{\TEXTbibliography}
-        % This document contains \total{totalCitationsInArticle:\myarticleKeyCore}\ citation(s).
+        \wrtxSectionTitle{\TEXTbibliography}
+        % This document contains \total{totalCitationsInArticle:\wrtxarticleKeyCore}\ citation(s).
         \printbibliography[
             heading=none, % "bibintoc" adds the title to the table of contents. "none" to exclude.
             % title={My bibliography title} % Add title above bibliography
             % type=report,
-            notcategory=myMediationArticles% Exclude my articles
+            notcategory=wrtxMediationArticles% Exclude wrtx articles
             ]
         \end{SplitColumnsInTwo}
     }{}
@@ -111,10 +111,10 @@
 
 
 
-\newcommand{\myCite}[1]{%
+\newcommand{\wrtxCite}[1]{%
     \ifthenelse{\boolean{isIncludeCitations}}{% whether or not to include citations in article
     \stepcounter{%
-    totalCitationsInArticle:\myarticleKeyCore% COUNTS REPEATS!
+    totalCitationsInArticle:\wrtxarticleKeyCore% COUNTS REPEATS!
     }%
         \ifthenelse{\boolean{isIncludeCitationsInFootnotes}}{% whether to show citations in footnotes or not
             \footcite{#1}%
@@ -138,12 +138,12 @@
 
 % Change missing reference message for Biblatex
 \usepackage{xpatch}
-\newcommand{\myUnknownRefSymbol}{????}
+\newcommand{\wrtxUnknownRefSymbol}{????}
 \makeatletter%
 \def\abx@missing@entry#1{%
 \raiseup{\tiny}{%
-    \textcolor{myColorDanger}{%
-        \abx@missing{[\myUnknownRefSymbol\ #1 \myUnknownRefSymbol]}%
+    \textcolor{wrtxColorDanger}{%
+        \abx@missing{[\wrtxUnknownRefSymbol\ #1 \wrtxUnknownRefSymbol]}%
     }%
     }%
 }
@@ -154,16 +154,16 @@
 
 % command to apply to prenotes and custom inputs
 \newcommand{\genericPrenote}[1]
-{\textcolor{myGrayMed}{#1\addcolon\space}}
+{\textcolor{wrtxGrayMed}{#1\addcolon\space}}
 % custom field format
-\DeclareFieldFormat{myLabelFormat}{\genericPrenote{\titlecap{#1}}}
+\DeclareFieldFormat{wrtxLabelFormat}{\genericPrenote{\titlecap{#1}}}
 %
 % field format for prenotes
 \DeclareFieldFormat{prenote}
 {\genericPrenote{#1}}
 %
 % custom empty entry format
-\DeclareFieldFormat{myEntrymptyEntry}{\textcolor{red}{#1}}
+\DeclareFieldFormat{wrtxEntrymptyEntry}{\textcolor{red}{#1}}
 %
 % field format for DOI specifically (auto applies)
 \DeclareFieldFormat{doi}{%
@@ -189,11 +189,11 @@
 
 % Macro to check if an entry is empty, and print something if TRUE or FALSE
 \newcommand{\checkIfNoEntryFound}[2]{%
-    \iffieldundef{\myEntry}% IS IT A FIELD ?
+    \iffieldundef{\wrtxEntry}% IS IT A FIELD ?
     {%
-        \ifnameundef{\myEntry}% IS IT A NAME ?
+        \ifnameundef{\wrtxEntry}% IS IT A NAME ?
         {%
-            \iflistundef{\myEntry}% IS IT A LIST ?
+            \iflistundef{\wrtxEntry}% IS IT A LIST ?
             {#1}%
             {#2}%
         }%
@@ -204,7 +204,7 @@
 \newcommand{\checkIfNoEntryFoundConditional}[2]{%
     \ifthenelse{\boolean{isIncludeMissingBibEntries}}
     {%
-    % \textcolor{myColorSuccess}{TRUE}
+    % \textcolor{wrtxColorSuccess}{TRUE}
     #2%
     }%
     {%
@@ -213,9 +213,9 @@
 }%
 
 
-\DeclareCiteCommand{\myCiteCommand}%
+\DeclareCiteCommand{\wrtxCiteCommand}%
     {% PRENOTE
-    % \textcolor{orange}{\myEntry}
+    % \textcolor{orange}{\wrtxEntry}
     \checkIfNoEntryFound{%
             % \textcolor{red}{Missing entry!}
         }{%
@@ -224,30 +224,30 @@
         }%
     }
     {
-        \iffieldundef{\myEntry}% IS IT A FIELD ?
+        \iffieldundef{\wrtxEntry}% IS IT A FIELD ?
         {%
-            \ifnameundef{\myEntry}% IS IT A NAME ?
+            \ifnameundef{\wrtxEntry}% IS IT A NAME ?
             {%
-                \iflistundef{\myEntry}% IS IT A LIST ?
+                \iflistundef{\wrtxEntry}% IS IT A LIST ?
                 {%
                     % \ifthenelse{\boolean{isIncludeMissingBibEntries}}{%
                     \isDraftDebugger{
-                        \printtext[myEmptyEntry]
+                        \printtext[wrtxEmptyEntry]
                         {\na}
                         }{}%
                         % If it is none of the below
                     % }{}%
                 }%
                 {%
-                    \printlist{\myEntry}% if it is a biblatex list
+                    \printlist{\wrtxEntry}% if it is a biblatex list
                 }%
             }%
             {%
-                \printnames{\myEntry}% if it is a biblatex name
+                \printnames{\wrtxEntry}% if it is a biblatex name
             }%
         }%
         {%
-            \printfield{\myEntry}% if it is a biblatex field
+            \printfield{\wrtxEntry}% if it is a biblatex field
         }%
     }
     {}
@@ -259,7 +259,7 @@
         }%
     }
 
-\DeclareCiteCommand{\myCiteWithLabelCommand}%
+\DeclareCiteCommand{\wrtxCiteWithLabelCommand}%
     {%
         \checkIfNoEntryFoundConditional{%
             % Missing entry!
@@ -267,7 +267,7 @@
             \item[%
                 \iffieldundef{prenote}%
                 {%
-                    \printtext[myLabelFormat]{\myEntry:}%
+                    \printtext[wrtxtxLabelFormat]{\wrtxEntry:}%
                     % \setunit{\prenotedelim}
                 }%
                 {%
@@ -277,28 +277,28 @@
         }%
     }%
     {%
-        \iffieldundef{\myEntry}% IS IT A FIELD ?
+        \iffieldundef{\wrtxEntry}% IS IT A FIELD ?
         {%
-            \ifnameundef{\myEntry}% IS IT A NAME ?
+            \ifnameundef{\wrtxEntry}% IS IT A NAME ?
             {%
-                \iflistundef{\myEntry}% IS IT A LIST ?
+                \iflistundef{\wrtxEntry}% IS IT A LIST ?
                 {%
                     \ifthenelse{\boolean{isIncludeMissingBibEntries}}{%
                         \isDraftDebugger{
-                            \printtext[myEmptyEntry]{\na}%
+                            \printtext[wrtxEmptyEntry]{\na}%
                             }{}%
                     }{}%
                 }%
                 {%
-                    \printlist{\myEntry}% if it is a biblatex list
+                    \printlist{\wrtxEntry}% if it is a biblatex list
                 }%
             }%
             {%
-                \printnames{\myEntry}% if it is a biblatex name
+                \printnames{\wrtxEntry}% if it is a biblatex name
             }%
         }%
         {%
-            \printfield{\myEntry}% if it is a biblatex field
+            \printfield{\wrtxEntry}% if it is a biblatex field
         }%
     }%
     {%
@@ -314,28 +314,28 @@
 
 
 % placeholder command to hold entry label
-\newcommand{\myEntry}{}
+\newcommand{\wrtxEntry}{}
 % entrypoint commands for the citation that picks on the above cite command to generalize it
-\NewDocumentCommand{\myCiteEntryWithLabel}
+\NewDocumentCommand{\wrtxCiteEntryWithLabel}
 {
     m% #1 citation key
     m% #2 citation entry key
     O{}% #3 prenote
     O{}% #4 postnote
 }{%
-    \renewcommand{\myEntry}{#2}%
-    \myCiteWithLabelCommand[#3][#4]{#1}%
+    \renewcommand{\wrtxEntry}{#2}%
+    \wrtxCiteWithLabelCommand[#3][#4]{#1}%
 }%
 
 % entrypoint command for the citation that picks on the above cite command to generalize it
-\NewDocumentCommand{\myCiteEntry}
+\NewDocumentCommand{\wrtxCiteEntry}
 {
     m% #1 citation key
     m% #2 citation entry key
     O{}% #3 prenote
     O{}% #4 postnote
 }{%
-    \renewcommand{\myEntry}{#2}%
+    \renewcommand{\wrtxEntry}{#2}%
     % \textcolor{red}{#2}
-    \myCiteCommand[#3][#4]{#1}%
+    \wrtxCiteCommand[#3][#4]{#1}%
 }%

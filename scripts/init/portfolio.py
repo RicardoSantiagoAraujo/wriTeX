@@ -6,7 +6,7 @@ from scripts.utils.style_console_text import red, green, blue, bold, reset
 from scripts.enums.ThingType import ThingType
 
 # CONSTANTS
-portfolio_template_string = "portfolio_template"  # change here if the name of the template changes
+wrtx_portfolio_template_string = "wrtx_portfolio_template"  # change here if the name of the template changes
 portfolio_versions_directory = "./../../portfolios/versions/"  # relative to script location
 
 # get the directory of the current script
@@ -26,7 +26,7 @@ def main():
 
     #### Creating new portfolio version folder/files:
     # create portfolio version unless user quits
-    new_folder = create_new_folder_with_files(new_portfolio_name, portfolio_template_string, dir_path)
+    new_folder = create_new_folder_with_files(new_portfolio_name, wrtx_portfolio_template_string, dir_path)
 
     #### Cleaning up files in folder:
 

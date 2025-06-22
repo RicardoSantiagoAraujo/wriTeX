@@ -4,7 +4,7 @@
 
 % \pagestyle{headings}
 
-\renewcommand{\myLanguage}{\myLanguagePortfolio}
+\renewcommand{\wrtxLanguage}{\wrtxLanguagePortfolio}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%% MACRO TO ADD ARTICLES TO PORTFOLIO
@@ -21,9 +21,9 @@
       {%%% PART
         \ifthenelse{\boolean{isDivideArticlesIntoParts}}
         {% if yes, add parts
-          \pagecolor{myColorPrimary!10}
+          \pagecolor{wrtxColorPrimary!10}
           \updateRibbons{\textbf{Part \thepart: \parsePartString{\article}}}{}
-          \myPortfolioPart{\parsePartString{\article}}%
+          \wrtxPortfolioPart{\parsePartString{\article}}%
           \pagecolor{bgColor}
         } % if not, do nothing
         {}%
@@ -81,17 +81,17 @@
 \newcommand{\addSingleArticle}[1]{
   %%% RECOVER MAIN VARIABLES
   \input{../../../articles/#1/#1}
-  \myLogger{START OF ARTICLE \myarticleKeyCore (\myLanguage)}
+  \wrtxLogger{START OF ARTICLE \wrtxarticleKeyCore (\wrtxLanguage)}
   % Overwrite language setting to use portfolio language
-  \renewcommand{\myLanguage}{\myLanguagePortfolio}
-  % Add article key to my mediation category
-  \addtocategory{myMediationArticles}{\myarticleKey}
-  \updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Introduction}{INTRODUCTION \ribbonSpacer PORTFOLIO \ribbonSpacer \myLanguage}
+  \renewcommand{\wrtxLanguage}{\wrtxLanguagePortfolio}
+  % Add article key to wrtx mediation category
+  \addtocategory{wrtxMediationArticles}{\wrtxarticleKey}
+  \updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Introduction}{INTRODUCTION \ribbonSpacer PORTFOLIO \ribbonSpacer \wrtxLanguage}
   \renewcommand{\chaptername}{\TEXTchapter}% Rename "Chapter" heading
   %%% Separators for LOF, LOT and LOTB to distinguish articles better
   \addSeparatorsToListsOfContents
   %
-  \myPortfolioArticleChapter{\myCiteEntry{\myarticleKey}{title}}
+  \wrtxPortfolioArticleChapter{\wrtxCiteEntry{\wrtxarticleKey}{title}}
   %
   %
   %%% Creating a partial TOC/LOF/LOT for the chapter
@@ -108,7 +108,7 @@
   %%% Partial LOF
   \ifthenelse{\boolean{isIncludePerArticleLoF}}
   {
-    \ifthenelse{\totvalue{totalFiguresInArticle:\myarticleKeyCore}=0}{}
+    \ifthenelse{\totvalue{totalFiguresInArticle:\wrtxarticleKeyCore}=0}{}
     {
       \startlist{lof}
       \printlist{lof}{}{\subsection*{\listTitleStyle\TEXTpLof}}
@@ -117,7 +117,7 @@
   %%% Partial LOT
   \ifthenelse{\boolean{isIncludePerArticleLoT}}
   {
-    \ifthenelse{\totvalue{totalTablesInArticle:\myarticleKeyCore}=0}{}
+    \ifthenelse{\totvalue{totalTablesInArticle:\wrtxarticleKeyCore}=0}{}
     {
       \startlist{lot}
       \printlist{lot}{}{\subsection*{\listTitleStyle\TEXTpLot}}
@@ -152,30 +152,30 @@
     \begin{bodyEnvironment}%
         \updateRibbons
         {
-          Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer%
+          Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer%
           Article Content%
         }
         {
-          ARTICLE CONTENT \ribbonSpacer PORTFOLIO \ribbonSpacer \myLanguage
+          ARTICLE CONTENT \ribbonSpacer PORTFOLIO \ribbonSpacer \wrtxLanguage
         }
-      \subimport{./../../../articles/\myarticleKeyCore/elements/body}{body_\myLanguage.tex}
+      \subimport{./../../../articles/\wrtxarticleKeyCore/elements/body}{body_\wrtxLanguage.tex}
     \end{bodyEnvironment}%
     %
     %%%%%%%%% ARTICLE  BIBLIOGRAPHY
     \ifthenelse{\boolean{isSplitBibliographyByChapter}}
     {%
         \updateRibbons
-        {Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Bibliography}
-        {BIBLIOGRAPHY \ribbonSpacer PORTFOLIO \ribbonSpacer \myLanguage}
+        {Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Bibliography}
+        {BIBLIOGRAPHY \ribbonSpacer PORTFOLIO \ribbonSpacer \wrtxLanguage}
         \printbibliography[%
         heading=subbibliography,%
-        notcategory=myMediationArticles,%
+        notcategory=wrtxMediationArticles,%
         segment=\therefsegment % print only prev segment's bibliographu
         ]%
     }
     {%
       \isDraftDebugger{%
-      ARTICLE BIBLIOGRAPHY GOES HERE IF \textcolor{myColorSuccess}{isSplitBibliographyByChapter = True}%
+      ARTICLE BIBLIOGRAPHY GOES HERE IF \textcolor{wrtxColorSuccess}{isSplitBibliographyByChapter = True}%
       }{}%
     }%
   \end{refsegment}%%% To be able to print bib by segment
@@ -190,7 +190,7 @@
   %%
   \ifthenelse{\boolean{isIncludePerArticleLoF}}
   {% Stop printing (connect to \startlist above)
-    \ifthenelse{\totvalue{totalFiguresInArticle:\myarticleKeyCore}=0}{}
+    \ifthenelse{\totvalue{totalFiguresInArticle:\wrtxarticleKeyCore}=0}{}
     {
       \stoplist{lof}%
     }
@@ -199,7 +199,7 @@
   %%
   \ifthenelse{\boolean{isIncludePerArticleLoT}}
   {% Stop printing (connect to \startlist above)
-    \ifthenelse{\totvalue{totalTablesInArticle:\myarticleKeyCore}=0}{}
+    \ifthenelse{\totvalue{totalTablesInArticle:\wrtxarticleKeyCore}=0}{}
     {%
       \stoplist{lot}% not working for some reason, but not needed ?
     }%
@@ -235,9 +235,9 @@
   [1cm]
   {1\linewidth}
   {%
-    \textcolor{myGrayLight}{%
+    \textcolor{wrtxGrayLight}{%
       \small%
-      \myCiteEntry{\myarticleKey}{title}%
+      \wrtxCiteEntry{\wrtxarticleKey}{title}%
       \hrulefill%
       % \addvspace{3pt}% words with addcontents, but not with addcontentsline or cfaddcontentline
       % \endgraf%replacement to \par to avoid error
@@ -298,14 +298,14 @@ chapter:\the\value{totalArticlesAltogether}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% PART
 % \titleformat{\part}[display]
-% {\huge\color{myColorPrimary}} % style number display
+% {\huge\color{wrtxColorPrimary}} % style number display
 % {\parttname\ \thepart}
 % {20pt}
 % {\huge}
 \titleformat{\part}
 [display]
 {% style number display
-  \centering\setTitleFont\color{myColorPrimary}\HUGE\bfseries%
+  \centering\setTitleFont\color{wrtxColorPrimary}\HUGE\bfseries%
 }%
 {% content of number display
   % \titlerule[5pt]\vspace{3pt}\titlerule[2pt]\vspace{3pt}% decorative ruler
@@ -321,7 +321,7 @@ chapter:\the\value{totalArticlesAltogether}%
 {m}{%
   part:\detokenize{#1}% detokenize to treat special characters as plain text
 }
-\NewDocumentCommand{\myPortfolioPart}
+\NewDocumentCommand{\wrtxPortfolioPart}
 {
   m %
   O{} % optional alternative label for ease of referencing
@@ -336,7 +336,7 @@ chapter:\the\value{totalArticlesAltogether}%
   \part[#1]{\linkPartConditionally{%
     \HUGE%
     \setTitleFont%
-    \color{myColorPrimary}%
+    \color{wrtxColorPrimary}%
     % \scshape%
     \bfseries%
     \lsstyle%
@@ -348,7 +348,7 @@ chapter:\the\value{totalArticlesAltogether}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% ARTICLE AS CHAPTER
 \titleformat{\chapter}[display]
-{\setTitleFont\bfseries\huge\color{myColorPrimary}}% style pre-text
+{\setTitleFont\bfseries\huge\color{wrtxColorPrimary}}% style pre-text
 {\chaptertitlename\ \thechapter}% pre text content
 {10pt}% vertical gap
 {\Huge}% style text
@@ -357,7 +357,7 @@ chapter:\the\value{totalArticlesAltogether}%
 {m}{%
   chapter:\detokenize{#1}% detokenize to treat special characters as plain text
 }
-\NewDocumentCommand{\myPortfolioArticleChapter}
+\NewDocumentCommand{\wrtxPortfolioArticleChapter}
 {
   m %
   O{} % optional alternative label for ease of referencing
@@ -371,7 +371,7 @@ chapter:\the\value{totalArticlesAltogether}%
   \chapter[#1]{%
     \linkChapterConditionally{%
       \setTitleFont%
-      \color{myColorPrimary}%
+      \color{wrtxColorPrimary}%
       #1}%
     }%
   \ifthenelse{\equal{#2}{}}{}{\label{\chapterLabel{#2}}}%
@@ -379,7 +379,7 @@ chapter:\the\value{totalArticlesAltogether}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% NON-ARTICLE CHAPTER
-\NewDocumentCommand{\myPortfolioChapter}
+\NewDocumentCommand{\wrtxPortfolioChapter}
 {%
   m%
 }%
@@ -388,7 +388,7 @@ chapter:\the\value{totalArticlesAltogether}%
   \chapter*{%
     \hyperlink{toc}{%
     \setTitleFont%
-    \color{myColorPrimary}%
+    \color{wrtxColorPrimary}%
     #1%
     }%
   }%

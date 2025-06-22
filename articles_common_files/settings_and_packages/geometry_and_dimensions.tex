@@ -11,28 +11,28 @@
   \geometry{landscape=false}%
 }
 
-\newcommand{\myWidthDigital}{150mm}
-\newcommand{\myTopDigital}{25mm}
-\newcommand{\myBottomDigital}{25mm}
-\newcommand{\myLeftDigital}{25mm}
-\newcommand{\myRightDigital}{25mm}
-\newcommand{\myBindingOffsetDigital}{0mm}
+\newcommand{\wrtxWidthDigital}{150mm}
+\newcommand{\wrtxTopDigital}{25mm}
+\newcommand{\wrtxBottomDigital}{25mm}
+\newcommand{\wrtxLeftDigital}{25mm}
+\newcommand{\wrtxRightDigital}{25mm}
+\newcommand{\wrtxBindingOffsetDigital}{0mm}
 
-\newcommand{\myWidthPrint}{150mm}
-\newcommand{\myTopPrint}{25mm}
-\newcommand{\myBottomPrint}{25mm}
-\newcommand{\myLeftPrint}{25mm}
-\newcommand{\myRightPrint}{25mm}
-\newcommand{\myBindingOffsetPrint}{8mm}
+\newcommand{\wrtxWidthPrint}{150mm}
+\newcommand{\wrtxTopPrint}{25mm}
+\newcommand{\wrtxBottomPrint}{25mm}
+\newcommand{\wrtxLeftPrint}{25mm}
+\newcommand{\wrtxRightPrint}{25mm}
+\newcommand{\wrtxBindingOffsetPrint}{8mm}
 % DIMENSIONS FOR DIGITAL VERSION
 \geometry{
   a4paper,
-  width=\myWidthDigital,
-  top=\myTopDigital,
-  bottom=\myBottomDigital,
-  left=\myLeftDigital,
-  right=\myRightDigital,
-  bindingoffset=\myBindingOffsetDigital,
+  width=\wrtxWidthDigital,
+  top=\wrtxTopDigital,
+  bottom=\wrtxBottomDigital,
+  left=\wrtxLeftDigital,
+  right=\wrtxRightDigital,
+  bindingoffset=\wrtxBindingOffsetDigital,
   twoside % must be true for other features
 }
 \savegeometry{digital}
@@ -41,27 +41,27 @@
 % DIMENSIONS FOR PRINTED VERSION
 \newgeometry{
   a4paper,
-  width=\myWidthPrint,
-  top=\myTopPrint,
-  bottom=\myBottomPrint,
-  left=\myLeftPrint,
-  right=\myRightPrint,
-  bindingoffset=\myBindingOffsetPrint,
+  width=\wrtxWidthPrint,
+  top=\wrtxTopPrint,
+  bottom=\wrtxBottomPrint,
+  left=\wrtxLeftPrint,
+  right=\wrtxRightPrint,
+  bindingoffset=\wrtxBindingOffsetPrint,
   twoside % must be true for other features
 }
 \savegeometry{print}
 
 
-\newcommand{\myGeometrySettingsInfo}{%
-text width:\isPrint{\myWidthPrint}{\myWidthDigital};
-top margin:\isPrint{\myTopPrint}{\myTopDigital};
-bottom margin:\isPrint{\myBottomPrint}{\myBottomDigital};
+\newcommand{\wrtxGeometrySettingsInfo}{%
+text width:\isPrint{\wrtxWidthPrint}{\wrtxWidthDigital};
+top margin:\isPrint{\wrtxTopPrint}{\wrtxTopDigital};
+bottom margin:\isPrint{\wrtxBottomPrint}{\wrtxBottomDigital};
 left margin:
-\isPrint{\myLeftPrint}{\myLeftDigital};
+\isPrint{\wrtxLeftPrint}{\wrtxLeftDigital};
 right margin:
-\isPrint{\myRightPrint}{\myRightDigital};
+\isPrint{\wrtxRightPrint}{\wrtxRightDigital};
 binding offset:
-\isPrint{\myBindingOffsetPrint}{\myBindingOffsetDigital}
+\isPrint{\wrtxBindingOffsetPrint}{\wrtxBindingOffsetDigital}
 }
 
 \usepackage{setspace} % to change spacing between lines

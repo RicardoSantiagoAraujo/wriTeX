@@ -1,0 +1,379 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% wriTeX ARTICLE TEMPLATE %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This is the \textcolor{wrtxColorWarning}{\textbf{\wrtxLanguageLong} (\wrtxLanguage)} version.\\
+
+\wrtxArticleSection{Structuring the Article}
+
+%%%%%% CHAPEAU/INTRO/STANDFIRST
+%%% Factual
+%%% Short
+%%% Simple
+%%% Summary-oriented
+Start with \textcolor{wrtxColorSuccess}{\textbf{Chapeau/Intro/Standfirst}}. typically a few sentences that set the stage for the article, giving readers a quick snapshot of what to expect. It is often used to highlight the most relevant or intriguing aspects of the article, nudging readers to continue. It is a  a more factual or summary-oriented introduction. Somewhat equivalent to the \textcolor{wrtxColorSuccess}{\textbf{Abstract}} in academia.
+
+
+%%%%%% Lead/Lede
+%%% Who?
+%%% What?
+%%% When/Where?
+%%% Why ?
+%%% How ?
+%%% Dynamic and Engaging
+%%% May be Anecdotal or even Humorous
+%%% Open with HOOK/ACCROCHE
+The \textcolor{wrtxColorSuccess}{\textbf{Lead/Lede}} appears at the very start of the story. Its purpose is to \textcolor{wrtxColorSuccess}{\textbf{hook/accroche}} readers and provide the essential \textbf{"who, what, when, where, why, and how"} in an engaging manner. Leads are usually more narrative or conversational, aiming to pull readers into the story rather than simply summarizing it. Leads can be factual, anecdotal, or even humorous, depending on the article's style.
+
+
+\wrtxArticleSection{Section}[manual-key-for-sec]
+Example of article section.
+\wrtxArticleSubsection{Subsection}[manual-key-for-subsec]
+Example of article subsection.
+\wrtxArticleSubsubsection{Subsubsection}[manual-key-for-subsubsec]
+Example of article subsubsection.
+The code generates key for each section and (sub)(sub)section automatically, which are used for linking to the TOC.
+Moreover, you can manually provide an optional argument for an additional shorter key, which is useful when you want refer link to a specific (sub)section within the text. To do that, you can do like so:\wrtxSecRef{subsec}{manual-key-for-subsec} or \wrtxSecRef{subsubsec}{manual-key-for-subsubsec}[Subsubsection].
+
+With an alternative command, you can also \wrtxSecHyperref[sec][manual-key-for-sec]{link to a secton/subsection} without the section number included, which should make sense in most cases. A similar feature has not been implemented for Figures/tables/textboxes as those are numbered so it makes more sense to refer to them by number.
+
+\wrtxArticleSection{Basic commands}
+
+\wrtxArticleSubsection{Font styles}
+\newcommand\demoString{This is a sentence}
+
+\begin{wrtxListMeta}
+  \item[Default] \demoString
+  \item[Medium] \textmd{\demoString}\ (textmd\{\} or mdseries)
+  \item[Bold] \textbf{\demoString}\ (textbf\{\} or bfseries)
+  \item[Italic] \textit{\demoString}\ (textit\{\} or itshape)
+  \item[Slanted] \textsl{\demoString}\ (textsl\{\} or slshape)
+  \item[Upright] \textup{\demoString}\ (textup\{\} or upshape)
+  \item[Spaced out] \textls{\demoString} \ (textls\{\} or lsstyle) % with microtype package
+  \item[Uppercase] \MakeUppercase{\demoString}\ (MakeUppercase\{\})
+  \item[Small caps] \textsc{\demoString}\ (textsc\{\} or scshape)
+  \item[Colored] \textcolor{wrtxColorSuccess}{\demoString}\ (textcolor\{\}\{\} or color\{\})
+\end{wrtxListMeta}
+
+\wrtxArticleSubsection{Font sizes}
+\begin{wrtxListMeta}
+  \item[tiny] {\tiny\demoString}
+  \item[scriptsize] {\scriptsize\demoString}
+  \item[footnotesize] {\footnotesize\demoString}
+  \item[small] {\small\demoString}
+  \item[normalsize] {\normalsize\demoString}
+  \item[large] {\large\demoString}
+  \item[Large] {\Large\demoString}
+  \item[LARGE] {\LARGE\demoString}
+  \item[huge] {\huge\demoString}
+  \item[Huge] {\Huge\demoString}
+  \item[HUGE] {\HUGE\demoString}
+\end{wrtxListMeta}
+
+
+\wrtxArticleSubsection{Font families}
+\begin{wrtxListMeta}
+  \item[wriTeX main font] {\setMainFont\ [\wrtxMainFont; \wrtxMainFontBackup] \demoString}\ (wrtxMainFont)
+  %
+  \item[wriTeX draft font] {\setDraftFont\ [\wrtxDraftFont; \wrtxDraftFontBackup] \demoString} (wrtxDraftFont)
+  %
+  \item[wriTeX title font] {\setTitleFont\ [\wrtxTitleFont; \wrtxTitleFontBackup] \demoString} (wrtxTitleFont)
+  %
+  \item[wriTeX subtitle font] {\setSubtitleFont\ [\wrtxSubtitleFont; \wrtxSubtitleFontBackup] \demoString} (wrtxSubtitleFont)
+  %
+  \item[Serif (Roman)] \textrm{\demoString}\ (textrm\{\} or rmfamily)
+  %
+  \item[Sans serif] \textsf{\demoString}\ (textsf\{\} or sffamily)
+  %
+  \item[Typewriter/monospace/teletype] \texttt{\demoString}\ (texttt\{\} or ttfamily)
+\end{wrtxListMeta}
+
+
+\wrtxArticleSection{Color Palette}
+\NewDocumentCommand{\demoPaletteColor}
+{
+  O{0.6cm}% length
+  O{0.4cm}% height
+  m % color
+}{%
+  \item[#3:]\textcolor{#3}{\rule{#1}{#2}}\ \textcolor{#3}{\demoString}
+}
+\begin{wrtxListMeta}
+  \demoPaletteColor{wrtxColorPrimary}
+  \demoPaletteColor{wrtxColorSecondary}
+  \demoPaletteColor{wrtxColorSuccess}
+  \demoPaletteColor{wrtxColorWarning}
+  \demoPaletteColor{wrtxColorDanger}
+  \demoPaletteColor{wrtxGrayLight}
+  \demoPaletteColor{wrtxGrayMed}
+  \demoPaletteColor{wrtxGrayDark}
+\end{wrtxListMeta}
+
+
+\wrtxArticleSection{Positioned features}
+
+\wrtxArticleSubsection{Footnotes}
+Adding a footnote to a phrase\wrtxFN{This is a footnote}.
+
+\wrtxArticleSubsection{Citations}
+Adding a citations to a phrase\wrtxCite{bibliography:source_template}.
+
+\wrtxArticleSubsection{Glossary entries}
+Adding a glossary entry \wrtxGLS{entryExampleKey1}.
+You can also provide an alternative glossary text in [square brackets]: \wrtxAbrev{entryExampleKey1}[AlternativeText].
+
+\wrtxArticleSubsection{Abreviations}
+Adding an abreviation.\\
+The first time \wrtxAbrev{aeoaa}, it is shown in full.\\
+The second time is different  \wrtxAbrev{aeoaa}.
+You can also provide an alternative abreviation text in [square brackets]: \wrtxAbrev{aeoaa}[ALTTEXT].
+
+\wrtxArticleSubsection{Margin notes}
+Adding a margin note. \marginpar[left margin note]{right margin note}
+
+\wrtxArticleSection{wriTeX lists}
+\wrtxArticleSubsection{Ordered lists}
+
+\begin{wrtxListEnumerate}
+  \item First element
+  \item Second element
+  \item Third element
+\end{wrtxListEnumerate}
+\wrtxArticleSubsection{Unordered lists}
+\begin{wrtxListItemize}
+  \item First element
+  \item Second element
+  \item Third element
+\end{wrtxListItemize}
+
+\wrtxArticleSubsection{Compact lists (used mostly in meta section)}
+\begin{wrtxListMeta}
+  \item[First element] About first element
+  \item[Second element] About second element
+  \item[\wrtxListLabelStyle{Third element styled}] About third element
+  \wrtxCiteEntryWithLabel{\mainSourceKey}{title}[Example of a cite entry in the list][]%
+\end{wrtxListMeta}
+
+\wrtxArticleSection{Input Images}
+
+These would usually be placed inside float environments (see floats section of this guide), but they can also be used independently.
+Each has an automatically-generated key that corresponds to the filename (graphics) or foldername (TikZ).
+
+\textcolor{wrtxColorWarning}{Warning: since this image is repeated several times, the link leads to last instance.}
+
+\wrtxArticleSubsection{Using external graphics}
+\wrtxFigRef{example-image}
+
+\wrtxFigGraphics
+[width=0.6\linewidth]% Dimensions
+{example-image} % File name
+[jpg]% File extension
+
+\wrtxArticleSubsection{Using TikZ code}
+\wrtxFigRef{tikz_example}
+
+\wrtxFigTikz
+[scale=1]% Dimensions (relative to initial size)
+{tikz_example}% containing folder name
+
+\wrtxArticleSection{wriTeX floats}
+
+Floats do not have a precise position. \LaTeX takes care of optimizing their location.
+
+\wrtxArticleSubsection{Float placement}[float-placement-keys]
+
+\begin{wrtxListMeta}
+  \item[h] ---	Place the float \textbf{h}ere, i.e., approximately at the same point it occurs in the source text (however, not exactly at the spot)
+  \item[t] ---	Position at the \textbf{t}op of the page.
+  \item[b] --- Position at the \textbf{b}ottom of the page.
+  \item[p] --- Put on a special \textbf{p}age for floats only.
+  \item[!] --- Override internal parameters LaTeX uses for determining "good" float positions.
+  \item[H] ---	Places the float at precisely the location in the LATEX code, as in ``exactly \textbf{H}ERE''. Requires the float package. This is somewhat equivalent to h!
+\end{wrtxListMeta}
+
+
+\wrtxArticleSubsection{Figures}
+
+
+Figures are can be added inside \wrtxSecHyperref[subsubsec][fig-env-explanation]{figure} (wrtxFigEnv) or \wrtxSecHyperref[subsubsec][wrapfig-env-explanation]{wrapfigure} (wrtxWrapFigEnv) environments.
+
+\wrtxArticleSubsubsection{Figure Environments}[fig-env-explanation]
+
+A figure environment(wrtxFigEnv) takes arguments as follows:
+\begin{wrtxListItemize}
+  \item position (optimal) input as \wrtxSecHyperref[subsec][float-placement-keys]{keys}: LaTeX takes care of optimizing the figure's position in the text.
+  \item fig env native optional arguments such as width.
+  \item Caption (mandatory, used in ToC).
+  \item Caption details (optional).
+  \item Optionally, a key to be able to link to it without depending on the contained image, for example \wrtxFigRef{env:fig-env-ref} (make sure to include "env:" when refering to an environment).
+\end{wrtxListItemize}
+
+You can then refer to it in the text \wrtxFigRef{example-image}.
+
+
+
+\begin{wrtxFigEnv}[][width=0.6\linewidth]
+  {Main caption of graphics figure.}% Caption
+  {Further details about Graphics Figure.}% Caption details
+  [fig-env-ref]
+  %
+  \wrtxFigGraphics[width=0.6\linewidth]{example-image}[jpg]% Image
+\end{wrtxFigEnv}
+
+
+\begin{wrtxFigEnv}[][width=1\linewidth]
+  {Main caption of TikZ figure.}% Caption
+  {Further details about TikZ Figure.}% Caption details
+  [lab-for-tikz-demo]
+  %
+  \wrtxFigTikz[scale=1]{tikz_example}% Image
+\end{wrtxFigEnv}
+
+
+
+\wrtxArticleSubsubsection{Wrap Figure environments}[wrapfig-env-explanation]
+
+Wrap figures are wrapped by surrounding text.
+\begin{wrtxListItemize}
+  \item Number of lines (optimal) to be taken up by wrapfigure.
+  \item position (optimal) input which differs from the usual\wrtxSecHyperref[subsec][float-placement-keys]{keys}. See list below.
+  \item fig env native optional arguments such as width.
+  \item Caption (mandatory, used in ToC).
+  \item Caption details (optional).
+  \item Optionally, a key to be able to link to it without depending on the contained image, for example \wrtxFigRef{env:wrapfig-env-ref} (make sure to include "env:" when refering to an environment).
+\end{wrtxListItemize}
+
+\begin{wrtxListMeta}
+  \item[r] \textbf{r}ight (Exact position)
+  \item[R] \textbf{r}ight (Float)
+  \item[l] \textbf{l}eft (Exact position)
+  \item[L] \textbf{l}eft (Float)
+  \item[i] \textbf{i}nside edge
+  \item[o] \textbf{o}utside edge.
+  \item[!] Override internal parameters\textbf{!}
+\end{wrtxListMeta}
+
+
+\begin{wrtxWrapFigEnv}[8][R][0.33\textwidth]
+  {Caption of wrap figure.}% Caption
+  {Details about wrap figure}% Caption details
+  [wrapfig-env-ref]
+  %
+  \wrtxFigGraphics{example-image}[jpg]% Image
+\end{wrtxWrapFigEnv}
+
+\lipsum[1]
+
+\wrtxArticleSubsubsection{Figures with subfigures}
+
+Floats that take a mandatory filename; an optional filetype (default is jpg); a mandatory main caption (also used in LoF); and a mandatory description (that may remain empty).
+
+Subfigures can be added inside a figure/wrapfigure using the wrtxSubFig command. Then you can refer specifically to a subfigure inside the figure (\wrtxFigRef{lab-for-first-subfig-demo}), or the figure itself (\wrtxFigRef{env:lab-for-fig-group-demo}).
+
+Note that this system to refer to the SubFig requires a key to be manually given, in contrast to the auto-labeling in Graphics and TikZ pictures.
+This is because the label works weirdly inside a subfloat for unknown reasons.
+
+
+\begin{wrtxFigEnv}[][width=1\linewidth]
+  {Main caption of figure group} % Caption
+  {Details.}% Caption details
+  [lab-for-fig-group-demo]
+  %
+  \wrtxSubfig
+  {Main subcaption 1}% Subcaption
+  {Details}% Subcaption details
+  {%
+    \wrtxFigGraphics[width=0.475\linewidth]{example-image}[jpg]% Image
+  }%
+  [lab-for-first-subfig-demo]
+  %
+  %
+  \hfill
+  %s
+  %
+  \wrtxSubfig
+  {Main subcaption 2}% Subcaption
+  {}% Subcaption details
+  {%
+    \wrtxFigGraphics[width=0.475\linewidth]{example-image}[jpg]% Image
+  }%
+  [lab-for-second-subfig-demo]
+\end{wrtxFigEnv}
+
+
+\wrtxArticleSubsection{Textboxes}
+Textboxes are floats that take a mandatory title; and a mandatory content.
+You can then refer to it in the text \wrtxTextboxRef{1}. A second optional argument may be passed to alter the text of the reference, as in \wrtxTextboxRef{1}[TeXtBoX].
+
+\wrtxTextBox[width=0.75\linewidth]{Textbox A title.}
+{
+Custom textboxes are included in the document using the wrtxTextBox command. Option arguments can be passed to further customize the textbox.
+\\%
+Paragraphs and line breaks cannot be added by leaving an empty line, instead you must use commands such as a double backslash \detokenize{\\}.
+}
+
+\wrtxArticleSubsection{Tables}
+Tables are floats that use a custom environment that takes a mandatory title; a mandatory description; and a mandatory reference key.
+You can then refer to it in the text \wrtxTabRef{tablekey}.
+
+
+\begin{wrtxArticleTableEnv}
+    {Example table}
+    {Further details about the table.}
+    [tablekey]
+    %
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{ID} & \textbf{Name} & \textbf{Age} \\
+        \hline
+        1 & Alice & 30 \\
+        2 & Bob & 25 \\
+        3 & Charlie & 35 \\
+        4 & Diana & 28 \\
+        \hline
+    \end{tabular}
+\end{wrtxArticleTableEnv}
+
+
+
+\wrtxArticleSection{Appendix files}
+
+Appendix files can be added by including them in the appendixList macro, separated by commas.
+Reference an appendix item with \wrtxAppendixRef{ref-b-appendix}. You can also reference its content [\wrtxFigRef{env:appendix-fig-env-ref}].
+
+\wrtxArticleSection{Lorem Ipsum text}
+
+% \lipsum[<par-range>][<sentence-range>]
+\lipsum[1][1-4]
+
+\wrtxArticleSection{Math mode}
+
+Example of math mode block:
+\begin{displaymath}
+    E = \frac{m_{0} c^{2}}{\sqrt{1-v^{2}/c^{2}}}
+\end{displaymath}
+
+
+\wrtxArticleSection{Specific features of Lua\TeX{}}
+
+Lua\TeX{} can execute Lua code from the source file in Lua\LaTeX{} or Con\TeX{}t. For example, \texttt{directlua}
+can generate a random number: \directlua{tex.print(math.random())}.
+It is no longer necessary to remember the value of $π$ :
+\directlua{tex.print(math.pi)}.
+
+Using the \texttt{luacode} environment, you can count, as the following example (to 60):
+\begin{luacode}
+  for x=1,60 do
+    tex.print(x)
+  end
+\end{luacode}
+
+
+\wrtxArticleSection{REAME contents}
+
+Import the contents of the markdown README.md file.
+\wrtxInputREADME

@@ -1,0 +1,5233 @@
+\documentclass[
+  %
+  %
+  %
+  %
+  ]{scrartcl}
+
+  %
+%
+%
+\usepackage{luacode} %
+
+%
+\begin{luacode*}
+    startTime = os.clock()
+    endTime = nil
+    elapsedTime = nil
+\end{luacode*}
+
+
+%
+\providecommand{\wrtxCompileDuration}{0}%
+\providecommand{\elapsedInt}{0}%
+\providecommand{\elapsedFrac}{0}%
+
+%
+\makeatletter
+\newcommand{\writeToAux}[2]{%
+%
+%
+%
+%
+\protected@write\@auxout{}{\gdef\string#1{#2}}}
+\makeatother
+
+%
+\AtEndDocument{
+    \luaexec{
+        %
+        %
+        %
+        endTime = os.clock()
+        %
+        elapsedTimeSeconds=endTime-startTime
+        elapsedTimeMilliseconds=(elapsedTimeSeconds\%1)*10
+        %
+        %
+        elapsedInt=math.floor(elapsedTimeSeconds)
+        %
+        elapsedFrac=math.floor(elapsedTimeMilliseconds)
+        %
+        elapsedIntFormatted=tostring(elapsedInt)
+        elapsedFracFormatted=tostring(elapsedFrac)
+        %
+        %
+        %
+        f=io.open("auxiliary_files/\jobname.aux","a")
+        f:write("\\gdef\\elapsedInt{"..elapsedIntFormatted.."}")
+        f:write("\\gdef\\elapsedFrac{"..elapsedFracFormatted.."}")
+    }
+    %
+    \isDraftDebugger{%
+        \luaexec{
+        %
+        tex.print("Start Time: " .. string.format("\%.2f", startTime))
+        tex.print(" --- ")
+        tex.print("End Time: " .. string.format("\%.2f", endTime))
+        tex.print(" --- ")
+        tex.print("Elapsed Time: " .. string.format("\%.2f", elapsedTimeSeconds))
+        }%
+    }{}
+    %
+    %
+    %
+    %
+}
+ %
+%
+%
+ %
+
+
+%
+%
+
+\newcommand{\wrtxarticleKeyCore}{} %
+\newcommand{\wrtxarticleKey}{%
+wrtxarticle:\wrtxarticleKeyCore:\wrtxLanguage%
+}%
+
+\newcommand{\wrtxMainImg}{} %
+
+\newcommand{\mainSourceKey}{bibliography:source_template} %
+ %
+
+\usepackage{hologo}
+\usepackage{ifluatex}
+\usepackage{ifxetex}
+\usepackage{ifvtex}
+
+%
+%
+
+\usepackage{etoolbox} %
+%
+%
+\newcommand{\createAndSetBoolean}[2]{
+  %
+  %
+  \newbool{#1}\setbool{#1}{#2}
+}
+
+\newcommand{\wrtxLanguage}{en}
+%
+
+%
+\createAndSetBoolean{isDraft}{false} %
+%
+\createAndSetBoolean{isMinimal}{true} %
+%
+\createAndSetBoolean{isIncludeFigures}{true} %
+%
+\createAndSetBoolean{isPrintVersion}{false} %
+\createAndSetBoolean{isDrawRibbons}{false}  %
+\createAndSetBoolean{isIncludeMeta}{true} %
+\createAndSetBoolean{isIncludeArticleCover}{true} %
+\createAndSetBoolean{isIncludeToC}{true}  %
+\createAndSetBoolean{isIncludeLoF}{true}  %
+\createAndSetBoolean{isIncludeLoT}{true}  %
+\createAndSetBoolean{isIncludeLoTB}{true}  %
+\createAndSetBoolean{isIncludeBiblio}{true}  %
+\createAndSetBoolean{isIncludeGlossary}{true}  %
+\createAndSetBoolean{isIncludeAbreviations}{true}  %
+\createAndSetBoolean{isPrintUnusedGlossary}{true}  %
+\createAndSetBoolean{isPrintUnusedAbreviations}{true}  %
+\createAndSetBoolean{isHighlightGlossaryAndAbreviations}{true}  %
+\createAndSetBoolean{isIncludeMissingBibEntries}{true}  %
+\createAndSetBoolean{hidecontentswitch}{true}  %
+\createAndSetBoolean{revealhiddenswitch}{false}  %
+%
+\createAndSetBoolean{isIncludeFootnotes}{true}  %
+%
+\createAndSetBoolean{isIncludeCitations}{true}  %
+%
+\createAndSetBoolean{isIncludeCitationsInFootnotes}{true}  %
+%
+\createAndSetBoolean{isIncludeTextBoxes}{true}  %
+%
+\createAndSetBoolean{isMoveTextBoxesToEndOfArticle}{false}  %
+%
+\createAndSetBoolean{isConstrainFloats}{true}  %
+%
+\createAndSetBoolean{isCollapseLists}{true}  %
+%
+\createAndSetBoolean{isIncludeArticleCoverImgInBody}{false}  %
+%
+\createAndSetBoolean{isCreditsInArticleBody}{true}  %
+%
+\createAndSetBoolean{isSplitInTwoColumns}{false}  %
+%
+\createAndSetBoolean{isLandscapeMode}{false}  %
+%
+\createAndSetBoolean{isIncludeAppendix}{false}  %
+%
+\createAndSetBoolean{isPrintLogs}{true}  %
+
+
+%
+%
+\createAndSetBoolean{isDivideArticlesIntoParts}{true}  %
+%
+\createAndSetBoolean{isIncludePerArticleToC}{true}  %
+\createAndSetBoolean{isIncludePerArticleLoF}{true}  %
+\createAndSetBoolean{isIncludePerArticleLoT}{true}  %
+%
+\createAndSetBoolean{isIncludePerArticleSubstance}{true}  %
+%
+\createAndSetBoolean{isSplitBibliographyByChapter}{false}  %
+
+
+
+
+
+
+\usepackage{xstring} %
+
+\newcommand{\addonlyfiles}[1]{%
+  \def\onlyfiles{#1}%
+}
+
+
+%
+\NewDocumentCommand\addContent{
+  +m %
+  +O{} %
+  }{
+
+    \ifthenelse{\equal{#2}{}}%
+      { %
+        \def\fileAddress{elements/#1/#1.tex}%
+      }%
+      { %
+        \def\fileAddress{./#1\_#2.tex}%
+      }%
+    %
+
+
+    %
+    \updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Section : \textbf{#1}}{#2}
+
+    \IfSubStr{\onlyfiles}{#1}{ %
+      \InputIfFileExists{\fileAddress}
+        {%
+           %
+          %
+        }%
+        {%
+    %
+        \textcolor{wrtxColorDanger}{\Huge #1 #2: CONTENT DOES NOT EXIST}
+    %
+        }%
+    }
+
+}
+
+
+
+%
+
+%
+%
+
+%
+\NewDocumentEnvironment{hidecontent}{O{999}}%
+%
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\comment}%
+  \ifbool{revealhiddenswitch}{\color{hideEnvColor}%
+  }%
+  \else%
+  \fi%
+  }%
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\endcomment}%
+  \else%
+  \fi%
+  }%
+
+%
+\NewDocumentEnvironment{hidecontentbasic}{O{999}}%
+%
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\comment}%
+  \else%
+  \fi%
+  }%
+{%
+  \ifnum\version<#1%
+  \ifbool{hidecontentswitch}{\endcomment}%
+  \else%
+  \fi%
+  }%
+
+%
+%
+%
+
+
+%
+\newcommand{\hide}[2][999]{%
+    \ifnum\version<#1%
+     \ifbool{hidecontentswitch}{}{%
+      \ifbool{revealhiddenswitch}{%
+      \ignorespaces\textcolor{hideColor}{%
+          #2}}{%
+          \ignorespaces#2}%
+     }%
+     \else%
+     #2%
+    \fi%
+}%
+
+%
+\newcommand{\hidebasic}[2][999]{%
+    \ifnum\version<#1%
+     \ifbool{hidecontentswitch}{}{%
+      \ignorespaces#2%
+     }%
+    \else%
+     #2%
+    \fi%
+}%
+
+%
+\newcommand{\isPortfolio}[2]{% /!\ need to address the expanded version too
+  \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}}
+  {#1}
+  {#2}
+}%
+
+%
+\newcommand{\isArticle}[2]{%
+  \ifthenelse{\equal{\jobname}{\detokenize{document}}}
+  {#1}
+  {#2}
+}%
+
+%
+\newcommand{\isPrint}[2]{%
+  \ifthenelse{\boolean{isPrintVersion}}%
+  {#1}%
+  {#2}%
+}
+%
+%
+%
+%
+%
+%
+%
+%
+\renewcommand{\wrtxarticleKeyCore}{%
+    \detokenize{wrtx_article_tutorial}%
+}
+%
+\renewcommand{\wrtxLanguage}{en}
+
+%
+\renewcommand{\wrtxMainImg}{./figures/example-image.jpg}
+
+%
+\renewcommand{\mainSourceKey}{%
+bibliography:source_template%
+}%
+ %
+ %
+%
+
+
+%
+%
+\newcommand{\filesToAdd}{
+  substance,
+  body
+}
+
+
+
+%
+\newcommand{\appendixList}
+{%
+    appendix_a,%
+    appendix_b%
+}
+
+\setbool{isMinimal}{false} %
+\setbool{isDraft}{false} %
+\setbool{isPrintVersion}{false} %
+\setbool{isDrawRibbons}{false} %
+\setbool{isIncludeMeta}{true} %
+\setbool{isIncludeArticleCover}{true} %
+\setbool{isIncludeToC}{true} %
+\setbool{isIncludeLoF}{true} %
+\setbool{isIncludeLoT}{true} %
+\setbool{isIncludeLoTB}{true} %
+\setbool{isIncludeBiblio}{true} %
+\setbool{isIncludeGlossary}{true} %
+\setbool{isIncludeAbreviations}{true} %
+\setbool{isPrintUnusedGlossary}{true} %
+\setbool{isPrintUnusedAbreviations}{true} %
+\setbool{isHighlightGlossaryAndAbreviations}{true}  %
+\setbool{isIncludeMissingBibEntries}{false} %
+\setbool{isIncludeFootnotes}{true} %
+\setbool{isIncludeCitations}{true} %
+\setbool{isIncludeCitationsInFootnotes}{true} %
+\setbool{isIncludeTextBoxes}{true} %
+\setbool{isMoveTextBoxesToEndOfArticle}{false}  %
+\setbool{isConstrainFloats}{false}  %
+\setbool{isIncludeArticleCoverImgInBody}{true}  %
+\setbool{isCreditsInArticleBody}{true}  %
+\setbool{isSplitInTwoColumns}{false} %
+\setbool{isLandscapeMode}{false} %
+\setbool{isIncludeAppendix}{true} %
+\setbool{isPrintLogs}{true} %
+
+
+
+%
+%
+\setbool{hidecontentswitch}{false} %
+\setbool{revealhiddenswitch}{true} %
+%
+\newcommand\version{0}
+%
+%
+%
+%
+%
+%
+
+%
+%
+
+%
+\usepackage{xifthen}
+\usepackage{lipsum} %
+
+%
+
+
+\newcommand{\setMinimalMode}
+{
+    \isMinimal
+    {
+
+        \ifthenelse{\equal{\jobname}{\detokenize{portfolio_document}}}
+        {
+            \includeonly{ %
+            %
+            %
+            %
+            }
+        }
+        {
+            \addonlyfiles{
+                %
+                %
+                %
+                body
+            }
+        }
+
+        %
+        \setbool{isPrintVersion}{false} %
+        \setbool{isDrawRibbons}{false} %
+        \setbool{isIncludeMeta}{false} %
+        \setbool{isIncludeArticleCover}{false} %
+        \setbool{isIncludeToC}{false} %
+        \setbool{isIncludeLoF}{false} %
+        \setbool{isIncludeLoT}{false} %
+        \setbool{isIncludeLoTB}{false} %
+        \setbool{isIncludeBiblio}{false} %
+        \setbool{isIncludeGlossary}{false} %
+        \setbool{isIncludeAbreviations}{false} %
+        \setbool{isPrintUnusedGlossary}{false} %
+        \setbool{isPrintUnusedAbreviations}{false} %
+        \setbool{isHighlightGlossaryAndAbreviations}{false}  %
+        \setbool{isIncludeMissingBibEntries}{false} %
+        \setbool{isIncludeFootnotes}{false} %
+        \setbool{isIncludeCitations}{false} %
+        \setbool{isIncludeCitationsInFootnotes}{false} %
+        \setbool{isIncludeTextBoxes}{false} %
+        \setbool{isMoveTextBoxesToEndOfArticle}{false}  %
+        \setbool{isConstrainFloats}{false}  %
+        \setbool{isIncludeArticleCoverImgInBody}{false}  %
+        \setbool{isCreditsInArticleBody}{false}  %
+        \setbool{isSplitInTwoColumns}{false} %
+        \setbool{isLandscapeMode}{false} %
+        \setbool{isIncludeAppendix}{false} %
+
+        %
+        \setbool{isIncludePerArticleToC}{false} %
+        \setbool{isIncludePerArticleLoF}{false} %
+        \setbool{isIncludePerArticleLoT}{false} %
+        \setbool{isIncludePerArticleSubstance}{false} %
+        \setbool{isSplitBibliographyByChapter}{false}  %
+
+        %
+        \pagecolor{black}%
+        \color{white}%
+    }
+    {}
+}
+
+\AfterPreamble{
+    \setMinimalMode
+}
+
+%
+\newcommand{\isMinimal}[2]{%
+    \ifthenelse{\boolean{isMinimal}}%
+    {#1}%
+    {#2}%
+} %
+
+%
+%
+\ifthenelse{\equal{\wrtxLanguage}{en}}{
+  \usepackage[english]{babel}
+  \usepackage[en-GB]{datetime2}
+  \newcommand{\wrtxLanguageLong}{english}
+  %
+  %
+  %
+  \newcommand{\TEXTcover}{Cover}
+  \newcommand{\TEXTtoc}{Table of Contents}
+  \newcommand{\TEXTlof}{List of Figures}
+  \newcommand{\TEXTlot}{List of Tables}
+  \newcommand{\TEXTpToc}{Partial Table of Contents}
+  \newcommand{\TEXTpLof}{Partial List of Figures}
+  \newcommand{\TEXTpLot}{Partial List of Tables}
+  \newcommand{\TEXTlotb}{List of Textboxes}
+  \newcommand{\TEXTmainSource}{Main source}
+  \newcommand{\TEXTtextbox}{Textbox}
+  \newcommand{\TEXTbibliography}{Bibliography}
+  \newcommand{\TEXTchapter}{Article}
+  \newcommand{\TEXTacknowledgements}{Acknowledgements}
+  \newcommand{\TEXTpreface}{Preface}
+  \newcommand{\TEXTpostface}{Postface}
+  \newcommand{\TEXTquotation}{Quotation}
+  \newcommand{\TEXTby}{by}
+}{}%
+
+%
+\ifthenelse{\equal{\wrtxLanguage}{fr}}{
+  \usepackage[french]{babel}
+  \usepackage[french]{datetime2}
+  \newcommand{\wrtxLanguageLong}{french}
+  %
+  %
+  %
+  \newcommand{\TEXTcover}{Couverture}
+  \newcommand{\TEXTtoc}{Table des Matières}
+  \newcommand{\TEXTlof}{Liste des Figures}
+  \newcommand{\TEXTlot}{Liste des Tableaux}
+  \newcommand{\TEXTpToc}{Table Partielle des Matières}
+  \newcommand{\TEXTpLof}{Liste Partielle des Figures}
+  \newcommand{\TEXTpLot}{Liste Partielle des Tableaux}
+  \newcommand{\TEXTlotb}{Liste des Notes}
+  \newcommand{\TEXTmainSource}{Source principale}
+  \newcommand{\TEXTtextbox}{Encadré}
+  \newcommand{\TEXTbibliography}{Bibliographie}
+  \newcommand{\TEXTchapter}{Article}
+  \newcommand{\TEXTacknowledgements}{Remerciements}
+  \newcommand{\TEXTpreface}{Avant-propos}
+  \newcommand{\TEXTpostface}{Postface}
+  \newcommand{\TEXTquotation}{Quotation}
+  \newcommand{\TEXTby}{par}
+}{}%
+
+%
+ %
+\usepackage[inline]{enumitem} %
+
+%
+\def\hiddenitem{%
+    \item[]%
+    \vskip-\baselineskip%
+    \vskip-\parsep%
+    \vskip-\itemsep%
+}
+
+%
+\newlist{wrtxListMeta}{enumerate}{1}
+\setlist[wrtxListMeta]{
+    label={},
+    align=right, %
+    %
+    topsep=0pt, %
+    itemsep=0pt, %
+    parsep=0pt, %
+    leftmargin=100pt, %
+    labelsep=10pt, %
+}
+
+%
+\newlist{wrtxListMetaCollapsed}{enumerate*}{1}
+\setlist[wrtxListMetaCollapsed]{
+%
+}
+
+
+
+\newenvironment{customlist} %
+  {
+    \ifthenelse{\boolean{isCollapseLists}}%
+    {\begin{wrtxListMetaCollapsed}}%
+    {\begin{wrtxListMeta}}%
+    }%
+  {%
+  \ifthenelse{\boolean{isCollapseLists}}%
+  {\end{wrtxListMetaCollapsed}}%
+  {\end{wrtxListMeta}}%
+  }%
+
+
+%
+%
+\newlist{wrtxListEnumerate}{enumerate}{1}
+\newlist{wrtxListItemize}{itemize}{1}
+%
+\def\wrtxListAlign{right}
+\def\wrtxListTopsep{0pt} %
+\def\wrtxListItemsep{8pt} %
+\def\wrtxListParsep{0pt} %
+\def\wrtxListLeftmargin{10pt} %
+\def\wrtxListLabelsep{10pt} %
+%
+\setlist[wrtxListEnumerate]{
+    label=({\arabic*}),
+    align=\wrtxListAlign, %
+    %
+    topsep=\wrtxListTopsep, %
+    itemsep=\wrtxListItemsep, %
+    parsep=\wrtxListParsep, %
+    leftmargin=\wrtxListLeftmargin, %
+    labelsep=\wrtxListLabelsep, %
+}
+\setlist[wrtxListItemize]{
+    label={--},
+    align=\wrtxListAlign, %
+    %
+    topsep=\wrtxListTopsep, %
+    itemsep=\wrtxListItemsep, %
+    parsep=\wrtxListParsep, %
+    leftmargin=\wrtxListLeftmargin, %
+    labelsep=\wrtxListLabelsep, %
+} %
+
+\usepackage[dvipsnames]{xcolor} %
+%
+\usepackage[breakable, skins]{tcolorbox}
+
+\usepackage{transparent}
+
+
+\definecolor{wrtxColorPrimary}{rgb}{0.3,0.2,0.2}
+\definecolor{wrtxColorSecondary}{rgb}{0.1,0.3,0.5}
+\definecolor{wrtxColorSuccess}{rgb}{0,1,0}
+\definecolor{wrtxColorWarning}{rgb}{1,0.5,0}
+\definecolor{wrtxColorDanger}{rgb}{1,0,0}
+\definecolor{wrtxGrayDark}{gray}{0.25}
+\definecolor{wrtxGrayMed}{gray}{0.5}
+\definecolor{wrtxGrayLight}{gray}{0.9}
+\definecolor{bgColor}{rgb}{1,1,1}
+\definecolor{textColor}{rgb}{0,0,0}
+\definecolor{draftBgColor}{rgb}{0.1,0.05,0}
+\definecolor{draftTextColor}{RGB}{255,255,255}
+
+
+%
+\definecolor{hideColor}{rgb}{1,0.5,0.5}
+\definecolor{hideEnvColor}{rgb}{0.5,1,0.5}
+
+
+\colorlet{sectionHeaderColor}{wrtxGrayDark}
+
+\definecolor{sectionDraftContentsBgColor}{rgb}{0.9, 0.7, 0.5}
+\colorlet{sectionFinalContentsBgColor}{bgColor}
+
+\pagecolor{bgColor} %
+\color{textColor} %
+
+
+%
+%
+
+\usepackage[T1]{fontenc} %
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec} %
+\usepackage[fontsize=12pt]{fontsize} %
+\usepackage{unicode-math} %
+%
+%
+%
+%
+%
+%
+
+%
+%
+%
+%
+%
+%
+
+
+%
+
+%
+%
+
+%
+%
+
+%
+%
+%
+%
+%
+
+
+%
+\newcommand{\applyFonts}[2]{%
+    %
+    %
+    \IfFontExistsTF{#1}
+    {%
+        \setmainfont{#1}%
+    }%
+    {%
+        \setmainfont{#2}%
+    }%
+}
+
+%
+%
+\newcommand{\wrtxMainFont}{Helvetica}
+\newcommand{\wrtxMainFontBackup}{Arial}
+\newcommand{\setMainFont}{%
+    %
+    \isMinimal%
+    {}%
+    {%
+        \AfterEndPreamble{
+            \applyFonts{\wrtxMainFont}{\wrtxMainFontBackup}
+        }%
+    }%
+}%
+
+%
+\setMainFont%
+
+
+
+%
+\newcommand{\wrtxDraftFont}{Open Dyslexic}
+\newcommand{\wrtxDraftFontBackup}{Times New Roman}
+\newcommand{\setDraftFont}{%
+    %
+    \isMinimal%
+    {}%
+    {%
+        \AfterEndPreamble{
+            \applyFonts{\wrtxDraftFont}{\wrtxDraftFontBackup}
+        }%
+    }%
+}%
+
+
+%
+\newcommand{\wrtxTitleFont}{Times New Roman}
+\newcommand{\wrtxTitleFontBackup}{Times New Roman}
+\newcommand{\setTitleFont}{%
+    \isMinimal%
+    {}%
+    {%
+        \applyFonts{\wrtxTitleFont}{\wrtxTitleFontBackup}%
+    }%
+}%
+
+%
+\newcommand{\wrtxSubtitleFont}{Times New Roman}
+\newcommand{\wrtxSubtitleFontBackup}{Times New Roman}
+\newcommand{\setSubtitleFont}{%
+    \isMinimal%
+    {}%
+    {%
+        \applyFonts{\wrtxSubtitleFont}{\wrtxSubtitleFontBackup}%
+    }%
+}%
+%
+
+%
+
+\usepackage{geometry}
+
+\ifthenelse{\boolean{isLandscapeMode}}
+{%
+  \geometry{landscape=true}%
+}
+{%
+  \geometry{landscape=false}%
+}
+
+\newcommand{\wrtxWidthDigital}{150mm}
+\newcommand{\wrtxTopDigital}{25mm}
+\newcommand{\wrtxBottomDigital}{25mm}
+\newcommand{\wrtxLeftDigital}{25mm}
+\newcommand{\wrtxRightDigital}{25mm}
+\newcommand{\wrtxBindingOffsetDigital}{0mm}
+
+\newcommand{\wrtxWidthPrint}{150mm}
+\newcommand{\wrtxTopPrint}{25mm}
+\newcommand{\wrtxBottomPrint}{25mm}
+\newcommand{\wrtxLeftPrint}{25mm}
+\newcommand{\wrtxRightPrint}{25mm}
+\newcommand{\wrtxBindingOffsetPrint}{8mm}
+%
+\geometry{
+  a4paper,
+  width=\wrtxWidthDigital,
+  top=\wrtxTopDigital,
+  bottom=\wrtxBottomDigital,
+  left=\wrtxLeftDigital,
+  right=\wrtxRightDigital,
+  bindingoffset=\wrtxBindingOffsetDigital,
+  twoside %
+}
+\savegeometry{digital}
+
+
+%
+\newgeometry{
+  a4paper,
+  width=\wrtxWidthPrint,
+  top=\wrtxTopPrint,
+  bottom=\wrtxBottomPrint,
+  left=\wrtxLeftPrint,
+  right=\wrtxRightPrint,
+  bindingoffset=\wrtxBindingOffsetPrint,
+  twoside %
+}
+\savegeometry{print}
+
+
+\newcommand{\wrtxGeometrySettingsInfo}{%
+text width:\isPrint{\wrtxWidthPrint}{\wrtxWidthDigital};
+top margin:\isPrint{\wrtxTopPrint}{\wrtxTopDigital};
+bottom margin:\isPrint{\wrtxBottomPrint}{\wrtxBottomDigital};
+left margin:
+\isPrint{\wrtxLeftPrint}{\wrtxLeftDigital};
+right margin:
+\isPrint{\wrtxRightPrint}{\wrtxRightDigital};
+binding offset:
+\isPrint{\wrtxBindingOffsetPrint}{\wrtxBindingOffsetDigital}
+}
+
+\usepackage{setspace} %
+%
+%
+\doublespacing %
+\parskip=1em %
+\parindent=15pt %
+%
+
+
+
+\usepackage{scrextend} %
+
+%
+%
+%
+
+\usepackage{fancyhdr}
+%
+
+
+
+
+\fancypagestyle{styleDigital}{
+  \fancyhf{}%
+  %
+  \fancyhead[RO, RE]{\wrtxArticleTitle}
+  \fancyhead[LO, LE]{\wrtxPrintOrDigitalMarker}
+  \fancyhead[CO, CE]{
+    %
+  }
+  %
+  \fancyfoot[RO, RE]{
+    \textcolor{wrtxColorPrimary}{
+      %
+    }
+    \wrtxAbsolutePagination
+  }
+  \fancyfoot[CE, CO]{
+    \wrtxRelativePagination
+  }
+}
+
+%
+\fancypagestyle{styleDigital-NoPage}[styleDigital]{
+\fancyfoot[]{} %
+\fancyfoot[RO, RE]{\wrtxAbsolutePagination}
+\fancyfoot[LO, LE]{\isDraft{\color{wrtxColorWarning}page without pagination in final v.}{}}
+}
+
+
+
+\fancypagestyle{stylePrint}{
+  \fancyhf{}%
+  %
+  %
+  \fancyhead[RO, LE]{\wrtxArticleTitle}
+  %
+
+  %
+  \fancyfoot[LO, RE]{
+    %
+    \wrtxAbsolutePagination
+     }
+  \fancyfoot[RO, LE]{
+    \textcolor{wrtxColorPrimary}{\wrtxRelativePagination}
+    }
+  \fancyfoot[CO]{
+    %
+    \isDraft{\textcolor{wrtxColorWarning}{ODD (RIGHT)}{}}
+  }
+  \fancyfoot[CE]{
+    %
+    \isDraft{\textcolor{wrtxColorWarning}{EVEN (LEFT)}{}}
+  }
+}
+
+%
+\fancypagestyle{stylePrint-NoPage}[stylePrint]{
+  \fancyfoot[LO,RE, RO, LE]{} %
+  \fancyfoot[LO, RE]{\wrtxAbsolutePagination}
+  \fancyfoot[RO, LE]{\isDraft{\color{wrtxColorWarning}page without pagination in final v.}{}}
+}
+
+
+\newcommand{\verticalCenterIcon}[1]{
+    \raisebox{-0.5\height}{%
+    \scalebox{-1}[1]{%
+      #1
+    }
+  }
+}
+
+%
+\newcommand{\wrtxRelativePagination}{%
+  \isDraft
+  {\hyperlink{toc}{\textcolor{wrtxGrayMed}{\thepage}} \textcolor{wrtxColorPrimary}{out of\totalPagesInArticleBody}}%
+  {
+    \textcolor{wrtxColorPrimary}{\hyperlink{toc}{\thepage}}%
+  }
+}
+
+%
+\newcommand{\wrtxAbsolutePagination}{%
+  \isDraft{\textcolor{wrtxColorPrimary}{Absolute page: \textcolor{wrtxGrayMed}{\abspagenumber}/\ztotpages}}{}%
+}
+
+%
+\newcommand{\wrtxArticleTitle}{%
+  \hyperlink{\wrtxarticleKey}{\textcolor{wrtxColorPrimary}{\setTitleFont\citefield{\wrtxarticleKey}{title}}}%
+}
+
+%
+\newcommand{\wrtxPrintOrDigitalMarker}{%
+  \isDraft{%
+  \color{wrtxColorWarning}\isPrint{PRINT VERSION}{DIGITAL VERSION}
+  }{}
+}
+
+
+
+%
+%
+
+%
+\renewcommand{\headrule}{\hbox to\headwidth{\color{wrtxColorPrimary}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{wrtxColorPrimary}\leaders\hrule height \headrulewidth\hfill}}
+
+%
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headheight}{15pt}
+
+
+\fancyheadoffset{0cm}
+
+%
+\usepackage{sectsty}
+\sectionfont{\centering} %
+
+%
+\newcommand{\wrtxSectionTitleLinker}{}
+\newcommand*{\wrtxSectionTitle}[1]{
+    \renewcommand{\wrtxSectionTitleLinker}{%
+        \wrtxarticleKeyCore:\detokenize{#1}%
+    }
+    \phantomsection %
+    \hypertarget{\wrtxSectionTitleLinker}{}
+    %
+    \section*{%
+        \hyperlink{toc}{%
+            \setTitleFont\textcolor{wrtxColorPrimary}{#1}%
+            }%
+        }\label{\wrtxSectionTitleLinker}%
+    %
+    \markboth{\uppercase{#1}}{}
+    %
+    %
+    %
+    %
+    %
+    \addcontentsline{toc}{section}{\noindent%
+                        \hyperref[\wrtxSectionTitleLinker]{\textbf{#1}}%
+                        }
+}
+
+
+
+
+
+\usepackage{titlesec} %
+
+\usepackage{titlecaps} %
+
+\usepackage{lineno} %
+
+\usepackage{import} %
+
+\usepackage{xparse}
+
+\usepackage{totcount} %
+
+
+
+
+\usepackage{dashrule} %
+\newcommand*{\wrtxdashrule}{
+\smallskip
+{\color{gray}\hdashrule{\linewidth}{1pt}{1pt}}
+\medskip
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{%
+  {./}
+  %
+  {./../../articles_common_files/assets/}%
+  {./../../articles_common_files/assets/}%
+  %
+  {./assets/} %
+  {../../../articles/\wrtxarticleKeyCore/assets/} %
+}
+
+\usepackage{verbatim} %
+\usepackage{amsmath} %
+\usepackage[nointegrals]{wasysym} %
+\usepackage{microtype} %
+\usepackage{xspace} %
+
+
+
+%
+%
+%
+\usepackage{csquotes}
+
+\ifthenelse{\boolean{isIncludeCitationsInFootnotes}}
+{%
+    \newcommand{\wrtxCiteStyle}{authoryear}%
+    \newcommand{\wrtxBibStyle}{authoryear}%
+}
+{%
+    \newcommand{\wrtxCiteStyle}{numeric}%
+    \newcommand{\wrtxBibStyle}{numeric}%
+}%
+
+
+
+\usepackage[%
+    %
+    sorting=nty, %
+    %
+    %
+    %
+    citestyle=\wrtxCiteStyle,%
+    bibstyle=\wrtxBibStyle,%
+    backend=biber,%
+    datamodel=wrtxdatamodels,%
+    doi=false,%
+    isbn=false,%
+    url=false,%
+    eprint=false%
+    %
+    %
+    %
+]{biblatex} %
+%
+%
+
+\begin{filecontents*}{temp.bib}
+% ADD YOUR BIBLIOGRAPHY ENTRIES INTO THIS FILE.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM WRITEX.
+
+% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM WRITEX
+
+@article{bibliography:source_template,
+	title = {template},
+	volume = {template},
+	issn = {template},
+	url = {template},
+	doi = {template},
+	language = {template},
+	urldate = {template},
+	journal = {template},
+	author = {{Name1}, Surname1 and {Name2}, Surname2},
+	month = {1},
+	year = {1900},
+	pages = {template},
+	file = {template},
+	abstract = {template}
+}
+% ADD YOUR ARTICLE ENTRIES INTO THIS FILE.
+% MAKE SURE NOT TO OVEWRITE YOUR REPOSITORY'S VERSION WHEN PULLING FROM WRITEX.
+%
+% Add commas after each field, after last one it is ok too
+NAME FIELDS: name, forename AND name, forename AND name, forename% /!\ DO NOT MAKE CHANGES TO THIS FILE FROM ANOTHER REPOSITORY, AS THEY MAY BE OVERWRITTEN WHEN PULLING FROM WRITEX
+
+% Add commas after each field, after last one it is ok too
+NAME FIELDS: name, forename AND name, forename AND name, forename
+
+@wrtxarticle{wrtxarticle:wrtx_article_template:en,
+  IDS = {wrtxarticle:wrtx_article_template:fr, wrtxarticle:wrtx_article_template:pt},
+  title = {Article Title},
+  shorttitle = {Article Title (short)},
+  subtitle = {Article Subtitle},
+  url = {url/to/article},
+	doi = {doi.of.article},
+	abstract = {Article abstract},
+  author = {{Name1}, Surname1 and {Name2}, Surname2},
+  translator = {{Name1}, Surname1 and {Name2}, Surname2},
+	illustrator  = {{Name1}, Surname1 and {Name2}, Surname2},
+  reviewer = {{Name1}, Surname1 and {Name2}, Surname2},
+  thank = {{Name1}, Surname1 and {Name2}, Surname2},
+	month = {1},
+	year = {1900},
+	note = {template},
+	pages = {template},
+	file = {template},
+	language = {template},
+  targetPublication={template},
+  audienceLevel={template},
+  wordMin ={template},
+  wordMax ={template},
+  charMin ={template},
+  charMax ={template},
+  keywords={template},
+  discipline={template},
+  copyright={template},
+  mainSourceKey={template}
+}
+
+
+
+
+@wrtxarticle{wrtxarticle:wrtx_article_tutorial:en,
+	title={tutorial title},
+	shorttitle={tutorial shorttitle},
+	subtitle={tutorial subtitle},
+	url={tutorial.org},
+	doi={},
+	abstract={Abstract for the tutorial},
+	author={Tutorial Author},
+	translator={Tutorial Translator},
+	illustrator={Tutorial Illustrator},
+	reviewer={Tutorial Reviewer},
+	thank={},
+	month={},
+	year={},
+	note={},
+	pages={},
+	file={},
+	language={en},
+	targetPublication={Tutorial Publisher},
+	audienceLevel={Tutorial learners},
+	wordMin={},
+	wordMax={},
+	charMin={},
+	charMax={},
+	keywords={tutorial},
+	discipline={tutorial},
+	copyright={},
+	mainSource={},
+}
+\end{filecontents*}
+
+\addbibresource{temp.bib}
+\isPortfolio%
+{%
+    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography_template.bib}%
+    \loadBibIfExists{../../../articles_common_files/biblatex_files/bibliography.bib}%
+}%
+{%
+    \isArticle{%
+        %
+        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography_template.bib}%
+        \loadBibIfExists{../../articles_common_files/biblatex_files/bibliography.bib}%
+    }{}%
+}%
+
+
+\DeclareBibliographyCategory{wrtxMediationArticles}
+\addtocategory{wrtxMediationArticles}{\wrtxarticleKey}
+
+
+%
+%
+
+%
+\isPortfolio%
+{%
+    \input{../../../articles_common_files/settings_and_packages/biblatex_settings/wrtx_biblatex_types.tex}%
+}%
+{%
+    \isArticle{%
+    %
+%
+\isPortfolio
+{ %
+  \loadBibIfExists{../../../articles_common_files/biblatex_files/wrtxArticles_template.bib}
+  \loadBibIfExists{../../../articles_common_files/biblatex_files/wrtxArticles.bib}
+}
+{
+  \isArticle{%
+    %
+    \loadBibIfExists{../../articles_common_files/biblatex_files/wrtxArticles_template.bib}
+    \loadBibIfExists{../../articles_common_files/biblatex_files/wrtxArticles.bib}
+  }{}
+}
+
+
+
+
+\usepackage{filecontents}
+
+\begin{filecontents}{wrtxdatamodels.dbx}
+  %
+  %
+  \DeclareDatamodelEntrytypes{wrtxarticle}
+  %
+  %
+  %
+  %
+  \DeclareDatamodelFields[type=field, datatype=literal]
+  %
+  {
+    subtitle,
+    abstract,
+    targetPublication,
+    audienceLevel,
+    wordMin,
+    wordMax,
+    charMin,
+    charMax,
+    copyright,
+    mainSourceKey,
+  }
+  %
+  %
+  \DeclareDatamodelFields[type=list,datatype=name]
+  %
+  {
+    illustrator,
+    reviewer,
+    translator,
+    thank,
+    discipline,
+    %
+  }
+  %
+  %
+  \DeclareDatamodelFields[type=field, datatype=date, skipout]
+  %
+  {
+    %
+  }
+  %
+  %
+  \DeclareDatamodelFields[type=field, datatype=verbatim]
+  %
+  {
+    %
+  }
+  %
+  %
+  %
+  \DeclareDatamodelEntryfields[wrtxarticle]
+    %
+  {
+    title,
+    subtitle,
+    illustrator,
+    translator,
+    reviewer,
+    thank,
+    abstract,
+    targetPublication,
+    audienceLevel,
+    wordMin,
+    wordMax,
+    charMin,
+    charMax,
+    keywords,
+    discipline,
+    copyright,
+    mainSourceKey,
+    %
+    }
+\end{filecontents}
+
+
+%
+\DeclareFieldFormat[wrtxarticle]{title}{%
+    %
+        %
+          #1\isdot
+        %
+    %
+}
+
+\DeclareFieldFormat[wrtxarticle]{illustrator}{
+    \printtext{illustrator}
+    \textcolor{red}{
+        \mkbibquote{#1\isdot}
+    }
+}
+
+
+
+\newbibmacro*{wrtxArticleBibMacro}{%
+  \printfield{title}%
+  %
+  %
+  \ifnameundef{author}
+  {}
+  {
+    \newunit\newblock %
+    \printtext{Written by}
+    \printnames{author}%
+    \setunit{\addcomma\space}%
+  }
+  %
+  %
+  %
+  \newunit\newblock %
+  \ifnameundef{illustrator}
+  {}
+  {
+    \printtext{Illustrated by}
+    \printnames{illustrator}%
+    \setunit{\addcomma\space}%
+  }
+  %
+  %
+  %
+  \newunit\newblock %
+  \ifnameundef{reviewer}
+  {}
+  {
+    \printtext{Reviewed by}
+    \printnames{reviewer}%
+    \setunit{\addcomma\space}%
+  }
+  %
+  %
+  %
+  \newunit\newblock %
+  \iffieldundef{targetPublication}
+  {}
+  {
+    \printtext{To be published in}
+    \printfield{targetPublication}%
+    \setunit{\addcomma\space}%
+  }
+  \newunitpunct\addperiod %
+}
+
+
+%
+\DeclareBibliographyDriver{wrtxarticle}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{wrtxArticleBibMacro}%
+  \usebibmacro{finentry}%
+}
+
+
+\newcommand{\setSurnameCommaN}{%
+  \namepartfamily\addcomma\addspace \namepartgiveni\addcomma\isdot%
+}
+\newcommand{\setNameSpaceSurname}{%
+  \namepartgiven\addspace\namepartfamily\isdot%
+}
+
+%
+\newcommand{\chooseNameFormat}{%
+      %
+      %
+      %
+      \setNameSpaceSurname%
+}
+
+\newboolean{wrtxHighlight}
+\newcommand{\setMyHighlight}[1]{%
+  \begingroup%
+      %
+      %
+      #1%
+      %
+  \endgroup%
+}%
+
+\newcommand{\highlightName}[2]{%
+  \DeclareNameFormat{#2}{%
+  \setboolean{wrtxHighlight}{false}%
+    \renewcommand{\do}[1]{\expandafter\ifstrequal\expandafter{\namepartfamily}{####1}{\setboolean{wrtxHighlight}{true}}{}}%
+    \docsvlist{#1}%
+    %
+    \ifthenelse{\value{listcount}=1}
+    {%
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+        %
+        \chooseNameFormat%
+        }}{%
+        %
+        \chooseNameFormat%
+      }}%
+      %
+    }{\ifnumless{\value{listcount}}{\value{liststop}}
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+        %
+        \addcomma\addspace\chooseNameFormat%
+        }}{%
+        %
+        \addcomma\addspace\chooseNameFormat%
+      }}%
+      %
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{and\addspace
+      \setMyHighlight{%
+        %
+        \chooseNameFormat%
+      }}{%
+        %
+        and\addspace\chooseNameFormat%
+        }}%
+      }
+    \ifthenelse{\value{listcount}<\value{liststop}}
+    {\addcomma\space}{}
+  }
+}
+
+\highlightName{Surname, Name}{author}
+\highlightName{Surname, Name}{illustrator}
+\highlightName{Surname, Name}{reviewer} %
+%
+    }{}
+}%
+
+
+\AtDataInput{\stepcounter{%
+    totalCitationsAltogether%
+    }} %
+%
+
+
+
+
+%
+\newcommand{\addBibliography}{
+    \isPortfolio{%
+    \newcommand{\wrtxCitationCounter}{1} %
+    }
+    {
+    \newcommand{\wrtxCitationCounter}{%
+        \totvalue%
+        {totalCitationsInArticle:\wrtxarticleKeyCore}%
+        }
+    }
+
+    \ifthenelse{\boolean{isIncludeBiblio} \and \wrtxCitationCounter>0}{
+        \newpage
+        \begin{SplitColumnsInTwo}%
+        \updateRibbons{\textbf{\TEXTbibliography}}{}
+        \wrtxSectionTitle{\TEXTbibliography}
+        %
+        \printbibliography[
+            heading=none, %
+            %
+            %
+            notcategory=wrtxMediationArticles%
+            ]
+        \end{SplitColumnsInTwo}
+    }{}
+}
+
+
+
+
+\newcommand{\wrtxCite}[1]{%
+    \ifthenelse{\boolean{isIncludeCitations}}{%
+    \stepcounter{%
+    totalCitationsInArticle:\wrtxarticleKeyCore%
+    }%
+        \ifthenelse{\boolean{isIncludeCitationsInFootnotes}}{%
+            \footcite{#1}%
+        }{%
+            \cite{#1}%
+        }%
+    }{}
+}
+
+
+
+%
+\newcommand*\raiseup[2]{%
+        \begingroup%
+        \setbox0\hbox{#1\strut #2}%
+        \leavevmode%
+        %
+        \raise\dimexpr (\ht\strutbox - \ht0)/3 \box0%
+        \endgroup%
+}
+
+%
+\usepackage{xpatch}
+\newcommand{\wrtxUnknownRefSymbol}{????}
+\makeatletter%
+\def\abx@missing@entry#1{%
+\raiseup{\tiny}{%
+    \textcolor{wrtxColorDanger}{%
+        \abx@missing{[\wrtxUnknownRefSymbol\ #1 \wrtxUnknownRefSymbol]}%
+    }%
+    }%
+}
+\makeatother%
+
+
+%
+
+%
+\newcommand{\genericPrenote}[1]
+{\textcolor{wrtxGrayMed}{#1\addcolon\space}}
+%
+\DeclareFieldFormat{wrtxLabelFormat}{\genericPrenote{\titlecap{#1}}}
+%
+%
+\DeclareFieldFormat{prenote}
+{\genericPrenote{#1}}
+%
+%
+\DeclareFieldFormat{wrtxEntrymptyEntry}{\textcolor{red}{#1}}
+%
+%
+\DeclareFieldFormat{doi}{%
+%
+  \ifhyperref
+    {\href{https://doi.org/#1}{\nolinkurl{#1}}}
+    {\nolinkurl{#1}}}
+%
+%
+\DeclareFieldFormat{url}{%
+%
+\url{#1}}
+%
+%
+\DeclareFieldFormat{issn}{%
+%
+#1}
+%
+\renewcommand{\postnotedelim}{\space}
+
+%
+%
+
+%
+\newcommand{\checkIfNoEntryFound}[2]{%
+    \iffieldundef{\wrtxEntry}%
+    {%
+        \ifnameundef{\wrtxEntry}%
+        {%
+            \iflistundef{\wrtxEntry}%
+            {#1}%
+            {#2}%
+        }%
+        {#2}%
+    }%
+    {#2}%
+}%
+\newcommand{\checkIfNoEntryFoundConditional}[2]{%
+    \ifthenelse{\boolean{isIncludeMissingBibEntries}}
+    {%
+    %
+    #2%
+    }%
+    {%
+        \checkIfNoEntryFound{#1}{#2}
+    }%
+}%
+
+
+\DeclareCiteCommand{\wrtxCiteCommand}%
+    {%
+    %
+    \checkIfNoEntryFound{%
+            %
+        }{%
+            \renewcommand{\genericPrenote}[1]{#1}%
+            \usebibmacro{prenote}%
+        }%
+    }
+    {
+        \iffieldundef{\wrtxEntry}%
+        {%
+            \ifnameundef{\wrtxEntry}%
+            {%
+                \iflistundef{\wrtxEntry}%
+                {%
+                    %
+                    \isDraftDebugger{
+                        \printtext[wrtxEmptyEntry]
+                        {\na}
+                        }{}%
+                        %
+                    %
+                }%
+                {%
+                    \printlist{\wrtxEntry}%
+                }%
+            }%
+            {%
+                \printnames{\wrtxEntry}%
+            }%
+        }%
+        {%
+            \printfield{\wrtxEntry}%
+        }%
+    }
+    {}
+    {%
+    \checkIfNoEntryFound{%
+            %
+        }{%
+            \usebibmacro{postnote}%
+        }%
+    }
+
+\DeclareCiteCommand{\wrtxCiteWithLabelCommand}%
+    {%
+        \checkIfNoEntryFoundConditional{%
+            %
+        }{%
+            \item[%
+                \iffieldundef{prenote}%
+                {%
+                    \printtext[wrtxLabelFormat]{\wrtxEntry:}%
+                    %
+                }%
+                {%
+                    \usebibmacro{prenote}%
+                }%
+            ]
+        }%
+    }%
+    {%
+        \iffieldundef{\wrtxEntry}%
+        {%
+            \ifnameundef{\wrtxEntry}%
+            {%
+                \iflistundef{\wrtxEntry}%
+                {%
+                    \ifthenelse{\boolean{isIncludeMissingBibEntries}}{%
+                        \isDraftDebugger{
+                            \printtext[wrtxEmptyEntry]{\na}%
+                            }{}%
+                    }{}%
+                }%
+                {%
+                    \printlist{\wrtxEntry}%
+                }%
+            }%
+            {%
+                \printnames{\wrtxEntry}%
+            }%
+        }%
+        {%
+            \printfield{\wrtxEntry}%
+        }%
+    }%
+    {%
+        \multicitedelim%
+    }%
+    {%
+        \checkIfNoEntryFoundConditional{%
+            %
+        }{%
+            \usebibmacro{postnote}%
+        }%
+    }%
+
+
+%
+\newcommand{\wrtxEntry}{}
+%
+\NewDocumentCommand{\wrtxCiteEntryWithLabel}
+{
+    m%
+    m%
+    O{}%
+    O{}%
+}{%
+    \renewcommand{\wrtxEntry}{#2}%
+    \wrtxCiteWithLabelCommand[#3][#4]{#1}%
+}%
+
+%
+\NewDocumentCommand{\wrtxCiteEntry}
+{
+    m%
+    m%
+    O{}%
+    O{}%
+}{%
+    \renewcommand{\wrtxEntry}{#2}%
+    %
+    \wrtxCiteCommand[#3][#4]{#1}%
+}%
+
+%
+\usepackage{tikz} %
+\usetikzlibrary{positioning} %
+\usetikzlibrary{trees} %
+\usetikzlibrary{shapes.geometric} %
+\usetikzlibrary{intersections} %
+\usetikzlibrary{calc} %
+\usetikzlibrary{tikzmark}
+\usetikzlibrary{decorations.text} %
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{3d}
+\usetikzlibrary{fadings}
+\usetikzlibrary {shadows.blur}
+\usetikzlibrary{backgrounds}
+\usepackage{pgf-pie}
+
+%
+%
+
+%
+\newcommand{\isDraft}[2]{%
+    \ifthenelse{\boolean{isDraft}}%
+    {#1}%
+    {#2}%
+}
+\newcommand{\draftVersionOnly}[1]{%
+    %
+    \isDraft{%
+        #1%
+    }
+    {}
+}
+
+\usepackage{draftwatermark}
+\DraftwatermarkOptions{stamp=false} %
+
+\newcommand{\wrtxWatermark}{
+    \DraftwatermarkOptions{stamp=true} %
+    \isPortfolio{ %
+        \SetWatermarkText{PORTFOLIO DRAFT} %
+    }{ %
+        \SetWatermarkText{ARTICLE DRAFT} %
+    }
+    %
+    \SetWatermarkScale{0.5}
+    \SetWatermarkColor[gray]{0.9}
+    %
+    \SetWatermarkLightness{0.05}
+    \SetWatermarkAngle{45}
+}
+
+%
+\draftVersionOnly{%
+    \color{draftTextColor}%
+    \pagecolor{draftBgColor}%
+    \setDraftFont %
+    \onehalfspacing %
+    \doublespacing %
+    %
+    \wrtxWatermark
+    %
+    %
+    %
+    %
+    %
+    \usepackage[
+        %
+        inline %
+        ]
+    {showlabels}%
+    \renewcommand{\showlabelfont}{\slshape\color{wrtxColorSuccess}\tiny}
+
+    %
+    \isMinimal
+    {}
+    {%
+        \usepackage{showframe}
+        \renewcommand*\ShowFrameColor{\color{wrtxColorSecondary}}
+        \renewcommand*\ShowFrameLinethickness{1pt}
+        \usepackage{layout} %
+        \AtEndDocument{\newpage\updateRibbons{LAYOUT}{}\layout}
+    }%
+}{}
+
+
+
+
+\NewDocumentCommand{\isDraftDebugger}
+{
+    m
+    m
+    O{wrtxColorWarning}
+}{%
+    \textcolor{#3}{%
+        %
+            {%
+            \isDraft%
+            {\texttt{\scriptsize#1}#2}%
+            {#2}%
+            }%
+    }%
+}
+
+
+\NewDocumentCommand{\wrtxBreakMessage}
+{
+    O{wrtxColorWarning}%
+    O{wrtxColorSuccess}%
+    m%
+}
+{%
+    {%
+    \noindent\centering%
+    \textcolor{#1}%
+    {%
+    \noindent\dotfill\\%
+    \setstretch{0.3}%
+    \noindent\dotfill \textcolor{#2}{#3} \dotfill\\%
+    \noindent\dotfill\\%
+    }%
+    }%
+}
+
+
+\usepackage[section]{placeins} %
+ %
+
+
+\usepackage{float} %
+\restylefloat{figure}%
+
+\newcommand{\wrtxFloatBarrier}{%
+  \ifthenelse{\boolean{isConstrainFloats}}
+  {%
+  \isDraftDebugger{%
+    \noindent\wrtxBreakMessage[yellow][blue]{FLOAT BARRIER}%
+  }{}%
+  \FloatBarrier%
+  }%
+  {}
+}
+
+
+\usepackage{soul} %
+\usepackage{textcomp}
+
+%
+%
+%
+
+%
+%
+
+
+
+\newcommand{\na}{
+  \textcolor{red}{NA} }
+
+  %
+
+\newcommand{\colorsubsection}[1]{%
+\colorbox{wrtxColorSecondary!30}{\parbox{\dimexpr\textwidth-2\fboxsep}{\hspace{0.5em}#1}}}
+\newcommand{\colorsubsubsection}[1]{%
+\colorbox{wrtxColorSecondary!10}{\parbox{\dimexpr\textwidth-2\fboxsep}{\hspace{0.5em}#1}}}
+
+
+\newcommand{\metaInfoSettings}[1]{
+    {
+    \newgeometry{top=0.3cm,bottom=0.3cm,left=0cm,right=0cm} %
+    %
+    %
+    \singlespacing %
+    \parskip=0em %
+    \parindent=0pt %
+    %
+    \titlespacing*{\paragraph}{0pt}{0pt}{0.5em}
+    %
+    %
+    %
+    %
+    \titlespacing*{\subsection}{0pt}{0pt}{5pt}
+    \titleformat{\subsection}
+    {\vbox{\rule{1\textwidth}{1pt}\vspace{-1.5ex}}\normalsize\color{wrtxGrayMed}\bfseries}
+    {\thesubsection}
+    {0.1em}
+    {\colorsubsection}
+    %
+    %
+    %
+    %
+    \titlespacing*{\subsubsection}{0pt}{0pt}{5pt}
+    \titleformat{\subsubsection}
+    {\vbox{\rule{1\textwidth}{0.1pt}\vspace{-1.4ex}}\small\color{wrtxGrayMed}}
+    {\thesubsubsection}
+    {0.1em}
+    {\colorsubsubsection} %
+
+    %
+    \scriptsize
+
+    %
+    #1
+    \clearpage
+    }
+}
+
+
+\newcommand{\mainSourceMetadata}{
+    \subsection*{Main source of information}
+
+
+        \begin{wrtxListMeta}
+        %
+            \hiddenitem %
+        %
+            \item[\wrtxListLabelStyle{Main source key}]\ \expandafter\detokenize\expandafter{\mainSourceKey}
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{title}[][]%
+            \wrtxCite{\mainSourceKey}%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{doi}[DOI][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{issn}[ISSN][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{url}[URL][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{language}[][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{year}[][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{month}[][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{author}[][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{journaltitle}[Journal:][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{volume}[][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{pages}[][]%
+        %
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{abstract}[][]%
+        \end{wrtxListMeta}
+}
+
+
+\newcommand{\wrtxArticleMetadata}{
+    \subsection*{Mediation paper}
+
+    \begin{addmargin}
+        [1em] %
+        {1em} %
+        To cite: \fullcite{\wrtxarticleKey}
+        \\
+    \end{addmargin}
+
+    \begin{wrtxListMeta}
+        %
+        \hiddenitem %
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{title}[][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{subtitle}[][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{discipline}[Disciplines:][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{abstract}[Summary:][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{keywords}[][]%
+    \end{wrtxListMeta}
+
+    %
+    \subsubsection*{Credits  \& Contributions}
+    \begin{wrtxListMeta}
+        %
+        \hiddenitem %
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{author}[][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{illustrator}[][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{reviewer}[][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{thank}[][]%
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{copyright}[][]%
+    \end{wrtxListMeta}
+    %
+    \subsubsection*{Target specifications}
+    \begin{wrtxListMeta}
+        %
+        \hiddenitem %
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{targetPublication}[Target publication: ][]
+        %
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{audienceLevel}[Audience level: ][]
+        %
+        \begin{alwaysShowMeta}
+            %
+            \wrtxCiteEntryWithLabel{\wrtxarticleKey}{wordMin}[World limits: ][]
+            ---
+            \wrtxCiteEntry{\wrtxarticleKey}{wordMax}
+            %
+            \wrtxCiteEntryWithLabel{\wrtxarticleKey}{charMin}[Character limits: ][]
+            ---
+            \wrtxCiteEntry{\wrtxarticleKey}{charMax}
+        \end{alwaysShowMeta}
+    \end{wrtxListMeta}
+}
+
+%
+\newenvironment{alwaysShowMeta}{
+    \begingroup%
+    \booltrue{isIncludeMissingBibEntries} %
+}
+{%
+    \endgroup%
+}%
+
+
+\newcommand{\wrtxLuatexMessage}{
+    \ifluatex \directlua{tex.print(status.banner)}
+    \else \textcolor{wrtxColorWarning}{This document was not compiled with \textbf{Lua\TeX}}
+    \fi
+}
+
+\newcommand{\technicalMetadata}{
+    \subsection*{Technical data}
+    \begin{wrtxListMeta}
+        %
+        \item[\wrtxListLabelStyle{Compilation date:}]\ \today
+        %
+        \item[\wrtxListLabelStyle{Compilation time:}]\ \DTMcurrenttime
+        %
+        \item[\wrtxListLabelStyle{Compilation duration:}] \elapsedInt.\elapsedFrac\ seconds (previous single run)
+        %
+        \item[\wrtxListLabelStyle{Lua\TeX\ version:}] \wrtxLuatexMessage
+        %
+        \item[\wrtxListLabelStyle{Paper format:}] \csname Gm@paper\endcsname
+        %
+        \item[\wrtxListLabelStyle{Geometry:}] \wrtxGeometrySettingsInfo
+        %
+    \end{wrtxListMeta}
+}
+
+
+\newcommand{\docOptionsItem}[1]{%
+    \isPortfolio{}{%
+        \item[\wrtxListLabelStyle{#1}]\ \ifthenelse{\boolean{#1}}{\textcolor{wrtxColorSuccess}{true}}{\textcolor{wrtxColorDanger}{false}}%
+    }%
+}%
+
+\newcommand{\docOptionsMetadata}{
+    \subsection*{Document options}
+    %
+    %
+    \begin{minipage}[t]{0.40\textwidth} %
+        \begin{wrtxListMeta}[
+            leftmargin=70pt,
+            labelsep=0pt
+            ]
+            %
+            \hiddenitem %
+            %
+            \item[\wrtxListLabelStyle{Article key (core)}]\ \wrtxarticleKeyCore
+            \item[\wrtxListLabelStyle{Article key (full)}]\ wrtxarticle:\wrtxarticleKeyCore:\wrtxLanguage
+            \item[\wrtxListLabelStyle{Language}]\ \wrtxLanguageLong (\wrtxLanguage)
+            \item[] %
+            %
+            \docOptionsItem{isMinimal}
+            %
+            \docOptionsItem{isDraft}
+            %
+            \docOptionsItem{isLandscapeMode}
+            %
+            \docOptionsItem{isSplitInTwoColumns}
+            %
+            \docOptionsItem{isPrintVersion}
+            %
+            \docOptionsItem{isDrawRibbons}
+            %
+            \docOptionsItem{isIncludeMeta}
+            %
+            \docOptionsItem{isIncludeArticleCover}
+            %
+        \end{wrtxListMeta}
+    \end{minipage}
+    %
+    %
+    %
+    \begin{minipage}[t]{0.30\textwidth}
+        \begin{wrtxListMeta}[
+            leftmargin=40pt,
+            labelsep=0pt
+            ]
+            %
+            \hiddenitem %
+            %
+            \docOptionsItem{isIncludeToC}
+            %
+            \docOptionsItem{isIncludeLoF}
+            %
+            \docOptionsItem{isIncludeLoT}
+            %
+            \docOptionsItem{isIncludeLoTB}
+            %
+            \docOptionsItem{isIncludeBiblio}
+            %
+            \docOptionsItem{isIncludeGlossary}
+            %
+            \docOptionsItem{isIncludeAbreviations}
+            %
+            \docOptionsItem{isPrintUnusedGlossary}
+            %
+            \docOptionsItem{isPrintUnusedAbreviations}
+            %
+            \docOptionsItem{isHighlightGlossaryAndAbreviations}
+            %
+            \docOptionsItem{isIncludeMissingBibEntries}
+            %
+        \end{wrtxListMeta}
+    \end{minipage}
+        %
+    %
+    \begin{minipage}[t]{0.30\textwidth}
+        \begin{wrtxListMeta}[
+            leftmargin=40pt,
+            labelsep=0pt
+            ]
+            %
+            \hiddenitem %
+            %
+            \docOptionsItem{isIncludeFootnotes}
+            %
+            \docOptionsItem{isIncludeCitations}
+            %
+            \docOptionsItem{isIncludeCitationsInFootnotes}
+            %
+            \docOptionsItem{isIncludeTextBoxes}
+            %
+            \docOptionsItem{isMoveTextBoxesToEndOfArticle}
+            %
+            \docOptionsItem{isConstrainFloats}
+            %
+            \docOptionsItem{isIncludeArticleCoverImgInBody}
+            %
+            \docOptionsItem{isCreditsInArticleBody}
+            %
+            \docOptionsItem{hidecontentswitch}
+            %
+            \docOptionsItem{revealhiddenswitch}
+            %
+            \isPortfolio{}{\item[\wrtxListLabelStyle{Contents version}]\ \version}
+        \end{wrtxListMeta}
+    \end{minipage}
+
+
+    \isPortfolio{}%
+    {
+        %
+        %
+        \subsubsection*{Components included}
+        %
+        \begin{wrtxListMeta}
+            %
+            \hiddenitem %
+            \foreach \file in \filesToAdd {
+                \item             \expandafter\detokenize\expandafter{\file}%
+            }%
+        \end{wrtxListMeta}%
+        \ifthenelse{\equal{\filesToAdd}{}}{\textcolor{wrtxColorDanger}{No components included}}{}%
+        %
+        %
+        \subsubsection*{Appendix entries\ %
+        \ifthenelse{\boolean{isIncludeAppendix}}{}{\textsuperscript{\textcolor{wrtxColorDanger}{\tiny APPENDIX EXCLUDED}}}
+        }
+        \ifthenelse{\not\equal{\appendixList}{}}%
+        {%
+            \begin{wrtxListMeta}
+                \foreach \entries [count=\n] in \appendixList {
+                    \item[\wrtxListLabelStyle{\makeAlph{\n}}] %
+                    \hyperlink{appendix:target:\n}{\expandafter\detokenize\expandafter{\entries}}%
+                }
+            \end{wrtxListMeta}
+        }
+        {%
+            \hspace{1cm}\textcolor{wrtxColorDanger}{No appendix entries selected}
+        }
+    }
+}
+
+
+\newcommand{\addMetadata}{
+    \ifthenelse{\boolean{isIncludeMeta}}%
+    {%
+    \updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Meta-information}{META-INFORMATION}
+        \metaInfoSettings{
+            {
+                \wrtxSectionTitle{Meta-info}
+
+                %
+                %
+                \isPortfolio{}{\technicalMetadata}
+                %
+                %
+                \docOptionsMetadata
+                %
+                %
+                \mainSourceMetadata
+                %
+                %
+                \wrtxArticleMetadata
+                %
+                %
+                \countersList
+            }
+        }%
+    }%
+}   %
+\NewDocumentEnvironment{substanceEnvironment}
+{
+    O{substance}
+}
+{
+    \IfSubStr{#1}{substance}{
+        %
+        %
+        %
+        %
+        \onehalfspacing %
+        \parskip=0em %
+        \parindent=0pt %
+        %
+        \small
+        %
+        %
+        \titlespacing*{\subsubsection}{0pt}{0pt}{5pt}
+        \titleformat{\subsubsection}
+        {\vbox{\rule{1\textwidth}{0.1pt}\vspace{-0.5ex}}\small\color{wrtxGrayMed}}
+        {\thesubsubsection}
+        {0.1em}
+        {\hspace{2em}} %
+        %
+        \wrtxSectionTitle{Substance}
+    }
+    {%
+        %
+    }%
+}
+{
+    %
+}
+
+\BeforeBeginEnvironment{substanceEnvironment}{
+    \newgeometry{top=0.3cm,bottom=0.3cm,left=0.5cm,right=0.5cm}
+}
+\AfterEndEnvironment{substanceEnvironment}{\restoregeometry}
+
+
+%
+\newcommand{\addSubstanceToPortfolio}[1]
+{%
+    \ifthenelse{\boolean{isIncludePerArticleSubstance}}%
+    {%
+        \begin{substanceEnvironment}%
+            #1%
+        \end{substanceEnvironment}%
+    }%
+    {}
+}%
+
+
+\BeforeBeginEnvironment{substanceEnvironmentPORTFOLIO}{
+    \newgeometry{top=0.3cm,bottom=0.3cm,left=0.5cm,right=0.5cm}
+}
+\AfterEndEnvironment{substanceEnvironmentPORTFOLIO}{\restoregeometry}
+
+
+
+
+%
+%
+\newlist{substanceList}{enumerate}{1}
+\setlist[substanceList]{
+    label={},
+    align=right, %
+    %
+    topsep=0pt, %
+    itemsep=0pt, %
+    parsep=0pt, %
+    leftmargin=0pt, %
+    labelsep=0pt, %
+}   %
+%
+
+
+%
+\newcommand{\wrtxTitlePage}{%
+    \begin{titlepage}
+        \atBeginTitlePage%
+        \pagecolor{wrtxGrayLight}
+        \centering
+        %
+        %
+        \begin{wrtxTitlesBox}
+            %
+            %
+            {%
+                \color{wrtxColorSecondary}%
+                \setTitleFont%
+                \HUGE%
+                \bfseries%
+                \scshape%
+                \lsstyle%
+                %
+                \wrtxCiteEntry{\wrtxarticleKey}{title}%
+            }%
+            %
+            %
+            %
+            {%
+                \color{wrtxGrayDark}\large \wrtxCiteEntry{\wrtxarticleKey}{subtitle}
+                [\\\vspace{0.35cm}]
+                [\vspace{0.35cm}]
+            }%
+        \end{wrtxTitlesBox}
+        %
+        \titlePageItem
+        {0}%
+        [\horizontalDeco{Written by:}]%
+        {author}
+        [\\]%
+        {0}%
+        %
+        \titlePageItem
+        {0}%
+        [\horizontalDeco{Illustrated by:}]%
+        {illustrator}
+        [\\]%
+        {0}%
+        %
+        \titlePageItem
+        {0}%
+        [\horizontalDeco{Reviewed by:}]%
+        {reviewer}
+        [\\]%
+        {0}%
+        %
+        \titlePageItem
+        {0}%
+        [\horizontalDeco{Translated by:}]%
+        {translator}
+        [\\]%
+        {0}%
+        %
+        %
+        %
+        %
+        %
+        %
+        \addCoverImg{\wrtxMainImg}
+        \wrtxVfills{1}
+        %
+        %
+        %
+        %
+        {\color{wrtxGrayDark}\normalsize \today}
+        \wrtxVfills{1}
+        %
+    \end{titlepage}
+}
+
+
+
+\newcounter{titlepagenumber}%
+
+\newcommand{\addCover}{%
+    \ifthenelse{\boolean{isIncludeArticleCover}}%
+    {%
+        \updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Cover}{COVER}
+        \setcounter{titlepagenumber}{\value{page}}%
+        %
+        \begin{samepage}
+            \wrtxTitlePage%
+        \end{samepage}
+        %
+        \isDraft{%
+            \pagecolor{draftBgColor}%
+        }%
+        {%
+            \pagecolor{bgColor}%
+        }%
+    }
+    {%
+    %
+    }%
+}
+
+\NewDocumentCommand{\addCoverImg}
+{
+    m%
+    O{0.5\textwidth}%
+}{%
+    \isDraftDebugger{Cover image:\ #1\\}{}%
+    \ifthenelse{\equal{#1}{}}%
+    {}%
+    {%
+    \begin{tcolorbox}
+        [
+        center,
+        colframe=wrtxColorPrimary,
+        %
+        boxsep=0px,
+        left=0pt,right=0pt,top=0pt,bottom=0pt,
+        boxrule=3px,
+        arc=0px,
+        outer arc=0px,
+        hbox
+        ]
+         \includegraphics[width=#2]{#1}%
+    \end{tcolorbox}%
+    }%
+}
+
+
+
+
+\newcommand{\atBeginTitlePage}
+%
+{%
+    \setcounter{page}{\thetitlepagenumber}%
+    %
+    \isPortfolio{}{\hypertarget{start}{}}%
+    \newcommand{\articleCoverRef}{\wrtxarticleKeyCore:cover}%
+    \isPortfolio{}{\hypertarget{\articleCoverRef}{}} %
+    \isDraftDebugger{specific reference: \articleCoverRef; generic reference: start}{}%
+    \phantomsection %
+    \hypertarget{\wrtxarticleKeyCore:cover}{}%
+    \label{\wrtxarticleKeyCore:cover} %
+    %
+    \isPortfolio
+    {%
+        \addcontentsline{toc}{section}{%
+            \noindent%
+            \protect\hyperref[\wrtxarticleKeyCore:cover]{\textbf{\TEXTcover}}%
+        }%
+    }
+    {%
+        \addtocontents{toc}{%
+            \protect\wrtxContentsTextFont%
+            \noindent%
+            \hyperref[\wrtxarticleKeyCore:cover]{\textbf{\TEXTcover}}%
+            \par%
+        }%
+    }%
+}
+
+
+%
+\NewDocumentCommand{\wrtxVfills}
+{%
+    m%
+}
+{%
+    %
+    \ifthenelse{#1>0}%
+    {%
+        \foreach \n in {1,...,#1}{%
+            \vfill%
+            \isDraftDebugger%
+            {%
+                \textcolor{wrtxColorWarning}{\tiny\n}%
+                \vfill%
+            }{}%
+        }%
+    }%
+    {%
+        \isDraftDebugger
+        {\textcolor{wrtxColorDanger}{\tiny DO NOT ADD SPACE}}%
+        {}%
+    }%
+}
+
+
+\NewDocumentCommand{\titlePageItem}
+{%
+    m%
+    O{}%
+    m%
+    O{}%
+    m%
+}
+{%
+    {%
+        %
+        \normalsize\color{wrtxGrayDark}%
+        %
+        \wrtxCiteEntry{\wrtxarticleKey}{#3}%
+        %
+        [{%
+            \wrtxVfills{#1}%
+            \normalsize\color{wrtxGrayMed}%
+            #2%
+        }]%
+        %
+        [{%
+            \normalsize\color{wrtxGrayMed}%
+            #4%
+            \wrtxVfills{#5}%
+        }]%
+    }%
+}
+
+\newtcolorbox{wrtxTitlesBox}
+{
+    %
+    enhanced,
+    center,
+    halign=center,
+    %
+    valign upper=center,
+    %
+    %
+    width={1\pagewidth},
+    %
+    height=5cm,
+    boxsep=5mm,
+    boxrule=0.1mm,
+    leftrule=0.25mm,
+    rightrule=0.25mm,
+    arc is angular,%
+    arc=1mm,
+    outer arc=0mm,
+    colback=wrtxColorPrimary!3!white,colframe=wrtxColorPrimary!95!black,
+    %
+    title={Mediation Article},
+    fonttitle=\Large,
+    coltitle=white,
+    %
+    toptitle=3mm, bottomtitle=3mm,
+    halign title=flush center,
+    attach boxed title to top center={
+        xshift=0cm,
+        yshift= -3.5mm, %
+%
+    }
+}
+
+
+\NewDocumentCommand{\horizontalDeco}
+{m}{%
+    \tikzset{
+    wrtxline/.style={
+        line width=0.1ex,
+        line cap=round,
+        wrtxColorPrimary
+    }
+    }
+    \noindent\tikz{%
+        %
+        \path (0,0) -- node[inner xsep=1em] (content) {#1} ++ (\linewidth,0);
+        %
+        \draw[wrtxline]  (0,0) -- (content);
+        %
+        \draw[wrtxline]  (content) -- (\linewidth,0);
+    }%
+}   %
+
+\usepackage{titletoc} %
+
+\newcommand{\wrtxContentsTextFont}{\setTitleFont}
+
+%
+\usepackage{tocloft}
+\renewcommand{\cftsecdotsep}{\cftdotsep}
+\setcounter{secnumdepth}{0} %
+\renewcommand{\cftsecindent}{0em}
+\renewcommand{\cftsecnumwidth}{2.4em}
+\renewcommand{\cftsubsecindent}{2.4em} %
+\renewcommand{\cftsubsecnumwidth}{3.0em}
+\renewcommand{\cftsubsubsecindent}{4.7em}
+\renewcommand{\cftsubsubsecnumwidth}{4.7cm}
+%
+\renewcommand{\cftpartfont}{\LARGE\bfseries\color{black}\wrtxContentsTextFont}
+\isPortfolio{\renewcommand{\cftchapfont}{\large\color{black}\wrtxContentsTextFont\bfseries}}{}
+\renewcommand{\cftsecfont}{\color{black}\wrtxContentsTextFont}
+\renewcommand{\cftsubsecfont}{\color{wrtxGrayDark}\wrtxContentsTextFont}
+\renewcommand{\cftsubsubsecfont}{\color{wrtxGrayDark!95}\wrtxContentsTextFont}
+\renewcommand{\cftparafont}{\color{wrtxGrayDark!90}\wrtxContentsTextFont}
+\renewcommand{\cftsubparafont}{\color{wrtxGrayDark!85}\wrtxContentsTextFont}
+%
+%
+\isPortfolio{\renewcommand{\cftchappagefont}{\setMainFont}}{}
+\renewcommand{\cftsecpagefont}{\setMainFont}
+\renewcommand{\cftsubsecpagefont}{\setMainFont}
+\renewcommand{\cftsubsubsecpagefont}{\setMainFont}
+\renewcommand{\cftparapagefont}{\setMainFont}
+\renewcommand{\cftsubparapagefont}{\setMainFont}
+%
+\renewcommand{\cftfigfont}{\color{black}\wrtxContentsTextFont}
+%
+\renewcommand{\cftfigpagefont}{\setMainFont}
+%
+\renewcommand{\cfttabfont}{\color{black}\wrtxContentsTextFont}
+%
+\renewcommand{\cfttabpagefont}{\setMainFont}
+%
+%
+%
+%
+
+
+\setlength{\cftfigindent}{0pt}  %
+\setlength{\cfttabindent}{0pt}  %
+%
+\newcommand{\listFirstLine}{%
+%
+\null\hfill\textmd{%
+    \color{wrtxGrayMed}{Page}%
+    }%
+}
+%
+\renewcommand\cftaftertoctitle{\listFirstLine}
+%
+\renewcommand\cftafterloftitle{\listFirstLine}
+%
+\renewcommand\cftafterlottitle{\listFirstLine}
+%
+\AfterPreamble{%
+    %
+    \cftaddtitleline{loTB}{textbox*}{%
+    \listFirstLine%
+    \\%
+    }{}%
+}
+
+
+
+%
+%
+
+
+\newcommand{\addToCLoFLoT}{
+    \newpage
+    \isPortfolio{}{\begin{SplitColumnsInTwo}}%
+        \updateRibbons{\textbf{TOC LOF LOT}}{}
+        \hypertarget{contents}{}
+        %
+        \addToC%
+        \addLoF%
+        \addLoT%
+        \addLoTextBoxes%
+    \isPortfolio{}{\end{SplitColumnsInTwo}}
+    %
+}
+
+
+
+
+\newcommand{\addToC}{
+    \ifthenelse{\boolean{isIncludeToC}}{
+        %
+        \hypertarget{toc}{}
+        \renewcommand{\contentsname}{\vspace*{-40pt}} %
+        \section*{\listTitleStyle\TEXTtoc}
+        %
+        \setcounter{tocdepth}{5}
+        \begingroup %
+            %
+            %
+            %
+            \tableofcontents%
+        \endgroup   %
+    }{}
+}
+
+
+
+\newcommand{\addLoF}{
+    \isPortfolio{%
+        \newcommand{\wrtxFigCounter}{1} %
+    }
+    {
+        \newcommand{\wrtxFigCounter}{%
+            \totvalue{totalFiguresInArticle:\wrtxarticleKeyCore}}
+    }
+    \ifthenelse{\wrtxFigCounter=0}{ %
+        %
+    }{
+        \ifthenelse{\boolean{isIncludeLoF}}{
+            %
+            \hypertarget{lof}{}
+            \setcounter{lofdepth}{2} %
+
+            \renewcommand{\listfigurename}{\vspace*{-40pt}} %
+            \section*{\listTitleStyle\TEXTlof}
+            %
+            %
+            \listoffigures
+            %
+        }{}
+    }
+
+}
+
+
+
+\newcommand{\addLoT}{
+    \isPortfolio{%
+        \newcommand{\wrtxTabCounter}{1} %
+    }
+    {
+        \newcommand{\wrtxTabCounter}{%
+            \totvalue{totalTablesInArticle:\wrtxarticleKeyCore}}
+    }
+    \ifthenelse{\wrtxTabCounter=0}{ %
+        %
+    }{
+    \ifthenelse{\boolean{isIncludeLoT}}{
+        %
+        \hypertarget{lot}{}
+        \setcounter{lotdepth}{1}
+        \renewcommand{\listtablename}{\vspace*{-40pt}} %
+        \section*{\listTitleStyle\TEXTlot}
+        \listoftables
+        %
+    }{}
+    }
+}
+
+
+\newcommand{\addLoTextBoxes}{
+    \isPortfolio{%
+        \newcommand{\wrtxTextboxCounter}{1} %
+    }
+    {
+        \newcommand{\wrtxTextboxCounter}{%
+            \totvalue{totalTextboxesInArticle:\wrtxarticleKeyCore}}
+    }
+    \ifthenelse{\wrtxTextboxCounter=0}{ %
+        %
+    }{
+    \ifthenelse{\boolean{isIncludeLoTB}}{
+        %
+        \hypertarget{loTB}{}
+        %
+        \renewcommand{\listtextboxname}{\vspace*{-40pt}} %
+        \section*{\listTitleStyle\TEXTlotb}
+        \begingroup %
+        %
+            %
+            %
+            \listoftextbox%
+        \endgroup   %
+        %
+    }{}
+    }
+}
+
+%
+\newcommand{\listTitleStyle}{%
+    \color{wrtxColorPrimary}\wrtxContentsTextFont
+}
+  %
+\ifthenelse{\boolean{isPrintVersion}}%
+{%
+    %
+    \setboolean{@twoside}{true}
+    \ifthenelse{\equal{\@documentclass}{book}}{\setboolean{@openright}{true}}{} %
+    \loadgeometry{print}
+    \isPortfolio
+    {%
+        \tocloftpagestyle{plain}%
+        \pagestyle{plain}%
+    }
+    {%
+        \tocloftpagestyle{stylePrint-NoPage}%
+        \pagestyle{stylePrint-NoPage}
+    }
+}
+{%
+    %
+    \setboolean{@twoside}{false} %
+    \ifthenelse{\equal{\@documentclass}{book}}{\setboolean{@openright}{false}}{} %
+    \loadgeometry{digital}
+    \pagestyle{styleDigital-NoPage}
+    \isPortfolio
+    {%
+        \tocloftpagestyle{plain}%
+        \pagestyle{plain}%
+    }
+    {%
+        \tocloftpagestyle{styleDigital-NoPage}%
+        \pagestyle{styleDigital-NoPage}
+    }
+}
+
+
+
+\newcommand{\pageStyleBody}{%
+    \isPrint%
+    {
+        \pagestyle{stylePrint}
+    }
+    {
+        \pagestyle{styleDigital}
+    }%
+}
+
+
+  %
+
+
+%
+
+
+\newcommand{\wrtxFN}[1]{%
+    \ifthenelse{\boolean{isIncludeFootnotes}}{%
+        \stepcounter{totalFootnotesInArticle:\wrtxarticleKeyCore}%
+        \stepcounter{totalFootnotesAltogether}%
+        \footnote{#1}%
+    }{}%
+}%
+  %
+%
+%
+%
+
+
+%
+\NewDocumentEnvironment{SplitColumnsInTwo}{
+    O{isSplitInTwoColumns}%
+}
+{%
+    \ifthenelse{\boolean{#1}}
+    {\twocolumn}
+    {}%
+}
+{%
+    \ifthenelse{\boolean{#1}}
+    {\onecolumn}
+    {}%
+}
+%
+\setlength{\columnsep}{1.4cm}
+
+%
+\setlength{\columnseprule}{0.4pt}
+
+%
+\newcommand{\latexcolumnseprulecolor}{\color{wrtxGrayMed}}
+%
+\makeatletter
+\patchcmd\@outputdblcol{%
+  \normalcolor\vrule
+}{%
+  \latexcolumnseprulecolor\vrule
+}{%
+}{%
+  \@latex@warning{Patching \string\@outputdblcol\space failed}%
+}
+\makeatother
+
+  %
+\newcommand{\wrtxArticleTitleLinker}{}
+
+\newcommand{\tocTitleBgColor}{}
+\isDraft{\renewcommand{\tocTitleBgColor}{draftBgColor}}{\renewcommand{\tocTitleBgColor}{bgColor}}%
+\newcommand{\setArticleTitle}[1]{%
+  \renewcommand{\wrtxArticleTitleLinker}{%
+    #1:articleHeader%
+  }
+  \phantomsection %
+  \sectionmark{#1}
+  \hypertarget{#1}{}
+  %
+  \isPortfolio
+  {
+    %
+    \addtocontents{toc}{\protect\vspace*{1ex}}
+    %
+    \addtocontents{toc}{
+      \protect\hypertarget%
+      {\wrtxArticleTitleLinker}{}%
+        %
+    }%
+  }%
+  { %
+    %
+    \addtocontents{toc}{\protect\vspace*{0ex}}
+    %
+    \addtocontents{toc}{
+      \protect\hypertarget%
+      {\wrtxArticleTitleLinker}{}%
+        \par%
+  }%
+  }
+  %
+  \addcontentsline{toc}{section}{%
+    {%
+      %
+        \noindent%
+        %
+        %
+        %
+          %
+          \protect\hyperref[\wrtxArticleTitleLinker]{%
+            \textbf{Article body:} \wrtxCiteEntry{#1}{title}%
+          }
+        %
+      %
+    }%
+  }
+  %
+  %
+  %
+  %
+  {%
+    %
+    \section*{%
+      \hyperlink{\wrtxArticleTitleLinker}
+      {\Huge\setTitleFont\color{wrtxGrayDark}\wrtxCiteEntry{#1}{title}%
+      }%
+    }%
+    \label{\wrtxArticleTitleLinker}%
+    \isDraftDebugger{%
+      \begin{center}%
+        Title ref: \wrtxArticleTitleLinker%
+      \end{center}}%
+      {
+        \vspace{-5ex}%
+      }
+  }%
+}
+
+\newcommand{\setArticleSubtitle}[1]
+{%
+      %
+      {%
+      \begin{center}%
+        \vspace{-2mm}%
+        \setTitleFont%
+        \color{wrtxGrayDark}%
+        \large%
+        \wrtxCiteEntry{#1}%
+        {subtitle}%
+        \vspace{-4mm}%
+      \end{center}%
+      }%
+}
+
+\newenvironment{bodyEnvironment}
+{
+    %
+    %
+    \titlespacing*{\subsection}{0pt}{30pt}{5pt}
+    \newfontfamily\articlesectionfont[Color=wrtxGrayMed]{\wrtxTitleFont}
+    \titleformat{\subsection}
+    {%
+    \wrtxFloatBarrier
+    \Large\articlesectionfont%
+    }
+    {\thesubsection}
+    {0.1em}
+    {}
+    %
+    %
+    \titlespacing*{\subsubsection}{0pt}{15pt}{3pt}
+    \newfontfamily\articlesubsectionfont[Color=wrtxGrayMed]{\wrtxTitleFont}
+    \titleformat{\subsubsection}
+    {%
+    %
+    \large\articlesubsectionfont%
+    }
+    {\thesubsubsection}
+    {0.1em}
+    {}
+    %
+    %
+    \titlespacing*{\paragraph}{0pt}{10pt}{0pt}
+    \newfontfamily\articleparagraphfont[Color=wrtxGrayMed]{\wrtxTitleFont}
+    \titleformat{\paragraph}
+    {%
+    %
+    \normalsize\articleparagraphfont%
+    }
+    {\theparagraph}
+    {0.1em}
+    {} %
+
+    %
+    \isPrint
+    {\newpage\pagestyle{empty}\cleardoublepage}
+    {\newpage}
+    \draftVersionOnly{
+      \linenumbers %
+    }
+    \isPortfolio
+    {
+      %
+      %
+    }
+    {
+      %
+      %
+      \setcounter{page}{1}
+    }
+    \pageStyleBody %
+      %
+    \begin{SplitColumnsInTwo}%
+    %
+    \setArticleTitle{\wrtxarticleKey}
+    %
+    \setArticleSubtitle{\wrtxarticleKey}%
+    %
+    \printTitleImg
+    %
+    \printMainSource
+    %
+}
+{%
+    %
+    %
+    \printCredits
+    \end{SplitColumnsInTwo}%
+    %
+    \postponeTextBoxPrintTillHere
+    %
+    %
+
+    \setcounter{lastPageInArticle:\wrtxarticleKeyCore}{\thepage}
+    \newpage
+}
+
+
+
+
+%
+\newcommand{\articleSectionRef}{\wrtxarticleKey:secAnchor%
+\the\value{totalSectionsInArticle:\wrtxarticleKeyCore}%
+}
+\newcommand{\articleSubsectionRef}{\wrtxarticleKey:subSecAnchor%
+\the\value{totalSubsectionsInArticle:\wrtxarticleKeyCore}%
+}
+\newcommand{\articleSubsubsectionRef}{\wrtxarticleKey:subsubSecAnchor%
+\the\value{totalSubsubsectionsInArticle:\wrtxarticleKeyCore}%
+}
+
+\ifthenelse{\boolean{isIncludeToC}}
+{ %
+  %
+  \newcommand{\linkSectionConditionally}[1]
+  {
+    \protect\hyperlink
+    {\articleSectionRef}
+    {#1}
+    \isDraftDebugger{\ Section key: \articleSectionRef}{}
+  }
+  %
+  \newcommand{\linkSubsectionConditionally}[1]
+  {
+    \protect\hyperlink
+    {\articleSubsectionRef}
+    {#1}
+    \isDraftDebugger{\ Subsection key: \articleSubsectionRef}{}
+  }
+  %
+  \newcommand{\linkSubsubsectionConditionally}[1]
+  {
+    \protect\hyperlink
+    {\articleSubsubsectionRef}
+    {#1}
+    \isDraftDebugger{\ Subsubsection key: \articleSubsubsectionRef}{}
+  }
+}
+{ %
+  \newcommand{\linkSectionConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Section key: LINK IS INACTIVE}{}
+  }
+  \newcommand{\linkSubsectionConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Subsection key: LINK IS INACTIVE}{}
+  }
+  \newcommand{\linkSubsubsectionConditionally}[1]
+  {
+    #1
+    \isDraftDebugger{\ Subsubsection key: LINK IS INACTIVE}{}
+  }
+}
+
+%
+%
+\NewDocumentCommand{\secLabel}
+{m}{%
+  sec:\detokenize{#1}%
+}
+\NewDocumentCommand{\wrtxArticleSection}
+{
+  m %
+  O{} %
+}
+{%
+  \stepcounter{totalSectionsInArticle:\wrtxarticleKeyCore} %
+  \refstepcounter{totalArticleSectionsAltogether} %
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\articleSectionRef}
+    {}%
+    }
+  \subsection[#1]{%
+    \linkSectionConditionally
+    {#1}%
+  }%
+  \ifthenelse{\equal{#2}{}}{}{\label{\secLabel{#2}}}%
+  \wrtxLogger{START SECTION NUMBER \the\value{totalSectionsInArticle:\wrtxarticleKeyCore} \wrtxarticleKeyCore}
+}
+
+%
+%
+\NewDocumentCommand{\subsecLabel}
+{m}{%
+  subsec:\detokenize{#1}%
+}
+\NewDocumentCommand{\wrtxArticleSubsection}
+{
+  m %
+  O{} %
+}
+{%
+  \stepcounter{totalSubsectionsInArticle:\wrtxarticleKeyCore} %
+  \refstepcounter{totalArticleSubsectionsAltogether} %
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\articleSubsectionRef}
+    {}%
+    }
+  \subsubsection[#1]{%
+      \linkSubsectionConditionally{#1}
+    }%
+  \ifthenelse{\equal{#2}{}}{}{\label{\subsecLabel{#2}}}%
+  \wrtxLogger{START SUBSECTION NUMBER \the\value{totalSubsectionsInArticle:\wrtxarticleKeyCore} \wrtxarticleKeyCore}
+}
+
+%
+%
+\NewDocumentCommand{\subsubsecLabel}
+{m}{%
+  subsubsec:\detokenize{#1}%
+}
+\NewDocumentCommand{\wrtxArticleSubsubsection}
+{
+  m %
+  O{} %
+}
+{%
+  \stepcounter{totalSubsubsectionsInArticle:\wrtxarticleKeyCore} %
+  \refstepcounter{totalArticleSubsubsectionsAltogether} %
+  \addtocontents{toc}{
+    \protect\hypertarget
+    {\articleSubsubsectionRef}
+    {}%
+    }
+  \paragraph[#1]{%
+      \linkSubsubsectionConditionally{#1}
+    }%
+  \ifthenelse{\equal{#2}{}}{}{\label{\subsubsecLabel{#2}}}%
+  \wrtxLogger{START SUBSUBSECTION NUMBER \the\value{totalSubsubsectionsInArticle:\wrtxarticleKeyCore} \wrtxarticleKeyCore}
+}
+
+
+
+
+
+\newcommand{\refDraftMessage}[1]{%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{wrtxColorWarning}%
+    {\texttt{(#1)}}%
+  }%
+  {%
+    \color{wrtxGrayMed}%
+  }%
+}
+
+%
+\NewDocumentCommand{\wrtxSecRef}
+{%
+    m %
+    m %
+    O{Section} %
+}{%
+  \begingroup%
+  \refDraftMessage{#1:#2}%
+  #3\ \ref{#1:#2}%
+  %
+  \endgroup%
+}
+
+
+%
+\NewDocumentCommand{\wrtxSecHyperref}
+{%
+    O{} %
+    O{} %
+    m %
+}{%
+  \begingroup%
+  \refDraftMessage{#1:#2}%
+  \hyperref[#1:#2]{#3}%
+  \endgroup%
+}
+
+
+\newcommand{\printMainSource}{%
+  \ifthenelse{\equal{\mainSourceKey}{}}%
+  {%
+    %
+  }%
+  {%
+    \textcolor{wrtxGrayMed}{\textbf{\TEXTmainSource:}}%
+    \wrtxCiteEntry{\mainSourceKey}{title}\wrtxCite{\mainSourceKey}%
+  }%
+}%
+
+
+\newcommand{\printCredits}{%
+  \ifthenelse{\boolean{isCreditsInArticleBody}}%
+  {%
+  \vspace{1cm}
+  \begin{wrtxListMeta}
+    [
+      align=left,
+      leftmargin=30pt,
+      labelsep=5pt,
+      itemsep=5pt,
+    ]
+    %
+    \item [\setTitleFont\color{wrtxGrayDark}\textbf{Contributions}]
+    \hiddenitem %
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{author}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{translator}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{illustrator}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{reviewer}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{thank}%
+  \end{wrtxListMeta}
+  }%
+  {%
+  }%
+}%
+
+\newcommand{\printTitleImg}{
+  \ifthenelse{\boolean{isIncludeArticleCoverImgInBody}}{
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{\wrtxMainImg}%
+    \isDraftDebugger{\\MAIN IMAGE}{}%
+  \end{center}
+  }
+  {
+    \isDraftDebugger{
+      \begin{center}
+    EXCLUDE MAIN IMAGE FROM HERE
+    \end{center} }{}%
+  }
+}   %
+\usepackage{wrapfig}
+\usepackage{subfloat} %
+\setcounter{lofdepth}{2} %
+
+\usepackage{caption}
+\usepackage[list=true,listformat=simple]{subcaption} %
+\captionsetup[figure]{font=scriptsize,labelfont=scriptsize}
+\captionsetup[figure]{labelformat=empty} %
+\renewcommand{\figurename}{Fig.} %
+\renewcommand{\subfigurename}{Subfig.} %
+\subcaptionsetup[figure]{labelformat=empty} %
+
+\newcommand{\stepGeneralFigureCounter}{%
+  \stepcounter{totalFiguresInArticle:\wrtxarticleKeyCore}%
+  \stepcounter{totalFiguresAltogether}%
+}
+
+\newcommand{\refcounterWithoutIncrementing}[1]
+{%
+  \addtocounter{#1}{-1}\refstepcounter{#1}%
+}
+
+\makeatletter
+\newcommand\wrtxFigCaption{%
+  \@dblarg\@wrtxFigCaption}
+  \newcommand\wrtxFigCaptionLinker{image:\wrtxarticleKeyCore:\the\value{totalFiguresInArticle:\wrtxarticleKeyCore}}%
+\def\@wrtxFigCaption[#1]#2{%
+  \caption[\protect\hypertarget{\wrtxFigCaptionLinker}{#1}]%
+      {%
+        \ifthenelse{\boolean{isIncludeLoF}}
+        {%
+          \hyperlink{\wrtxFigCaptionLinker}{#2}
+        }%
+        {%
+          #2%
+        }%
+      }%
+    }
+\makeatother
+%
+
+\NewDocumentCommand{\figLabel}
+{%
+  m %
+}{%
+  fig:\detokenize{#1}%
+}
+
+
+\NewDocumentCommand{\wrtxFigRef}
+{
+    m %
+    O{Figure} %
+}{%
+  \begingroup%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{wrtxColorWarning}%
+    {\texttt{(\figLabel{#1})}}%
+  }%
+  {%
+    \color{wrtxGrayMed}%
+  }
+  #2\ \ref{\figLabel{#1}}%
+  \endgroup%
+}
+
+
+%
+\NewDocumentEnvironment{wrtxFigEnv}
+{
+  O{}%
+  O{width=0.475\linewidth} %
+  m %
+  m %
+  O{} %
+}
+{%
+  \begin{figure}[#1]%
+    \stepGeneralFigureCounter
+    \stepcounter{totalFigureEnvsInArticle:\wrtxarticleKeyCore}%
+    \stepcounter{totalFigureEnvsAltogether}%
+    \centering%
+    \isDraftDebugger{\wrtxBreakMessage{START FIGURE ENVIRONMENT}}{}%
+}
+{%
+    %
+    \captionsetup{#2}%
+    \wrtxFigCaption[#3]{%
+    \textcolor{wrtxGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\wrtxarticleKeyCore}:\ }}%
+    \textbf{#3.} #4%
+    }%
+    \isDraftDebugger{\wrtxBreakMessage{END FIGURE ENVIRONMENT}}{}%
+    \label{fig:env:#5} %
+  \end{figure}
+}
+
+%
+\NewDocumentEnvironment{wrtxWrapFigEnv}
+{
+  O{10}%
+  O{R}%
+  O{0.33\textwidth} %
+  m %
+  m %
+  O{} %
+}
+{%
+  \wrapfigure[#1]{#2}{#3}%
+    \stepGeneralFigureCounter%
+    \stepcounter{totalWrapfigureEnvsInArticle:\wrtxarticleKeyCore}%
+    \stepcounter{totalWrapfigureEnvsAltogether}%
+    \centering%
+    \isDraftDebugger{%
+    %
+    %
+    \tiny wrap #1 lines;\ %
+    \tiny position: #2;\ %
+    \tiny width:\detokenize{#3}\\%
+    }{}%
+}
+{%
+    %
+    \wrtxFigCaption[#4]{%
+    \textcolor{wrtxGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\wrtxarticleKeyCore}:\ }}%
+    \textbf{#4.} #5%
+    }%
+    %
+    \label{fig:env:#6} %
+  \endwrapfigure%
+}
+
+
+\renewcommand\thesubfigure{\alph{subfigure}}%
+%
+\NewDocumentCommand{\wrtxSubfig}
+{%
+  O{width=1\linewidth}%
+  m %
+  m %
+  m%
+  O{}%
+}%
+{%
+  \stepcounter{totalSubfiguresInArticle:\wrtxarticleKeyCore}%
+  \stepcounter{totalSubfiguresAltogether}%
+  \captionsetup[subfigure]{#1}%
+  \subfloat%
+  [\ifstrempty{#2}{\isDraftDebugger{Captionless subfigure}{}}{#2}]%
+  [%
+    \textcolor{wrtxGrayMed}{\textbf{%
+      Subfigure\ %
+      \the\numexpr\value{totalFiguresInArticle:\wrtxarticleKeyCore}+0\relax%
+      \thesubfigure%
+    \ifstrempty{#2}{}{:\ }%
+    }}%
+    \ifstrempty{#2}{}{%
+      \textbf{#2.} #3%
+      }%
+  ]%
+  {%
+    #4%
+    \label{fig:#5}%
+  }%
+}%
+
+
+
+%
+\NewDocumentCommand{\wrtxFigGraphics}
+{
+  O{width=1\linewidth} %
+  O{%
+    {./}%
+    {./assets/figures/}%
+    {./../../articles_common_files/assets/}%
+    {../../../articles/\wrtxarticleKeyCore/assets/figures/}%
+    {./../../../articles_common_files/assets/}%
+  } %
+  m %
+  O{jpg} %
+}
+{%
+    \stepcounter{totalGraphicsInArticle:\wrtxarticleKeyCore}%
+    \stepcounter{totalGraphicsAltogether}%
+    \refcounterWithoutIncrementing{totalFiguresAltogether}
+    %
+    \graphicspath{#2}%
+    %
+      \begin{tikzpicture}%
+        %
+        \node[
+          anchor=center,
+          %
+          %
+          %
+          %
+          %
+          %
+          %
+          %
+          ] at (0,0) {%
+          %
+          %
+          \includegraphics[#1]{#3.#4}%
+          %
+          };
+        %
+        %
+        %
+        \isDraftDebugger{
+          %
+          \node[fill=black!90, fill opacity=0.75, anchor=south]
+          at (current bounding box.south)
+          {Ref key: \figLabel{#3}};
+          %
+          \node[fill=black!90, fill opacity=0.75, anchor=north east]
+          at (current bounding box.north east)
+          {.\detokenize{#4 }};
+          %
+          \node[fill=black!90, fill opacity=0.75, anchor=north west]
+          at (current bounding box.north west)
+          {\detokenize{#1}};
+        }{}%
+      \end{tikzpicture}%
+      %
+      \label{\figLabel{#3}}%
+      %
+      %
+}
+
+%
+\NewDocumentCommand{\wrtxFigTikz}
+{
+  O{scale=1} %
+  O{%
+  {./}%
+  {./assets/figures/}%
+  {./../../articles_common_files/assets/}%
+  {../../../articles/\wrtxarticleKeyCore/assets/figures/}%
+  {./../../../articles_common_files/assets/}%
+  } %
+  m %
+}
+{%
+    \stepcounter{totalTikZPicturesInArticle:\wrtxarticleKeyCore}%
+    \stepcounter{totalTikZPicturesAltogether}%
+    \refcounterWithoutIncrementing{totalFiguresAltogether}
+    %
+    \graphicspath{#2}
+    %
+    \tikzset{
+      background grid/.style={
+          %
+          thin,
+          draw=wrtxGrayLight,
+          step=.5cm
+        },
+      background rectangle/.style={
+          %
+          %
+          ultra thick,
+          draw=wrtxGrayDark,
+          fill=white,
+          %
+          %
+        }
+    }
+    %
+    \isMinimal
+    {%
+      \isPortfolio
+      {%
+        \includegraphics[#1]{../../../articles/\wrtxarticleKeyCore/assets/tikz/#3/auxiliary_files/standalone.pdf}%
+      }
+      {%
+        \includegraphics[#1]{assets/tikz/#3/auxiliary_files/standalone.pdf}%
+      }
+    }
+    {%
+    \isDraft
+    {%
+      \begin{tikzpicture}
+        [#1,%
+        show background rectangle,
+        show background grid
+        ]
+    }
+    {%
+      \begin{tikzpicture}
+        [#1,%
+        ]
+    }
+
+        \isPortfolio
+        {%
+          \expandafter\input\expandafter{../../../articles/\wrtxarticleKeyCore/assets/tikz/#3/content.tex}%
+        }{%
+        \expandafter\input\expandafter{assets/tikz/#3/content.tex}%
+        }%
+        %
+        \isDraftDebugger{%
+          \node[fill=black!90, fill opacity=0.75, anchor=north] at (current bounding box.south) {fig key: \normalsize\detokenize{#3}};%
+        }{};
+      \end{tikzpicture}
+    }
+    %
+    \label{\figLabel{#3}}%
+    %
+    %
+}
+   %
+\captionsetup[table]{font=scriptsize,labelfont=scriptsize}
+\captionsetup[table]{labelformat=empty} %
+\renewcommand{\tablename}{Tab.} %
+\subcaptionsetup[table]{labelformat=empty} %
+
+
+\makeatletter
+\newcommand\wrtxTabCaption{%
+  \stepcounter{totalTablesInArticle:\wrtxarticleKeyCore}%
+  \stepcounter{totalTablesAltogether}%
+  \@dblarg\@wrtxTabCaption}
+  \newcommand\wrtxTabCaptionLinker{table:\wrtxarticleKeyCore:\the\value{totalTablesInArticle:\wrtxarticleKeyCore}}%
+\def\@wrtxTabCaption[#1]#2{%
+  \caption[\protect\hypertarget{\wrtxTabCaptionLinker}{#1}]%
+    {
+      \ifthenelse{\boolean{isIncludeLoT}}
+      {%
+        \hyperlink{\wrtxTabCaptionLinker}{#2}
+      }%
+      {%
+        #2
+      }%
+    }
+    }
+\makeatother
+%
+
+
+\newcommand{\tabLabel}[1]{%
+  tab:\detokenize{#1}%
+}
+
+%
+\NewDocumentEnvironment{wrtxArticleTableEnv}
+{
+m %
+m %
+O{} %
+}
+{
+    \begin{table}
+        \centering
+        %
+        \wrtxTabCaption[#1]{%
+            \textcolor{wrtxGrayMed}{\textbf{Table\ \the\value{totalTablesInArticle:\wrtxarticleKeyCore}:\ }}%
+            \textbf{#1.} #2%
+            \isDraftDebugger{\\ Ref key: \tabLabel{#3}}{}%
+        }
+        %
+        \label{\tabLabel{#3}} %
+}
+{
+    \end{table}
+}
+
+\NewDocumentCommand{\wrtxTabRef}
+{
+    m %
+    O{Table} %
+}{%
+  \begingroup%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{wrtxColorWarning}%
+    {\texttt{(\tabLabel{#1})}}%
+  }%
+  {%
+    \color{wrtxGrayMed}%
+  }
+  #2\ \ref{\tabLabel{#1}}%
+  \endgroup%
+}
+  %
+
+    %
+    \usepackage{marginnote}
+
+    %
+    %
+
+
+    %
+    %
+    %
+    %
+
+  %
+\ifthenelse{\boolean{isSplitInTwoColumns}}
+{
+  \newcommand{\textboxXmargin}{5pt}
+  \newcommand{\textboxwidth}{0.98\linewidth}
+}
+{
+  \newcommand{\textboxXmargin}{35pt}
+  \newcommand{\textboxwidth}{0.95\linewidth}
+}
+
+%
+\tcbset{
+  wrtxTcbBaseStyle/.style={
+    center, %
+    colback=wrtxGrayLight!50, %
+    colframe=wrtxGrayMed, %
+    coltitle=wrtxGrayLight, %
+    sharp corners=south, %
+    rounded corners=north, %
+    boxrule=1pt, %
+    top=15pt, %
+    bottom=20pt, %
+    left=\textboxXmargin, %
+    right=\textboxXmargin, %
+    arc=5pt, %
+    fonttitle=\bfseries, %
+    width=\textboxwidth, %
+    before skip=20pt, %
+    after skip=20pt, %
+    title after break, %
+    breakable, %
+    enhanced, %
+    titlerule=0mm, %
+    %
+  },
+}
+
+\newtcolorbox[]{wrtxTextBoxBase}[2][]{%
+wrtxTcbBaseStyle,
+%
+%
+drop fuzzy shadow southeast=wrtxGrayDark,
+title after break={#2 -- cont.}, %
+title={#2},
+#1%
+}
+
+%
+\newcommand{\listtextboxname}{My list of Textboxes}
+\newlistof{textbox}{loTB}{\listtextboxname}
+
+%
+\newcommand\wrtxTBLinker{textbox:\the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}}%
+\NewDocumentCommand{\wrtxTextBox}
+{
+  O{}%
+  m%
+  m%
+}
+{%
+\ifthenelse{\boolean{isIncludeTextBoxes}}{%
+  \ifthenelse{\boolean{isMoveTextBoxesToEndOfArticle}}
+  {%
+    \moveTextboxToEnd{%
+      \textboxFrame{#2}{#3}
+      [nofloat]
+
+      %
+      \addLineToToTB{#2}
+    }
+  }
+  {%
+      \textboxFrame{#2}{#3}
+      [%
+        float, %
+        floatplacement=tbp, %
+        #1%
+      ]%
+    %
+    \addLineToToTB{#2}
+  }
+}{}
+}
+
+\newcommand{\addLineToToTB}[1]
+{%
+  \isPortfolio{%
+    %
+    \addcontentsline{loTB}{textbox}
+    {%
+      \protect\wrtxContentsTextFont%
+      \protect%
+      \hypertarget{\wrtxTBLinker}%
+      {\indent\protect\numberline{%
+        \thechapter.%
+        \the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}}%
+        \ \ \ #1}%
+    }
+  }
+  {%
+    %
+    \addcontentsline{loTB}{textbox}
+    {%
+      \protect\wrtxContentsTextFont%
+      \protect%
+      \hypertarget{\wrtxTBLinker}%
+      {\indent\protect\numberline{%
+        \the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}}%
+        \ \ \ #1}%
+    }
+  }%
+  \par%
+}
+
+\newcommand{\textboxTitle}[1]{%
+  \textcolor{wrtxGrayDark}{\TEXTtextbox\ \the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}:} \detokenize{#1}%
+}
+
+\NewDocumentCommand{\textboxFrame}
+{
+  m %
+  m %
+  O{} %
+}
+{
+  \stepcounter{totalTextboxesAltogether}%
+  \refstepcounter{totalTextboxesInArticle:\wrtxarticleKeyCore}%
+  \begin{wrtxTextBoxBase}[#3]
+    {%
+        {\phantomsection%
+        \ifthenelse{\boolean{isIncludeLoTB}}
+        {%
+          \hyperlink{\wrtxTBLinker}{%
+            \textboxTitle{#1}%
+          }%
+        }%
+        {%
+          \textboxTitle{#1}%
+        }%
+        }
+    }%
+    \label{\wrtxTBLinker}%
+    \isDraftDebugger{Ref key: \wrtxTBLinker\\}{}%
+    %
+    %
+    #2
+  \end{wrtxTextBoxBase}
+}
+
+
+\NewDocumentCommand{\wrtxTextboxRef}
+{
+    m %
+    O{\TEXTtextbox} %
+}{%
+  \begingroup%
+  \ifthenelse{\boolean{isDraft}}{%
+    \color{wrtxColorWarning}%
+    \texttt{(textbox:#1)}%
+  }
+  {%
+    \color{wrtxGrayMed}%
+  }
+  %
+  #2\ \ref{textbox:#1}%
+  \endgroup%
+}
+  %
+
+%
+\newtotcounter{totalArticlesAltogether}
+%
+%
+\newtotcounter{totalCitationsAltogether}
+%
+\newtotcounter{totalGlossaryEntriesAltogether}
+%
+\newtotcounter{totalAbreviationsAltogether}
+%
+\newtotcounter{totalArticleSectionsAltogether}
+%
+\newtotcounter{totalArticleSubsectionsAltogether}
+%
+\newtotcounter{totalArticleSubsubsectionsAltogether}
+%
+\newtotcounter{totalFiguresAltogether}
+%
+\newtotcounter{totalFigureEnvsAltogether}
+%
+\newtotcounter{totalWrapfigureEnvsAltogether}
+%
+\newtotcounter{totalSubfiguresAltogether}
+%
+\newtotcounter{totalGraphicsAltogether}
+%
+\newtotcounter{totalTikZPicturesAltogether}
+%
+\newtotcounter{totalTablesAltogether}
+%
+\newtotcounter{totalTextboxesAltogether}
+%
+\newtotcounter{totalFootnotesAltogether}
+%
+\newtotcounter{totalAppendixItemsAltogether}
+
+%
+%
+\newtotcounter{totalPortfolioPartsAltogether}
+
+
+
+
+%
+\AfterPreamble{
+    \isPortfolio{}{ %
+        \newcommand{\articleList}{\wrtxarticleKeyCore}
+    }
+    %
+    \foreach \article in \articleList {
+        %
+        \stepcounter{totalArticlesAltogether}
+        %
+        \expanded{\noexpand\newtotcounter{lastPageInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSectionsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSubsectionsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSubsubsectionsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalCitationsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalFiguresInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalFigureEnvsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalWrapfigureEnvsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalSubfiguresInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalGraphicsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalTikZPicturesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalTablesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalTextboxesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalGlossaryEntriesInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalAbreviationsInArticle:\article}}%
+        \expanded{\noexpand\newtotcounter{totalFootnotesInArticle:\article}}%
+        %
+    }
+}
+
+%
+\newcommand*\makeAlph[1]{\symbol{\numexpr64+#1}}%
+
+\NewDocumentCommand{\wrtxListLabelStyle}
+    {
+        m
+        O{wrtxColorSecondary}
+    }
+    {%
+        \textcolor{#2}%
+        {%
+            \textbf{%
+                #1%
+            }%
+        }%
+    }%
+
+\newcommand{\wrtxTotalCount}[1]{%
+    %
+    \ifthenelse{\totvalue{#1}=0}{%
+    %
+        \wrtxListLabelStyle{%
+            \total{#1}%
+        }%
+        [wrtxColorPrimary!50]%
+    }%
+    {%
+        \wrtxListLabelStyle{%
+            \total{#1}%
+        }%
+    }%
+}%
+
+\usepackage{zref-totpages}
+\usepackage{lastpage}
+
+\newcommand{\countersList}{
+    \subsection*{Counters}
+    %
+    %
+    \begin{minipage}[t]{0.40\textwidth} %
+        \begin{wrtxListMeta}[
+            %
+            labelsep=0pt
+            ]
+            \item[\wrtxTotalCount{totalFiguresInArticle:\wrtxarticleKeyCore}]\ Figure(s).%
+            %
+            \item[\wrtxTotalCount{totalFigureEnvsInArticle:\wrtxarticleKeyCore}]\ Figure Environment(s).%
+            %
+            \item[\wrtxTotalCount{totalWrapfigureEnvsInArticle:\wrtxarticleKeyCore}]\ Wrapfigure Environment(s).%
+            %
+            \item[\wrtxTotalCount{totalSubfiguresInArticle:\wrtxarticleKeyCore}]\ Subfigure(s).%
+            %
+            \item[\wrtxTotalCount{totalGraphicsInArticle:\wrtxarticleKeyCore}]\ Graphic input(s).%
+            %
+            \item[\wrtxTotalCount{totalTikZPicturesInArticle:\wrtxarticleKeyCore}]\ TiKz picture(s).%
+            %
+            \item[\wrtxTotalCount{totalTablesInArticle:\wrtxarticleKeyCore}]\ Table(s).
+            %
+            \item[\wrtxTotalCount{totalTextboxesInArticle:\wrtxarticleKeyCore}]\ Textbox(es).
+            %
+        \end{wrtxListMeta}
+    \end{minipage}
+    %
+    %
+    %
+    \begin{minipage}[t]{0.23\textwidth}
+        \begin{wrtxListMeta}[
+            leftmargin=0pt,
+            labelsep=0pt
+            ]
+            %
+            %
+            \item[\wrtxTotalCount{totalGlossaryEntriesInArticle:\wrtxarticleKeyCore}]\ Glossary Entry calls.
+            %
+            \isPortfolio{}{\item[\wrtxTotalCount{totalGlossaryEntriesAltogether}]\ Glossary Entri(es) (unique).}
+            %
+            \item[\wrtxTotalCount{totalAbreviationsInArticle:\wrtxarticleKeyCore}]\ Abreviation calls.
+            %
+            \isPortfolio{}{\item[\wrtxTotalCount{totalAbreviationsAltogether}]\ Abreviation(s) (unique).}
+            %
+            \item[\wrtxTotalCount{totalCitationsInArticle:\wrtxarticleKeyCore}]\ Citation(s) (repeats included).
+            %
+            \item[\wrtxTotalCount{totalFootnotesInArticle:\wrtxarticleKeyCore}]\ Non-citation Footnote(s).
+            %
+        \end{wrtxListMeta}
+    \end{minipage}
+    %
+    %
+    \begin{minipage}[t]{0.33\textwidth}
+        \begin{wrtxListMeta}[
+            leftmargin=0pt,
+            labelsep=0pt
+            ]
+            \isPortfolio{}{\item[\wrtxListLabelStyle{\ztotpages}]\ total page(s) (body + extras).}
+            %
+            \item[\wrtxTotalCount{lastPageInArticle:\wrtxarticleKeyCore}]\ is the last page in the article.
+            %
+            \item[%
+            \wrtxListLabelStyle{%
+            \totalPagesInArticleBody
+            }]\ total pages in article.
+            %
+            \item[\wrtxTotalCount{totalSectionsInArticle:\wrtxarticleKeyCore}]\ Article Section(s).
+            %
+            \item[\wrtxTotalCount{totalSubsectionsInArticle:\wrtxarticleKeyCore}]\ Article Subsection(s).
+            %
+            \item[\wrtxTotalCount{totalSubsubsectionsInArticle:\wrtxarticleKeyCore}]\ Article Subsubsection(s).
+            %
+            \isPortfolio{}{\item[\wrtxTotalCount{totalAppendixItemsAltogether}]\ Appendix Entri(es).}
+            %
+        \end{wrtxListMeta}
+    \end{minipage}
+}
+
+\usepackage{refcount}
+\newcommand{\pagedifference}[2]{%
+  \number\numexpr#1+1-#2\relax%
+}
+
+\newcommand{\totalPagesInArticleBody}{
+    \pagedifference%
+    {\totvalue{lastPageInArticle:\wrtxarticleKeyCore}}%
+    {\getpagerefnumber{\wrtxarticleKey:article_header}}%
+}
+
+\newcommand{\subtactOne}[1]
+{
+    \the\numexpr#1-1\relax
+}
+
+%
+\newcommand\abspagenumber{\inteval{\ReadonlyShipoutCounter+1}}
+  %
+\NewDocumentCommand{\wrtxLogger}
+{
+    O{}
+    m
+}
+{%
+    \ifthenelse{\boolean{isPrintLogs}}%
+    {%
+    \typeout{}%
+    \typeout{================================= WRITEX-LOG =================================}%
+    \typeout{LOG #1: #2}%
+    \typeout{=============================================================================}%
+    }%
+    {}%
+}%
+  %
+\RequirePackage{l3benchmark}
+\ExplSyntaxOn
+\AfterEndDocument { \benchmark_toc: }
+\use:n
+  {
+    \ExplSyntaxOff
+    %
+    %
+    \benchmark_tic:
+  }
+
+%
+%
+\usepackage[hidelinks]{hyperref} %
+\urlstyle{default} %
+ %
+%
+
+%
+\newcommand{\ribbonTextLeft}{Ribbon text (Left)}
+\newcommand{\ribbonTextRight}{Ribbon text (Right)}
+\newcommand{\ribbonShiftToCenter}{0.5} %
+\newcommand{\ribbonWidth}{0.75} %
+\definecolor{ribbonBgColorStart}{gray}{0.7}
+\definecolor{ribbonBgColorEnd}{gray}{0.5}
+\definecolor{ribbonTextColor}{gray}{0.1}
+
+\newcommand{\updateRibbons}[2]{
+      \renewcommand{\ribbonTextLeft}{#1}
+      \renewcommand{\ribbonTextRight}{#2}
+}
+
+\newcommand{\ribbonSpacer}{\hspace{5cm}}
+
+\usetikzlibrary{shapes.arrows,positioning}
+
+\tikzset{
+    wrtxarrow/.style={
+        draw=wrtxGrayDark,
+        fill=wrtxGrayLight,
+        single arrow,
+        rotate=90,
+        minimum height=10mm,
+        anchor=center
+    }
+}
+
+
+\AtBeginShipout{\AtBeginShipoutUpperLeft{
+      \ifthenelse{\boolean{isDrawRibbons}}{
+            %
+            \begin{tikzpicture}[remember picture,overlay]%
+                  %
+                  \fill[%
+                        %
+                        left color=ribbonBgColorStart,
+                        right color=ribbonBgColorEnd,
+                        shading = axis,
+                        shading angle = 90
+                        ]
+                        ($(current page.north west)+(\ribbonShiftToCenter,0)$)rectangle ++(\ribbonWidth,-\paperheight);
+                  \node[rectangle,rotate=90] (leftNode) at ($(current page.west)+(\ribbonShiftToCenter+\ribbonWidth/2, 0)$)
+                  {\small\textcolor{ribbonTextColor}{\ribbonTextLeft}};
+                  %
+                  %
+                  %
+                  \fill[%
+                        %
+                        left color=ribbonBgColorStart,
+                        right color=ribbonBgColorEnd,
+                        shading = axis,
+                        shading angle = -90
+                        ]
+                        ($(current page.north east)-(\ribbonShiftToCenter,0)$) rectangle ++(-\ribbonWidth,-\paperheight);
+                  \node[rectangle,rotate=90] (rightNode) at ($(current page.east)-(\ribbonShiftToCenter+\ribbonWidth/2, 0)$)
+                  {\normalfont\textcolor{ribbonTextColor}{\ribbonTextRight}};
+                  %
+                  \node (leftLink) at ($(leftNode)+(0, 0.45\pageheight)$)
+                  {\hyperlink{start}{\textbf{\textcolor{wrtxColorSecondary}{start}}}};
+                  \node[wrtxarrow] at ([yshift=5mm]leftLink.north) {};
+                  %
+                  \node (rightLink) at ($(rightNode)+(0, 0.45\pageheight)$)
+                  {\hyperlink{toc}{\textbf{\textcolor{wrtxColorSecondary}{TOC}}}};
+                  \node[wrtxarrow] at ([yshift=5mm]rightLink.north) {};
+            \end{tikzpicture}%
+      }{}
+}}
+ %
+%
+
+\usepackage[
+  acronym,
+  section, %
+  nopostdot=true, %
+  nogroupskip=false, %
+  nonumberlist %
+]{glossaries}%
+
+%
+\renewcommand{\glsnamefont}[1]{\textsf{\textcolor{wrtxColorPrimary}{#1}}}
+%
+%
+%
+\renewcommand*{\glslistnavigationitem}[1]
+{\item \textcolor{wrtxColorPrimary}{\textbf{#1}}}
+%
+\renewcommand*{\glslistgroupheaderfmt}[1]
+{\textcolor{wrtxColorPrimary}{\textbf{#1}}}
+
+\makenoidxglossaries
+
+%
+\newcommand{\glossaryStyle}{}
+\ifthenelse{\boolean{isPrintVersion}}
+{
+  \renewcommand{\glossaryStyle}{listgroup}
+}
+{
+  \renewcommand{\glossaryStyle}{listhypergroup}
+}
+\setglossarystyle{\glossaryStyle}
+%
+%
+%
+%
+%
+
+
+\NewDocumentCommand{\glossaryItem}
+{
+  O{en} %
+  m %
+  O{} %
+  m %
+  O{} %
+}
+{
+    \ifthenelse{\equal{\wrtxLanguage}{#1}}{
+        \stepcounter{totalGlossaryEntriesAltogether} %
+
+        %
+        %
+        \ifthenelse{\equal{#3}{}}
+        {%
+          \newglossaryentry{#2}
+          {
+              name={#2}, %
+              description={\wrtxGlossaryDescription{#2}{#4}{#5}}
+          }
+        }
+        %
+        {%
+          \newglossaryentry{#2}
+          {
+              name={#3},
+              description={\wrtxGlossaryDescription{#2}{#4}{#5}}
+          }
+        }
+    }{}
+}
+
+\NewDocumentCommand{\wrtxGlossaryDescription}{
+  m %
+  m %
+  m %
+}{%
+\isDraftDebugger{[KEY: \detokenize{#1}\ ]}{}
+#2 \includeAbrevInGlossary{#3}%
+}
+
+\NewDocumentCommand{\includeAbrevInGlossary}
+{
+  m %
+}{%
+  \ifthenelse{\equal{#1}{}}%
+  {\isDraftDebugger{no abbreviation}{}}
+  {Abbreviated as \acrshort{#1}.}
+}
+
+
+
+\NewDocumentCommand{\abreviationsItem}
+{
+  O{en} %
+  m %
+  O{} %
+  m %
+}
+{
+    \ifthenelse{\equal{\wrtxLanguage}{#1}}{
+        \stepcounter{totalAbreviationsAltogether} %
+        %
+        %
+        \ifthenelse{\equal{#3}{}}
+        {%
+        \newacronym{#2}{#2}{\isDraftDebugger{[abrev. key: #2]}{}[red]#4}
+        }
+        {%
+        \newacronym{#2}{#3}{\isDraftDebugger{[abrev. key: #2]}{}[red]#4}
+        }
+    }{}
+}
+
+%
+\ifthenelse{\boolean{isDraft}}
+{ %
+  \renewcommand*{\glstextformat}[1]%
+  {%
+    \texttt{%
+    \colorbox{wrtxColorSuccess}%
+    {%
+      \textcolor{wrtxColorWarning}{#1}%
+    }%
+    }%
+    }%
+}
+{ %
+  \renewcommand*{\glstextformat}[1]
+  {%
+  \ifthenelse{
+    \boolean{isHighlightGlossaryAndAbreviations}
+    %
+    %
+    %
+    %
+    %
+    %
+    %
+    }%
+  {%
+    \textbf{%
+      \textcolor{wrtxGrayDark}
+      {%
+        #1%
+      }%
+      }%
+    }%
+  }{}%
+}
+
+
+
+
+
+\newcommand{\addAbreviations}{
+
+  \ifthenelse{
+    \boolean{isIncludeAbreviations}
+    \AND
+      \(
+      \boolean{isPrintUnusedAbreviations}
+      \OR
+      \totvalue{totalAbreviationsInArticle:\wrtxarticleKeyCore}>0
+      \)
+    \AND
+    \totvalue{totalAbreviationsAltogether}>0
+    }{
+    \newpage
+    \begin{SplitColumnsInTwo}%
+      \updateRibbons{\textbf{Abreviations}}{}
+      {
+        \singlespacing
+        \wrtxSectionTitle{Abreviations and Acronyms}
+        %
+        \printnoidxglossary[
+          type=\acronymtype,
+          title={},
+          %
+          ]
+        %
+        \ifthenelse{\boolean{isPrintUnusedAbreviations}}{
+          \glsaddallunused[\acronymtype]
+        }{}
+      }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+
+
+\newcommand{\addGlossary}{
+  \ifthenelse{
+    \boolean{isIncludeGlossary}
+    \AND
+      \(
+      \boolean{isPrintUnusedGlossary}
+      \OR
+      \totvalue{totalGlossaryEntriesInArticle:\wrtxarticleKeyCore}>0
+      \)
+    \AND
+    \totvalue{totalGlossaryEntriesAltogether}>0
+  }{
+    \newpage
+    \begin{SplitColumnsInTwo}%
+      \updateRibbons{\textbf{Glossary}}{}
+      {
+        \singlespacing
+        \wrtxSectionTitle{Glossary}
+        %
+        \printnoidxglossary[
+          type=main,
+          title={},
+          %
+          ]
+          %
+          \ifthenelse{\boolean{isPrintUnusedGlossary}}{
+            \glsaddallunused[main]
+          }{}
+      }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+
+
+\newcommand{\addAbreviationsPORTFOLIO}{
+  \ifthenelse{\boolean{isIncludeAbreviations} \and 1>0}{
+    %
+    \cleardoublepage
+    \begin{SplitColumnsInTwo}
+    \wrtxPortfolioChapter{Abreviations}
+    {
+      \phantomsection
+      \singlespacing
+      %
+      %
+      \renewcommand*{\glsclearpage}{} %
+      \printnoidxglossary[
+        type=\acronymtype,
+        %
+        title={}
+        %
+      ]
+      %
+      \ifthenelse{\boolean{isPrintUnusedAbreviations}}{
+        \glsaddallunused[\acronymtype,]
+      }{}
+    }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+
+\newcommand{\addGlossaryPORTFOLIO}{
+  \ifthenelse{\boolean{isIncludeGlossary} \and 1>0}{
+    %
+    \cleardoublepage
+    \begin{SplitColumnsInTwo}
+    \wrtxPortfolioChapter{Glossary}
+    {%
+      \phantomsection
+      \singlespacing
+      %
+      %
+      \renewcommand*{\glsclearpage}{} %
+      \printnoidxglossary[
+        type=main,
+        %
+        title={}
+        %
+      ]
+      %
+      \ifthenelse{\boolean{isPrintUnusedGlossary}}{
+        \glsaddallunused[main]
+      }{}
+    }
+    \end{SplitColumnsInTwo}
+  }
+  {}
+}
+
+\NewDocumentCommand{\wrtxGLS}%
+{%
+  m%
+  O{}%
+}{%
+  {%
+    \ifthenelse{{\equal{\wrtxarticleKeyCore}{}}}%
+    {}%
+    {%
+      \stepcounter{totalGlossaryEntriesInArticle:\wrtxarticleKeyCore}%
+    }%
+    \ifthenelse{\boolean{isIncludeGlossary}}%
+    {%
+      %
+      \isDraftDebugger{[gloss. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls{#1}}%
+          {\glslink{#1}{#2}}%
+      }%
+    }%
+    {%
+      %
+      \isDraftDebugger{[gloss. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls*{#1}}%
+          {\glslink*{#1}{#2}}%
+      }%
+    }%
+  }%
+}
+
+\NewDocumentCommand{\wrtxAbrev}%
+{%
+  m%
+  O{}%
+}{%
+  {%
+    \ifthenelse{{\equal{\wrtxarticleKeyCore}{}}}%
+    {}%
+    {%
+      \stepcounter{totalAbreviationsInArticle:\wrtxarticleKeyCore}%
+    }%
+    \ifthenelse{\boolean{isIncludeAbreviations}}%
+    {%
+      %
+      \isDraftDebugger{[abrev. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls{#1}}%
+          {\glslink{#1}{#2}}%
+      }%
+    }%
+    {%
+      %
+      \isDraftDebugger{[abrev. key: \detokenize{#1}]}%
+      {%
+        \ifthenelse{%
+          \equal{#2}{}%
+          }%
+          {\gls*{#1}}%
+          {\glslink*{#1}{#2}}%
+      }%
+    }%
+  }%
+}
+
+
+%
+%
+
+\newcommand{\moveTextboxToEnd}
+[1]
+{%
+    \ifthenelse{\boolean{isMoveTextBoxesToEndOfArticle}}
+    {%
+        \immediate\write\writeenditems{%
+        \detokenize{#1}}%
+    }%
+    {%
+        #1%
+    }%
+}
+
+
+
+\AtBeginDocument{%
+  \newwrite\writeenditems
+  \immediate\openout\writeenditems=wrtxfile.tmp
+  }
+
+
+\newcommand{\printMovedContents}
+{
+    \immediate\closeout\writeenditems
+
+    %
+    \clearpage
+    \newread\readenditems
+    \immediate\openin\readenditems=wrtxfile.tmp
+    \loop
+    \immediate\read\readenditems to\linein
+    \linein
+    \ifeof\readenditems
+    \else\repeat
+    \immediate\closein\readenditems
+}
+
+%
+%
+%
+%
+
+%
+\newcommand{\postponeTextBoxPrintTillHere}{%
+    \noindent\isDraftDebugger{\wrtxBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (start)}}{}%
+    \FloatBarrier %
+    %
+    %
+    \ifthenelse{\boolean{isMoveTextBoxesToEndOfArticle}}
+    {%
+        \printMovedContents{}%
+    }
+    {}
+    %
+    %
+    \FloatBarrier %
+    \noindent\isDraftDebugger{\wrtxBreakMessage[purple][green]{TEXTBOX CONTAINER WHEN MOVED TO END (finish)}}{}%
+} %
+%
+\usepackage[
+  fancyLists=true
+]{markdown}
+
+\newcommand{\wrtxInputREADME}{%
+  \begin{tcolorbox}[
+      breakable,
+      title={README contents},
+      width={0.975\pagewidth},
+      center,
+      %
+    ]
+      \isPortfolio{%
+        \markdownInput{../../../README.md}%
+      }%
+      {%
+        \markdownInput{../../README.md}%
+      }%
+  \end{tcolorbox}
+}
+
+%
+%
+%
+%
+%
+%
+%
+
+%
+
+
+
+
+
+\begin{filecontents*}{appendix_a.tex}
+                       \wrtxAppendixTitle{Appendix Title A}
+
+\begin{wrtxFigEnv}[H][width=0.6\linewidth]
+    {Caption of Appendix Figure.}% Caption
+    {Details.}% Caption details
+    [appendix-fig-env-ref]
+
+
+    \wrtxFigGraphics
+    [width=0.5\linewidth, angle=90]
+    {example-image}
+    [jpg]
+
+\end{wrtxFigEnv}
+\end{filecontents*}
+
+\begin{filecontents*}{appendix_b.tex}
+                       \wrtxAppendixTitle{Appendix Title B}[ref-b-appendix]
+
+
+\lipsum[1-2]
+\end{filecontents*}
+
+\NewDocumentCommand{\wrtxAppendix}
+{
+    %
+}
+{   \ifthenelse{
+        \boolean{isIncludeAppendix}%
+        \AND%
+        \not\equal{\appendixList}{}%
+    }
+    {
+        \updateRibbons{\textbf{Appendix}}{}
+        %
+        %
+        \appendix
+        %
+        %
+        \pagestyle{plain}
+        \pagenumbering{Roman}
+        %
+        %
+
+
+        \foreach \item [count=\n] in \appendixList {%
+            \ifthenelse{\equal{\item}{}}%
+            {}%
+            {%
+                \cleardoublepage%
+                \refstepcounter{totalAppendixItemsAltogether}%
+                \expandafter\addAppendixItem\expandafter{\item}%
+            }%
+        }%
+    }%
+    {}%
+}%
+
+
+\NewDocumentCommand{\addAppendixItem}
+{
+    m %
+}
+{%
+    %
+    \isPortfolio
+    {%
+        \expandafter\input\expandafter{./#1.tex}%
+    }%
+    {%
+        \expandafter\input\expandafter{./#1.tex}%
+    }%
+}%
+
+\NewDocumentCommand{\wrtxAppendixTitle}
+{
+    m %
+    O{} %
+}{%
+    \isPortfolio
+    {%
+        \titlespacing{\chapter}{0pt}{0pt}{10pt} %
+        \chapter[#1]{%
+            \color{wrtxColorPrimary}%
+            \setTitleFont%
+            \linkAppendixConditionally{#1}%
+            }%
+    }
+    {%
+        \section[#1]{%
+            \color{wrtxColorPrimary}%
+            \setTitleFont%
+            \linkAppendixConditionally{#1}
+        }%
+        \ifthenelse{\equal{#2}{}}
+        {}
+        {%
+            \label{\appendixLabel{#2}}%
+            %
+            \isDraftDebugger{\ Appendix key: \appendixLabel{#2}}{}%
+        }%
+    }%
+    \hypertarget{\autoAppendixTargetId}{\isDraftDebugger{\\Auto ref: \autoAppendixTargetId}{}}%
+}
+
+
+\NewDocumentCommand{\appendixLabel}
+{m}{%
+  appendix:\detokenize{#1}%
+}
+
+\NewDocumentCommand{\wrtxAppendixRef}{
+    m
+    O{Appendix}
+}{\wrtxSecRef{appendix}{#1}[#2]}
+
+
+
+
+\ifthenelse{\boolean{isIncludeToC}}
+{ %
+  \newcommand{\linkAppendixConditionally}[1]
+  {
+    \protect\hyperlink
+    {toc}%
+    {#1}%
+  }
+}
+{ %
+  \newcommand{\linkAppendixConditionally}[1]
+  {%
+    #1%
+  }
+}
+
+%
+\newcommand{\autoAppendixTargetId}{%
+    appendix:target:\thetotalAppendixItemsAltogether
+}
+%
+%
+
+%
+\expandafter\addonlyfiles\expandafter{%
+  \filesToAdd%
+}%
+
+\BeforeBeginEnvironment{document}{
+   %
+
+%
+
+\glossaryItem[en]{entryExampleKey1}{Entry definition1.}
+\glossaryItem[en]{entryExampleKey2}[An Example Of An Acronym]{This is just an example of an acronym definition for demonstration's purpose.}[aeoaa]
+
+\glossaryItem[fr]{entryExampleKey1}{Entry definition1.}
+\glossaryItem[fr]{entryExampleKey2}[An Example Of An Acronym]{This is just an example of an acronym definition for demonstration's purpose.}[aeoaa]
+    %
+%
+\abreviationsItem[en]{aeoaa}[AEOAA]{An Example Of An Acronym}
+
+\abreviationsItem[en]{demonstration}[DEMO]{Demo dEmo deMo demO}
+
+\abreviationsItem[fr]{aeoaa}[AEPAA]{\wrtxGLS{entryExampleKey2}}
+
+\abreviationsItem[fr]{demonstration}[DEMO]{Demo dEmo deMo demO}
+ }
+
+\begin{filecontents*}{body_en.tex}
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% wriTeX ARTICLE TEMPLATE %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This is the \textcolor{wrtxColorWarning}{\textbf{\wrtxLanguageLong} (\wrtxLanguage)} version.\\
+
+\wrtxArticleSection{Structuring the Article}
+
+%%%%%% CHAPEAU/INTRO/STANDFIRST
+%%% Factual
+%%% Short
+%%% Simple
+%%% Summary-oriented
+Start with \textcolor{wrtxColorSuccess}{\textbf{Chapeau/Intro/Standfirst}}. typically a few sentences that set the stage for the article, giving readers a quick snapshot of what to expect. It is often used to highlight the most relevant or intriguing aspects of the article, nudging readers to continue. It is a  a more factual or summary-oriented introduction. Somewhat equivalent to the \textcolor{wrtxColorSuccess}{\textbf{Abstract}} in academia.
+
+
+%%%%%% Lead/Lede
+%%% Who?
+%%% What?
+%%% When/Where?
+%%% Why ?
+%%% How ?
+%%% Dynamic and Engaging
+%%% May be Anecdotal or even Humorous
+%%% Open with HOOK/ACCROCHE
+The \textcolor{wrtxColorSuccess}{\textbf{Lead/Lede}} appears at the very start of the story. Its purpose is to \textcolor{wrtxColorSuccess}{\textbf{hook/accroche}} readers and provide the essential \textbf{"who, what, when, where, why, and how"} in an engaging manner. Leads are usually more narrative or conversational, aiming to pull readers into the story rather than simply summarizing it. Leads can be factual, anecdotal, or even humorous, depending on the article's style.
+
+
+\wrtxArticleSection{Section}[manual-key-for-sec]
+Example of article section.
+\wrtxArticleSubsection{Subsection}[manual-key-for-subsec]
+Example of article subsection.
+\wrtxArticleSubsubsection{Subsubsection}[manual-key-for-subsubsec]
+Example of article subsubsection.
+The code generates key for each section and (sub)(sub)section automatically, which are used for linking to the TOC.
+Moreover, you can manually provide an optional argument for an additional shorter key, which is useful when you want refer link to a specific (sub)section within the text. To do that, you can do like so:\wrtxSecRef{subsec}{manual-key-for-subsec} or \wrtxSecRef{subsubsec}{manual-key-for-subsubsec}[Subsubsection].
+
+With an alternative command, you can also \wrtxSecHyperref[sec][manual-key-for-sec]{link to a secton/subsection} without the section number included, which should make sense in most cases. A similar feature has not been implemented for Figures/tables/textboxes as those are numbered so it makes more sense to refer to them by number.
+
+\wrtxArticleSection{Basic commands}
+
+\wrtxArticleSubsection{Font styles}
+\newcommand\demoString{This is a sentence}
+
+\begin{wrtxListMeta}
+  \item[Default] \demoString
+  \item[Medium] \textmd{\demoString}\ (textmd\{\} or mdseries)
+  \item[Bold] \textbf{\demoString}\ (textbf\{\} or bfseries)
+  \item[Italic] \textit{\demoString}\ (textit\{\} or itshape)
+  \item[Slanted] \textsl{\demoString}\ (textsl\{\} or slshape)
+  \item[Upright] \textup{\demoString}\ (textup\{\} or upshape)
+  \item[Spaced out] \textls{\demoString} \ (textls\{\} or lsstyle) % with microtype package
+  \item[Uppercase] \MakeUppercase{\demoString}\ (MakeUppercase\{\})
+  \item[Small caps] \textsc{\demoString}\ (textsc\{\} or scshape)
+  \item[Colored] \textcolor{wrtxColorSuccess}{\demoString}\ (textcolor\{\}\{\} or color\{\})
+\end{wrtxListMeta}
+
+\wrtxArticleSubsection{Font sizes}
+\begin{wrtxListMeta}
+  \item[tiny] {\tiny\demoString}
+  \item[scriptsize] {\scriptsize\demoString}
+  \item[footnotesize] {\footnotesize\demoString}
+  \item[small] {\small\demoString}
+  \item[normalsize] {\normalsize\demoString}
+  \item[large] {\large\demoString}
+  \item[Large] {\Large\demoString}
+  \item[LARGE] {\LARGE\demoString}
+  \item[huge] {\huge\demoString}
+  \item[Huge] {\Huge\demoString}
+  \item[HUGE] {\HUGE\demoString}
+\end{wrtxListMeta}
+
+
+\wrtxArticleSubsection{Font families}
+\begin{wrtxListMeta}
+  \item[My main font] {\setMainFont\ [\wrtxMainFont; \wrtxMainFontBackup] \demoString}\ (wrtxMainFont)
+  %
+  \item[My draft font] {\setDraftFont\ [\wrtxDraftFont; \wrtxDraftFontBackup] \demoString} (wrtxDraftFont)
+  %
+  \item[My title font] {\setTitleFont\ [\wrtxTitleFont; \wrtxTitleFontBackup] \demoString} (wrtxTitleFont)
+  %
+  \item[My subtitle font] {\setSubtitleFont\ [\wrtxSubtitleFont; \wrtxSubtitleFontBackup] \demoString} (wrtxSubtitleFont)
+  %
+  \item[Serif (Roman)] \textrm{\demoString}\ (textrm\{\} or rmfamily)
+  %
+  \item[Sans serif] \textsf{\demoString}\ (textsf\{\} or sffamily)
+  %
+  \item[Typewriter/monospace/teletype] \texttt{\demoString}\ (texttt\{\} or ttfamily)
+\end{wrtxListMeta}
+
+
+\wrtxArticleSection{Color Palette}
+\NewDocumentCommand{\demoPaletteColor}
+{
+  O{0.6cm}% length
+  O{0.4cm}% height
+  m % color
+}{%
+  \item[#3:]\textcolor{#3}{\rule{#1}{#2}}\ \textcolor{#3}{\demoString}
+}
+\begin{wrtxListMeta}
+  \demoPaletteColor{wrtxColorPrimary}
+  \demoPaletteColor{wrtxColorSecondary}
+  \demoPaletteColor{wrtxColorSuccess}
+  \demoPaletteColor{wrtxColorWarning}
+  \demoPaletteColor{wrtxColorDanger}
+  \demoPaletteColor{wrtxGrayLight}
+  \demoPaletteColor{wrtxGrayMed}
+  \demoPaletteColor{wrtxGrayDark}
+\end{wrtxListMeta}
+
+
+\wrtxArticleSection{Positioned features}
+
+\wrtxArticleSubsection{Footnotes}
+Adding a footnote to a phrase\wrtxFN{This is a footnote}.
+
+\wrtxArticleSubsection{Citations}
+Adding a citations to a phrase\wrtxCite{bibliography:source_template}.
+
+\wrtxArticleSubsection{Glossary entries}
+Adding a glossary entry \wrtxGLS{entryExampleKey1}.
+You can also provide an alternative glossary text in [square brackets]: \wrtxAbrev{entryExampleKey1}[AlternativeText].
+
+\wrtxArticleSubsection{Abreviations}
+Adding an abreviation.\\
+The first time \wrtxAbrev{aeoaa}, it is shown in full.\\
+The second time is different  \wrtxAbrev{aeoaa}.
+You can also provide an alternative abreviation text in [square brackets]: \wrtxAbrev{aeoaa}[ALTTEXT].
+
+\wrtxArticleSubsection{Margin notes}
+Adding a margin note. \marginpar[left margin note]{right margin note}
+
+\wrtxArticleSection{My lists}
+\wrtxArticleSubsection{Ordered lists}
+
+\begin{wrtxListEnumerate}
+  \item First element
+  \item Second element
+  \item Third element
+\end{wrtxListEnumerate}
+\wrtxArticleSubsection{Unordered lists}
+\begin{wrtxListItemize}
+  \item First element
+  \item Second element
+  \item Third element
+\end{wrtxListItemize}
+
+\wrtxArticleSubsection{Compact lists (used mostly in meta section)}
+\begin{wrtxListMeta}
+  \item[First element] About first element
+  \item[Second element] About second element
+  \item[\wrtxListLabelStyle{Third element styled}] About third element
+  \wrtxCiteEntryWithLabel{\mainSourceKey}{title}[Example of a cite entry in the list][]%
+\end{wrtxListMeta}
+
+\wrtxArticleSection{Input Images}
+
+These would usually be placed inside float environments (see floats section of this guide), but they can also be used independently.
+Each has an automatically-generated key that corresponds to the filename (graphics) or foldername (TikZ).
+
+\textcolor{wrtxColorWarning}{Warning: since this image is repeated several times, the link leads to last instance.}
+
+\wrtxArticleSubsection{Using external graphics}
+\wrtxFigRef{example-image}
+
+\wrtxFigGraphics
+[width=0.6\linewidth]% Dimensions
+{example-image} % File name
+[jpg]% File extension
+
+\wrtxArticleSubsection{Using TikZ code}
+\wrtxFigRef{tikz_example}
+
+\wrtxFigTikz
+[scale=1]% Dimensions (relative to initial size)
+{tikz_example}% containing folder name
+
+\wrtxArticleSection{My floats}
+
+Floats do not have a precise position. \LaTeX takes care of optimizing their location.
+
+\wrtxArticleSubsection{Float placement}[float-placement-keys]
+
+\begin{wrtxListMeta}
+  \item[h] ---	Place the float \textbf{h}ere, i.e., approximately at the same point it occurs in the source text (however, not exactly at the spot)
+  \item[t] ---	Position at the \textbf{t}op of the page.
+  \item[b] --- Position at the \textbf{b}ottom of the page.
+  \item[p] --- Put on a special \textbf{p}age for floats only.
+  \item[!] --- Override internal parameters LaTeX uses for determining "good" float positions.
+  \item[H] ---	Places the float at precisely the location in the LATEX code, as in ``exactly \textbf{H}ERE''. Requires the float package. This is somewhat equivalent to h!
+\end{wrtxListMeta}
+
+
+\wrtxArticleSubsection{Figures}
+
+
+Figures are can be added inside \wrtxSecHyperref[subsubsec][fig-env-explanation]{figure} (wrtxFigEnv) or \wrtxSecHyperref[subsubsec][wrapfig-env-explanation]{wrapfigure} (wrtxWrapFigEnv) environments.
+
+\wrtxArticleSubsubsection{Figure Environments}[fig-env-explanation]
+
+A figure environment(wrtxFigEnv) takes arguments as follows:
+\begin{wrtxListItemize}
+  \item position (optimal) input as \wrtxSecHyperref[subsec][float-placement-keys]{keys}: LaTeX takes care of optimizing the figure's position in the text.
+  \item fig env native optional arguments such as width.
+  \item Caption (mandatory, used in ToC).
+  \item Caption details (optional).
+  \item Optionally, a key to be able to link to it without depending on the contained image, for example \wrtxFigRef{env:fig-env-ref} (make sure to include "env:" when refering to an environment).
+\end{wrtxListItemize}
+
+You can then refer to it in the text \wrtxFigRef{example-image}.
+
+
+
+\begin{wrtxFigEnv}[][width=0.6\linewidth]
+  {Main caption of graphics figure.}% Caption
+  {Further details about Graphics Figure.}% Caption details
+  [fig-env-ref]
+  %
+  \wrtxFigGraphics[width=0.6\linewidth]{example-image}[jpg]% Image
+\end{wrtxFigEnv}
+
+
+\begin{wrtxFigEnv}[][width=1\linewidth]
+  {Main caption of TikZ figure.}% Caption
+  {Further details about TikZ Figure.}% Caption details
+  [lab-for-tikz-demo]
+  %
+  \wrtxFigTikz[scale=1]{tikz_example}% Image
+\end{wrtxFigEnv}
+
+
+
+\wrtxArticleSubsubsection{Wrap Figure environments}[wrapfig-env-explanation]
+
+Wrap figures are wrapped by surrounding text.
+\begin{wrtxListItemize}
+  \item Number of lines (optimal) to be taken up by wrapfigure.
+  \item position (optimal) input which differs from the usual\wrtxSecHyperref[subsec][float-placement-keys]{keys}. See list below.
+  \item fig env native optional arguments such as width.
+  \item Caption (mandatory, used in ToC).
+  \item Caption details (optional).
+  \item Optionally, a key to be able to link to it without depending on the contained image, for example \wrtxFigRef{env:wrapfig-env-ref} (make sure to include "env:" when refering to an environment).
+\end{wrtxListItemize}
+
+\begin{wrtxListMeta}
+  \item[r] \textbf{r}ight (Exact position)
+  \item[R] \textbf{r}ight (Float)
+  \item[l] \textbf{l}eft (Exact position)
+  \item[L] \textbf{l}eft (Float)
+  \item[i] \textbf{i}nside edge
+  \item[o] \textbf{o}utside edge.
+  \item[!] Override internal parameters\textbf{!}
+\end{wrtxListMeta}
+
+
+\begin{wrtxWrapFigEnv}[8][R][0.33\textwidth]
+  {Caption of wrap figure.}% Caption
+  {Details about wrap figure}% Caption details
+  [wrapfig-env-ref]
+  %
+  \wrtxFigGraphics{example-image}[jpg]% Image
+\end{wrtxWrapFigEnv}
+
+\lipsum[1]
+
+\wrtxArticleSubsubsection{Figures with subfigures}
+
+Floats that take a mandatory filename; an optional filetype (default is jpg); a mandatory main caption (also used in LoF); and a mandatory description (that may remain empty).
+
+Subfigures can be added inside a figure/wrapfigure using the wrtxSubFig command. Then you can refer specifically to a subfigure inside the figure (\wrtxFigRef{lab-for-first-subfig-demo}), or the figure itself (\wrtxFigRef{env:lab-for-fig-group-demo}).
+
+Note that this system to refer to the SubFig requires a key to be manually given, in contrast to the auto-labeling in Graphics and TikZ pictures.
+This is because the label works weirdly inside a subfloat for unknown reasons.
+
+
+\begin{wrtxFigEnv}[][width=1\linewidth]
+  {Main caption of figure group} % Caption
+  {Details.}% Caption details
+  [lab-for-fig-group-demo]
+  %
+  \wrtxSubfig
+  {Main subcaption 1}% Subcaption
+  {Details}% Subcaption details
+  {%
+    \wrtxFigGraphics[width=0.475\linewidth]{example-image}[jpg]% Image
+  }%
+  [lab-for-first-subfig-demo]
+  %
+  %
+  \hfill
+  %s
+  %
+  \wrtxSubfig
+  {Main subcaption 2}% Subcaption
+  {}% Subcaption details
+  {%
+    \wrtxFigGraphics[width=0.475\linewidth]{example-image}[jpg]% Image
+  }%
+  [lab-for-second-subfig-demo]
+\end{wrtxFigEnv}
+
+
+\wrtxArticleSubsection{Textboxes}
+Textboxes are floats that take a mandatory title; and a mandatory content.
+You can then refer to it in the text \wrtxTextboxRef{1}. A second optional argument may be passed to alter the text of the reference, as in \wrtxTextboxRef{1}[TeXtBoX].
+
+\wrtxTextBox[width=0.75\linewidth]{Textbox A title.}
+{
+Custom textboxes are included in the document using the wrtxTextBox command. Option arguments can be passed to further customize the textbox.
+\\%
+Paragraphs and line breaks cannot be added by leaving an empty line, instead you must use commands such as a double backslash \detokenize{\\}.
+}
+
+\wrtxArticleSubsection{Tables}
+Tables are floats that use a custom environment that takes a mandatory title; a mandatory description; and a mandatory reference key.
+You can then refer to it in the text \wrtxTabRef{tablekey}.
+
+
+\begin{wrtxArticleTableEnv}
+    {Example table}
+    {Further details about the table.}
+    [tablekey]
+    %
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{ID} & \textbf{Name} & \textbf{Age} \\
+        \hline
+        1 & Alice & 30 \\
+        2 & Bob & 25 \\
+        3 & Charlie & 35 \\
+        4 & Diana & 28 \\
+        \hline
+    \end{tabular}
+\end{wrtxArticleTableEnv}
+
+
+
+\wrtxArticleSection{Appendix files}
+
+Appendix files can be added by including them in the appendixList macro, separated by commas.
+Reference an appendix item with \wrtxAppendixRef{ref-b-appendix}. You can also reference its content [\wrtxFigRef{env:appendix-fig-env-ref}].
+
+\wrtxArticleSection{Lorem Ipsum text}
+
+% \lipsum[<par-range>][<sentence-range>]
+\lipsum[1][1-4]
+
+\wrtxArticleSection{Math mode}
+
+Example of math mode block:
+\begin{displaymath}
+    E = \frac{m_{0} c^{2}}{\sqrt{1-v^{2}/c^{2}}}
+\end{displaymath}
+
+
+\wrtxArticleSection{Specific features of Lua\TeX{}}
+
+Lua\TeX{} can execute Lua code from the source file in Lua\LaTeX{} or Con\TeX{}t. For example, \texttt{directlua}
+can generate a random number: \directlua{tex.print(math.random())}.
+It is no longer necessary to remember the value of $Ï€$â€¯:
+\directlua{tex.print(math.pi)}.
+
+Using the \texttt{luacode} environment, you can count, as the following example (to 60):
+\begin{luacode}
+  for x=1,60 do
+    tex.print(x)
+  end
+\end{luacode}
+
+
+\wrtxArticleSection{REAME contents}
+
+Import the contents of the markdown README.md file.
+\wrtxInputREADME
+
+\end{filecontents*}
+
+\begin{document}
+%
+%
+%
+\pagenumbering{roman}
+\addMetadata
+
+%
+%
+%
+\updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Substance}{SUBSTANCE}
+\begin{substanceEnvironment}[\onlyfiles]
+\addContent{substance}
+\end{substanceEnvironment}
+
+
+%
+%
+%
+\addCover
+
+
+
+%
+%
+%
+\addToCLoFLoT
+
+%
+%
+%
+
+
+\addGlossary
+
+
+%
+%
+%
+
+
+\addAbreviations
+
+
+
+%
+%
+%
+\pagenumbering{arabic}
+\begin{bodyEnvironment}
+   \addContent{body}[\wrtxLanguage]%
+   \noindent\wrtxFloatBarrier%
+\end{bodyEnvironment}
+%
+%
+%
+\addBibliography
+%
+%
+%
+\wrtxAppendix
+
+\end{document}

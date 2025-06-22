@@ -9,7 +9,7 @@
 
 
 %%% Create variables that will be stored in aux file
-\providecommand{\myCompileDuration}{0}%
+\providecommand{\wrtxCompileDuration}{0}%
 \providecommand{\elapsedInt}{0}%
 \providecommand{\elapsedFrac}{0}%
 
@@ -42,7 +42,7 @@
         elapsedIntFormatted=tostring(elapsedInt)
         elapsedFracFormatted=tostring(elapsedFrac)
         %-- Define the elapsed time in a TeX macro
-        %-- tex.print("\\gdef\\myCompileDurationTemp{" .. string.format("\%.2f seconds", elapsedTimeSeconds) .. "}")
+        %-- tex.print("\\gdef\\wrtxCompileDurationTemp{" .. string.format("\%.2f seconds", elapsedTimeSeconds) .. "}")
         %-- Write to the AUX file directly
         f=io.open("auxiliary_files/\jobname.aux","a")
         f:write("\\gdef\\elapsedInt{"..elapsedIntFormatted.."}")
@@ -60,7 +60,7 @@
         }%
     }{}
     % STORE RESULT FOR SUBSEQUENT RUNS
-    % \writeToAux{\myCompileDuration}{myCompileDurationTemp}
+    % \writeToAux{\wrtxCompileDuration}{wrtxCompileDurationTemp}
     % \elapsedInt
     % \elapsedFrac
 }

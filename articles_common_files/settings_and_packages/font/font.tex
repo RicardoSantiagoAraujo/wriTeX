@@ -50,15 +50,15 @@
 
 %%%%%% SETTING FONTS WITH BACKUPS IF NOT AVAILABLE
 %%% MAIN FONT
-\newcommand{\myMainFont}{Helvetica}
-\newcommand{\myMainFontBackup}{Arial}
+\newcommand{\wrtxMainFont}{Helvetica}
+\newcommand{\wrtxMainFontBackup}{Arial}
 \newcommand{\setMainFont}{%
     %%% Run immediately after \begin{document}, similar to \AtBeginDocument but the latter is outdated
     \isMinimal% check if in minimal mode
     {}% if yes, do not change font from default to speed up compilation
     {%
         \AfterEndPreamble{
-            \applyFonts{\myMainFont}{\myMainFontBackup}
+            \applyFonts{\wrtxMainFont}{\wrtxMainFontBackup}
         }%
     }%
 }%
@@ -69,38 +69,38 @@
 
 
 %%% DRAFT MAIN FONT
-\newcommand{\myDraftFont}{Open Dyslexic}
-\newcommand{\myDraftFontBackup}{Times New Roman}
+\newcommand{\wrtxDraftFont}{Open Dyslexic}
+\newcommand{\wrtxDraftFontBackup}{Times New Roman}
 \newcommand{\setDraftFont}{%
     %%% Run immediately after \begin{document}, similar to \AtBeginDocument but the latter is outdated
     \isMinimal% check if in minimal mode
     {}% if yes, do not change font from default to speed up compilation
     {%
         \AfterEndPreamble{
-            \applyFonts{\myDraftFont}{\myDraftFontBackup}
+            \applyFonts{\wrtxDraftFont}{\wrtxDraftFontBackup}
         }%
     }%
 }%
 
 
 %%% TITLE FONT
-\newcommand{\myTitleFont}{Times New Roman}
-\newcommand{\myTitleFontBackup}{Times New Roman}
+\newcommand{\wrtxTitleFont}{Times New Roman}
+\newcommand{\wrtxTitleFontBackup}{Times New Roman}
 \newcommand{\setTitleFont}{%
     \isMinimal% check if in minimal mode
     {}% if yes, do not change font from default to speed up compilation
     {%
-        \applyFonts{\myTitleFont}{\myTitleFontBackup}%
+        \applyFonts{\wrtxTitleFont}{\wrtxTitleFontBackup}%
     }%
 }%
 
 %%% SUBTITLE FONT
-\newcommand{\mySubtitleFont}{Times New Roman}
-\newcommand{\mySubtitleFontBackup}{Times New Roman}
+\newcommand{\wrtxSubtitleFont}{Times New Roman}
+\newcommand{\wrtxSubtitleFontBackup}{Times New Roman}
 \newcommand{\setSubtitleFont}{%
     \isMinimal% check if in minimal mode
     {}% if yes, do not change font from default to speed up compilation
     {%
-        \applyFonts{\mySubtitleFont}{\mySubtitleFontBackup}%
+        \applyFonts{\wrtxSubtitleFont}{\wrtxSubtitleFontBackup}%
     }%
 }%

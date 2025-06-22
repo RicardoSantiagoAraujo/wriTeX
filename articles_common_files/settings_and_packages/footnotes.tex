@@ -1,11 +1,11 @@
 
 
-% \setcounter{myFootnoteCounter}{0} % change counter value to a starting specific value
+% \setcounter{wrtxFootnoteCounter}{0} % change counter value to a starting specific value
 
 
-\newcommand{\myFN}[1]{%
+\newcommand{\wrtxFN}[1]{%
     \ifthenelse{\boolean{isIncludeFootnotes}}{%
-        \stepcounter{totalFootnotesInArticle:\myarticleKeyCore}% increment counter
+        \stepcounter{totalFootnotesInArticle:\wrtxarticleKeyCore}% increment counter
         \stepcounter{totalFootnotesAltogether}%
         \footnote{#1}%
     }{}%

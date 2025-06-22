@@ -9,8 +9,8 @@
 }
 
 % EXPANDED LIST WITH LINE BREAKS BETWEEN ITEMS
-\newlist{myListMeta}{enumerate}{1}
-\setlist[myListMeta]{
+\newlist{wrtxListMeta}{enumerate}{1}
+\setlist[wrtxListMeta]{
     label={},
     align=right, % label alignment
     % labelwidth=0.25cm,
@@ -22,8 +22,8 @@
 }
 
 % COLLAPSED LIST WITH INLINE ITEMS
-\newlist{myListMetaCollapsed}{enumerate*}{1}
-\setlist[myListMetaCollapsed]{
+\newlist{wrtxListMetaCollapsed}{enumerate*}{1}
+\setlist[wrtxListMetaCollapsed]{
 % label=(\textbf{\arabic*})
 }
 
@@ -32,45 +32,45 @@
 \newenvironment{customlist} % Define the new environment
   {
     \ifthenelse{\boolean{isCollapseLists}}% Check if the argument is "enumerate"
-    {\begin{myListMetaCollapsed}}% If yes, start
-    {\begin{myListMeta}}%
+    {\begin{wrtxListMetaCollapsed}}% If yes, start
+    {\begin{wrtxListMeta}}%
     }%
   {%
   \ifthenelse{\boolean{isCollapseLists}}% Check if the argument is "enumerate"
-  {\end{myListMetaCollapsed}}% If yes, end
-  {\end{myListMeta}}%
+  {\end{wrtxListMetaCollapsed}}% If yes, end
+  {\end{wrtxListMeta}}%
   }%
 
 
 % LIST STYLES USED INSIDE ARTICLE
 % \newlist{<list name>}{<bases>}{<max depth>}
-\newlist{myListEnumerate}{enumerate}{1}
-\newlist{myListItemize}{itemize}{1}
+\newlist{wrtxListEnumerate}{enumerate}{1}
+\newlist{wrtxListItemize}{itemize}{1}
 % Define a shared macro for list settings
-\def\myListAlign{right}
-\def\myListTopsep{0pt} % space above list
-\def\myListItemsep{8pt} % space between items
-\def\myListParsep{0pt} % space between paragraphs within the items
-\def\myListLeftmargin{10pt} % space on the left. * or 0pt
-\def\myListLabelsep{10pt} % space between the bullet and the item text
+\def\wrtxListAlign{right}
+\def\wrtxListTopsep{0pt} % space above list
+\def\wrtxListItemsep{8pt} % space between items
+\def\wrtxListParsep{0pt} % space between paragraphs within the items
+\def\wrtxListLeftmargin{10pt} % space on the left. * or 0pt
+\def\wrtxListLabelsep{10pt} % space between the bullet and the item text
 %
-\setlist[myListEnumerate]{
+\setlist[wrtxListEnumerate]{
     label=({\arabic*}),
-    align=\myListAlign, % label alignment
+    align=\wrtxListAlign, % label alignment
     % labelwidth=0.25cm,
-    topsep=\myListTopsep, % space above list
-    itemsep=\myListItemsep, % space between items
-    parsep=\myListParsep, % space between paragraphs within the items
-    leftmargin=\myListLeftmargin, % space on the left. * or 0pt
-    labelsep=\myListLabelsep, % space between the bullet and the item text
+    topsep=\wrtxListTopsep, % space above list
+    itemsep=\wrtxListItemsep, % space between items
+    parsep=\wrtxListParsep, % space between paragraphs within the items
+    leftmargin=\wrtxListLeftmargin, % space on the left. * or 0pt
+    labelsep=\wrtxListLabelsep, % space between the bullet and the item text
 }
-\setlist[myListItemize]{
+\setlist[wrtxListItemize]{
     label={--},
-    align=\myListAlign, % label alignment
+    align=\wrtxListAlign, % label alignment
     % labelwidth=0.25cm,
-    topsep=\myListTopsep, % space above list
-    itemsep=\myListItemsep, % space between items
-    parsep=\myListParsep, % space between paragraphs within the items
-    leftmargin=\myListLeftmargin, % space on the left. * or 0pt
-    labelsep=\myListLabelsep, % space between the bullet and the item text
+    topsep=\wrtxListTopsep, % space above list
+    itemsep=\wrtxListItemsep, % space between items
+    parsep=\wrtxListParsep, % space between paragraphs within the items
+    leftmargin=\wrtxListLeftmargin, % space on the left. * or 0pt
+    labelsep=\wrtxListLabelsep, % space between the bullet and the item text
 }

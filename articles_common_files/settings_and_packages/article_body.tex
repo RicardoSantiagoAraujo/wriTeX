@@ -1,9 +1,9 @@
-\newcommand{\myArticleTitleLinker}{}
+\newcommand{\wrtxArticleTitleLinker}{}
 
 \newcommand{\tocTitleBgColor}{}
 \isDraft{\renewcommand{\tocTitleBgColor}{draftBgColor}}{\renewcommand{\tocTitleBgColor}{bgColor}}%
 \newcommand{\setArticleTitle}[1]{%
-  \renewcommand{\myArticleTitleLinker}{%
+  \renewcommand{\wrtxArticleTitleLinker}{%
     #1:articleHeader%
   }
   \phantomsection % ensures linking with hyperref to exact page
@@ -17,7 +17,7 @@
     % ADD TARGET TO BE ABLE TO REACH IT
     \addtocontents{toc}{
       \protect\hypertarget%
-      {\myArticleTitleLinker}{}%
+      {\wrtxArticleTitleLinker}{}%
         % \par% "par" only needed in single articles for some reason
     }%
   }%
@@ -27,7 +27,7 @@
     % ADD TARGET TO BE ABLE TO REACH IT
     \addtocontents{toc}{
       \protect\hypertarget%
-      {\myArticleTitleLinker}{}%
+      {\wrtxArticleTitleLinker}{}%
         \par% "par must be included, so it a newline is create. Use vspacer above to compensate.
   }%
   }
@@ -40,8 +40,8 @@
         %   [c]% c: centered, t: top, b: bottom
         %   {0.90\linewidth}{% Not
           % \large% Uncomment this to change font size
-          \protect\hyperref[\myArticleTitleLinker]{%
-            \textbf{Article body:} \myCiteEntry{#1}{title}% ToC entry
+          \protect\hyperref[\wrtxArticleTitleLinker]{%
+            \textbf{Article body:} \wrtxCiteEntry{#1}{title}% ToC entry
           }
         % }
       % }
@@ -54,14 +54,14 @@
   {%
     %%% SECTION TITLE
     \section*{%
-      \hyperlink{\myArticleTitleLinker}
-      {\Huge\setTitleFont\color{myGrayDark}\myCiteEntry{#1}{title}%
+      \hyperlink{\wrtxArticleTitleLinker}
+      {\Huge\setTitleFont\color{wrtxGrayDark}\wrtxCiteEntry{#1}{title}%
       }% Document entry
     }%
-    \label{\myArticleTitleLinker}%
+    \label{\wrtxArticleTitleLinker}%
     \isDraftDebugger{%
       \begin{center}%
-        Title ref: \myArticleTitleLinker%
+        Title ref: \wrtxArticleTitleLinker%
       \end{center}}%
       {
         \vspace{-5ex}% remove empty space if needed
@@ -76,9 +76,9 @@
       \begin{center}%
         \vspace{-2mm}%
         \setTitleFont%
-        \color{myGrayDark}%
+        \color{wrtxGrayDark}%
         \large%
-        \myCiteEntry{#1}%
+        \wrtxCiteEntry{#1}%
         {subtitle}%
         \vspace{-4mm}%
       \end{center}%
@@ -90,10 +90,10 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%% Article subsection style
     \titlespacing*{\subsection}{0pt}{30pt}{5pt}
-    \newfontfamily\articlesectionfont[Color=myGrayMed]{\myTitleFont}
+    \newfontfamily\articlesectionfont[Color=wrtxGrayMed]{\wrtxTitleFont}
     \titleformat{\subsection}
     {%
-    \myFloatBarrier
+    \wrtxFloatBarrier
     \Large\articlesectionfont%
     }
     {\thesubsection}
@@ -102,10 +102,10 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%% Article subsubsection style
     \titlespacing*{\subsubsection}{0pt}{15pt}{3pt}
-    \newfontfamily\articlesubsectionfont[Color=myGrayMed]{\myTitleFont}
+    \newfontfamily\articlesubsectionfont[Color=wrtxGrayMed]{\wrtxTitleFont}
     \titleformat{\subsubsection}
     {%
-    % \myFloatBarrier
+    % \wrtxFloatBarrier
     \large\articlesubsectionfont%
     }
     {\thesubsubsection}
@@ -114,10 +114,10 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%% Article paragraph style (used as "sub"-subsubsection)
     \titlespacing*{\paragraph}{0pt}{10pt}{0pt}
-    \newfontfamily\articleparagraphfont[Color=myGrayMed]{\myTitleFont}
+    \newfontfamily\articleparagraphfont[Color=wrtxGrayMed]{\wrtxTitleFont}
     \titleformat{\paragraph}
     {%
-    % \myFloatBarrier
+    % \wrtxFloatBarrier
     \normalsize\articleparagraphfont%
     }
     {\theparagraph}
@@ -145,9 +145,9 @@
       % \pagestyle{plain}
     \begin{SplitColumnsInTwo}% conditionally split in two
     %%%%%% TITLE
-    \setArticleTitle{\myarticleKey}
+    \setArticleTitle{\wrtxarticleKey}
     %%%%%% SUBTITLE
-    \setArticleSubtitle{\myarticleKey}%
+    \setArticleSubtitle{\wrtxarticleKey}%
     %%%%%% ILLUSTRATIVE IMAGE
     \printTitleImg
     %%%%%% DECLARE MAIN SOURCE
@@ -164,7 +164,7 @@
     %%%% Store number of last article page
     % \totalArticles
 
-    \setcounter{lastPageInArticle:\myarticleKeyCore}{\thepage}
+    \setcounter{lastPageInArticle:\wrtxarticleKeyCore}{\thepage}
     \newpage
 }
 
@@ -172,14 +172,14 @@
 
 
 % Article section references
-\newcommand{\articleSectionRef}{\myarticleKey:secAnchor%
-\the\value{totalSectionsInArticle:\myarticleKeyCore}%
+\newcommand{\articleSectionRef}{\wrtxarticleKey:secAnchor%
+\the\value{totalSectionsInArticle:\wrtxarticleKeyCore}%
 }
-\newcommand{\articleSubsectionRef}{\myarticleKey:subSecAnchor%
-\the\value{totalSubsectionsInArticle:\myarticleKeyCore}%
+\newcommand{\articleSubsectionRef}{\wrtxarticleKey:subSecAnchor%
+\the\value{totalSubsectionsInArticle:\wrtxarticleKeyCore}%
 }
-\newcommand{\articleSubsubsectionRef}{\myarticleKey:subsubSecAnchor%
-\the\value{totalSubsubsectionsInArticle:\myarticleKeyCore}%
+\newcommand{\articleSubsubsectionRef}{\wrtxarticleKey:subsubSecAnchor%
+\the\value{totalSubsubsectionsInArticle:\wrtxarticleKeyCore}%
 }
 
 \ifthenelse{\boolean{isIncludeToC}}
@@ -233,13 +233,13 @@
 {m}{%
   sec:\detokenize{#1}% detokenize to treat special characters as plain text
 }
-\NewDocumentCommand{\myArticleSection}
+\NewDocumentCommand{\wrtxArticleSection}
 {
   m %
   O{} % optional alternative label for ease of referencing
 }
 {%
-  \stepcounter{totalSectionsInArticle:\myarticleKeyCore} % increase counter
+  \stepcounter{totalSectionsInArticle:\wrtxarticleKeyCore} % increase counter
   \refstepcounter{totalArticleSectionsAltogether} % increase counter
   \addtocontents{toc}{
     \protect\hypertarget
@@ -251,7 +251,7 @@
     {#1}% (Sub)Section title
   }%
   \ifthenelse{\equal{#2}{}}{}{\label{\secLabel{#2}}}%
-  \myLogger{START SECTION NUMBER \the\value{totalSectionsInArticle:\myarticleKeyCore} \myarticleKeyCore}
+  \wrtxLogger{START SECTION NUMBER \the\value{totalSectionsInArticle:\wrtxarticleKeyCore} \wrtxarticleKeyCore}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -260,13 +260,13 @@
 {m}{%
   subsec:\detokenize{#1}% detokenize to treat special characters as plain text
 }
-\NewDocumentCommand{\myArticleSubsection}
+\NewDocumentCommand{\wrtxArticleSubsection}
 {
   m %
   O{} % optional alternative label for ease of referencing
 }
 {%
-  \stepcounter{totalSubsectionsInArticle:\myarticleKeyCore} % increase counter
+  \stepcounter{totalSubsectionsInArticle:\wrtxarticleKeyCore} % increase counter
   \refstepcounter{totalArticleSubsectionsAltogether} % increase counter
   \addtocontents{toc}{
     \protect\hypertarget
@@ -277,7 +277,7 @@
       \linkSubsectionConditionally{#1}
     }%
   \ifthenelse{\equal{#2}{}}{}{\label{\subsecLabel{#2}}}%
-  \myLogger{START SUBSECTION NUMBER \the\value{totalSubsectionsInArticle:\myarticleKeyCore} \myarticleKeyCore}
+  \wrtxLogger{START SUBSECTION NUMBER \the\value{totalSubsectionsInArticle:\wrtxarticleKeyCore} \wrtxarticleKeyCore}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -286,13 +286,13 @@
 {m}{%
   subsubsec:\detokenize{#1}% detokenize to treat special characters as plain text
 }
-\NewDocumentCommand{\myArticleSubsubsection}
+\NewDocumentCommand{\wrtxArticleSubsubsection}
 {
   m %
   O{} % optional alternative label for ease of referencing
 }
 {%
-  \stepcounter{totalSubsubsectionsInArticle:\myarticleKeyCore} % increase counter
+  \stepcounter{totalSubsubsectionsInArticle:\wrtxarticleKeyCore} % increase counter
   \refstepcounter{totalArticleSubsubsectionsAltogether} % increase counter
   \addtocontents{toc}{
     \protect\hypertarget
@@ -303,7 +303,7 @@
       \linkSubsubsectionConditionally{#1}
     }%
   \ifthenelse{\equal{#2}{}}{}{\label{\subsubsecLabel{#2}}}%
-  \myLogger{START SUBSUBSECTION NUMBER \the\value{totalSubsubsectionsInArticle:\myarticleKeyCore} \myarticleKeyCore}
+  \wrtxLogger{START SUBSUBSECTION NUMBER \the\value{totalSubsubsectionsInArticle:\wrtxarticleKeyCore} \wrtxarticleKeyCore}
 }
 
 
@@ -312,16 +312,16 @@
 
 \newcommand{\refDraftMessage}[1]{%
   \ifthenelse{\boolean{isDraft}}{%
-    \color{myColorWarning}%
+    \color{wrtxColorWarning}%
     {\texttt{(#1)}}%
   }%
   {%
-    \color{myGrayMed}%
+    \color{wrtxGrayMed}%
   }%
 }
 
 %%% Classic ref, which includes the label number/text
-\NewDocumentCommand{\mySecRef}
+\NewDocumentCommand{\wrtxSecRef}
 {%
     m % section reference prefix: sec or subsec or subsubsec
     m % reference key
@@ -336,7 +336,7 @@
 
 
 %%% Hyper ref, which links a piece of text
-\NewDocumentCommand{\mySecHyperref}
+\NewDocumentCommand{\wrtxSecHyperref}
 {%
     O{} % section reference prefix: "part" or "chapter" ir "sec" or "subsec" or "subsubsec"
     O{} % reference key
@@ -355,8 +355,8 @@
     % empty main source
   }%
   {%
-    \textcolor{myGrayMed}{\textbf{\TEXTmainSource:}}%
-    \myCiteEntry{\mainSourceKey}{title}\myCite{\mainSourceKey}%
+    \textcolor{wrtxGrayMed}{\textbf{\TEXTmainSource:}}%
+    \wrtxCiteEntry{\mainSourceKey}{title}\wrtxCite{\mainSourceKey}%
   }%
 }%
 
@@ -365,7 +365,7 @@
   \ifthenelse{\boolean{isCreditsInArticleBody}}% check if source is empty
   {%
   \vspace{1cm}
-  \begin{myListMeta}
+  \begin{wrtxListMeta}
     [
       align=left,
       leftmargin=30pt,
@@ -373,14 +373,14 @@
       itemsep=5pt,
     ]
     %%% START WITH EMPTY ITEM
-    \item [\setTitleFont\color{myGrayDark}\textbf{Contributions}]
+    \item [\setTitleFont\color{wrtxGrayDark}\textbf{Contributions}]
     \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
-    \noindent\myCiteEntryWithLabel{\myarticleKey}{author}%
-    \noindent\myCiteEntryWithLabel{\myarticleKey}{translator}%
-    \noindent\myCiteEntryWithLabel{\myarticleKey}{illustrator}%
-    \noindent\myCiteEntryWithLabel{\myarticleKey}{reviewer}%
-    \noindent\myCiteEntryWithLabel{\myarticleKey}{thank}%
-  \end{myListMeta}
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{author}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{translator}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{illustrator}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{reviewer}%
+    \noindent\wrtxCiteEntryWithLabel{\wrtxarticleKey}{thank}%
+  \end{wrtxListMeta}
   }%
   {%
   }%
@@ -389,7 +389,7 @@
 \newcommand{\printTitleImg}{
   \ifthenelse{\boolean{isIncludeArticleCoverImgInBody}}{
   \begin{center}
-    \includegraphics[width=0.75\textwidth]{\myMainImg}%
+    \includegraphics[width=0.75\textwidth]{\wrtxMainImg}%
     \isDraftDebugger{\\MAIN IMAGE}{}%
   \end{center}
   }

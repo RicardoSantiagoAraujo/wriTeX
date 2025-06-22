@@ -1,0 +1,82 @@
+\documentclass[
+  % 12pt, % set in settings with fontsize package
+  % landscape % set with geometry package
+  % twoside % set with geometry package
+  % draft % "draft" compiles much faster than "final"/!\ do not use final in custom draftmode
+  ]{scrartcl}
+
+  % INITIAL IMPORTS: VARIABLES, CONSTANTS, ETC...
+\input{./../../articles_common_files/document/initial_inputs.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MAIN VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{./wrtx_article_tutorial.tex} % /!\ UPDATE HERE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% to run individuals fragments
+% Include only choosen sections
+\newcommand{\filesToAdd}{
+  substance,
+  body
+}
+
+
+
+%%% choose which appendix entries to include
+\newcommand{\appendixList}
+{% leave no spaces to be able to detect when list is empty
+    appendix_a,%
+    appendix_b%
+}
+
+\setbool{isMinimal}{false} % overwrites most booleans below
+\setbool{isDraft}{false} % true or false
+\setbool{isPrintVersion}{false} % true or false
+\setbool{isDrawRibbons}{false} % true or false
+\setbool{isIncludeMeta}{true} % true or false
+\setbool{isIncludeArticleCover}{true} % true or false
+\setbool{isIncludeToC}{true} % true or false
+\setbool{isIncludeLoF}{true} % true or false
+\setbool{isIncludeLoT}{true} % true or false
+\setbool{isIncludeLoTB}{true} % true or false
+\setbool{isIncludeBiblio}{true} % true or false
+\setbool{isIncludeGlossary}{true} % true or false
+\setbool{isIncludeAbreviations}{true} % true or false
+\setbool{isPrintUnusedGlossary}{true} % true or false
+\setbool{isPrintUnusedAbreviations}{true} % true or false
+\setbool{isHighlightGlossaryAndAbreviations}{true}  % true or false
+\setbool{isIncludeMissingBibEntries}{false} % true or false
+\setbool{isIncludeFootnotes}{true} % true or false
+\setbool{isIncludeCitations}{true} % true or false
+\setbool{isIncludeCitationsInFootnotes}{true} % true or false
+\setbool{isIncludeTextBoxes}{true} % true or false
+\setbool{isMoveTextBoxesToEndOfArticle}{false}  % true or false
+\setbool{isConstrainFloats}{false}  % true or false
+\setbool{isIncludeArticleCoverImgInBody}{true}  % true or false
+\setbool{isCreditsInArticleBody}{true}  % true or false
+\setbool{isSplitInTwoColumns}{false} % true or false
+\setbool{isLandscapeMode}{false} % true or false
+\setbool{isIncludeAppendix}{true} % true or false
+\setbool{isPrintLogs}{true} % true or false
+
+
+
+%%% To toggle out part(s) of the article with a switch:
+% change true/false here to control behavior
+\setbool{hidecontentswitch}{false} %true (exclude) or false (include)
+\setbool{revealhiddenswitch}{true} %true (color) or false (no color) - (hidecontentswitch must be ¨false¨)
+% pick version to print, more is included as the number goes up:
+\newcommand\version{0}
+% levels:
+% empty = 999 <- exclude all
+% version 0 <- exlude all excpect hide's with a param 0
+% version 1 <- exlude all except hide's with param 0 or 1
+% version 2 <- exlude all except hide with param 1, 2
+% version n <- exlude all except hide with param 1, 2, ..., n
+
+%SETTINGS
+\input{./../../articles_common_files/settings_and_packages/article_settings.tex}
+
+% DOCUMENT ENVIRONMENT
+\input{./../../articles_common_files/document/document_environment.tex}

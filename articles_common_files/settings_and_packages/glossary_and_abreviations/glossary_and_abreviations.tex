@@ -8,15 +8,15 @@
 ]{glossaries}%import glossary as well as acronym features
 
 % Change glossary/acronym nsame font
-\renewcommand{\glsnamefont}[1]{\textsf{\textcolor{myColorPrimary}{#1}}}
+\renewcommand{\glsnamefont}[1]{\textsf{\textcolor{wrtxColorPrimary}{#1}}}
 % Change glossary/acronym page number style (if "nonumberlist" is off)
-%\renewcommand{\glossaryentrynumbers}[1]{\textcolor{myColorPrimary}{#1}}
+%\renewcommand{\glossaryentrynumbers}[1]{\textcolor{wrtxColorPrimary}{#1}}
 % Change glossary/acronym alphabetic navigation line style
 \renewcommand*{\glslistnavigationitem}[1]
-{\item \textcolor{myColorPrimary}{\textbf{#1}}}
+{\item \textcolor{wrtxColorPrimary}{\textbf{#1}}}
 % Change glossary/acronym alphabetic letter grouping style
 \renewcommand*{\glslistgroupheaderfmt}[1]
-{\textcolor{myColorPrimary}{\textbf{#1}}}
+{\textcolor{wrtxColorPrimary}{\textbf{#1}}}
 
 \makenoidxglossaries
 
@@ -46,7 +46,7 @@
   O{} % ABBREVIATION
 }
 {
-    \ifthenelse{\equal{\myLanguage}{#1}}{
+    \ifthenelse{\equal{\wrtxLanguage}{#1}}{
         \stepcounter{totalGlossaryEntriesAltogether} % increment counter
 
         %%% CREATE NEW GLOSSARY ENTRY
@@ -56,7 +56,7 @@
           \newglossaryentry{#2}
           {
               name={#2}, % Reuse entry
-              description={\myGlossaryDescription{#2}{#4}{#5}}
+              description={\wrtxGlossaryDescription{#2}{#4}{#5}}
           }
         }
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,13 +64,13 @@
           \newglossaryentry{#2}
           {
               name={#3},
-              description={\myGlossaryDescription{#2}{#4}{#5}}
+              description={\wrtxGlossaryDescription{#2}{#4}{#5}}
           }
         }
     }{}
 }
 
-\NewDocumentCommand{\myGlossaryDescription}{
+\NewDocumentCommand{\wrtxGlossaryDescription}{
   m % glossary key
   m % Description
   m % Abreviation key
@@ -98,7 +98,7 @@
   m % MEANING
 }
 {
-    \ifthenelse{\equal{\myLanguage}{#1}}{
+    \ifthenelse{\equal{\wrtxLanguage}{#1}}{
         \stepcounter{totalAbreviationsAltogether} % increment counter
         %%% CREATE NEW GLOSSARY ENTRY
         % If #3 is empty, use #2 as name
@@ -118,9 +118,9 @@
   \renewcommand*{\glstextformat}[1]%
   {%
     \texttt{%
-    \colorbox{myColorSuccess}%
+    \colorbox{wrtxColorSuccess}%
     {%
-      \textcolor{myColorWarning}{#1}%
+      \textcolor{wrtxColorWarning}{#1}%
     }%
     }%
     }%
@@ -140,7 +140,7 @@
     }%
   {%
     \textbf{%
-      \textcolor{myGrayDark}
+      \textcolor{wrtxGrayDark}
       {%
         #1%
       }%
@@ -161,7 +161,7 @@
       \(
       \boolean{isPrintUnusedAbreviations}
       \OR
-      \totvalue{totalAbreviationsInArticle:\myarticleKeyCore}>0
+      \totvalue{totalAbreviationsInArticle:\wrtxarticleKeyCore}>0
       \)
     \AND
     \totvalue{totalAbreviationsAltogether}>0
@@ -171,7 +171,7 @@
       \updateRibbons{\textbf{Abreviations}}{}
       {
         \singlespacing
-        \mySectionTitle{Abreviations and Acronyms}
+        \wrtxSectionTitle{Abreviations and Acronyms}
         % Print Abreviations
         \printnoidxglossary[
           type=\acronymtype,
@@ -197,7 +197,7 @@
       \(
       \boolean{isPrintUnusedGlossary}
       \OR
-      \totvalue{totalGlossaryEntriesInArticle:\myarticleKeyCore}>0
+      \totvalue{totalGlossaryEntriesInArticle:\wrtxarticleKeyCore}>0
       \)
     \AND
     \totvalue{totalGlossaryEntriesAltogether}>0
@@ -207,7 +207,7 @@
       \updateRibbons{\textbf{Glossary}}{}
       {
         \singlespacing
-        \mySectionTitle{Glossary}
+        \wrtxSectionTitle{Glossary}
         % Print glossary
         \printnoidxglossary[
           type=main,
@@ -231,7 +231,7 @@
     % \newpage
     \cleardoublepage
     \begin{SplitColumnsInTwo}
-    \myPortfolioChapter{Abreviations}
+    \wrtxPortfolioChapter{Abreviations}
     {
       \phantomsection
       \singlespacing
@@ -260,7 +260,7 @@
     % \newpage
     \cleardoublepage
     \begin{SplitColumnsInTwo}
-    \myPortfolioChapter{Glossary}
+    \wrtxPortfolioChapter{Glossary}
     {%
       \phantomsection
       \singlespacing
@@ -283,16 +283,16 @@
   {}
 }
 
-\NewDocumentCommand{\myGLS}%
+\NewDocumentCommand{\wrtxGLS}%
 {%
   m% glossary key
   O{}% optional text to be used instead of name from glossary
 }{%
   {%
-    \ifthenelse{{\equal{\myarticleKeyCore}{}}}% check if key is still empty
+    \ifthenelse{{\equal{\wrtxarticleKeyCore}{}}}% check if key is still empty
     {}% if so, do nothing, since it means the article has not yet started
     {% else, step counter
-      \stepcounter{totalGlossaryEntriesInArticle:\myarticleKeyCore}%
+      \stepcounter{totalGlossaryEntriesInArticle:\wrtxarticleKeyCore}%
     }%
     \ifthenelse{\boolean{isIncludeGlossary}}%
     {%
@@ -320,16 +320,16 @@
   }%
 }
 
-\NewDocumentCommand{\myAbrev}%
+\NewDocumentCommand{\wrtxAbrev}%
 {%
   m% abreviation key
   O{}% optional text to be used instead of name from abreviation
 }{%
   {%
-    \ifthenelse{{\equal{\myarticleKeyCore}{}}}% check if key is still empty
+    \ifthenelse{{\equal{\wrtxarticleKeyCore}{}}}% check if key is still empty
     {}% if so, do nothing, since it means the article has not yet started
     {% else, step  counter
-      \stepcounter{totalAbreviationsInArticle:\myarticleKeyCore}%
+      \stepcounter{totalAbreviationsInArticle:\wrtxarticleKeyCore}%
     }%
     \ifthenelse{\boolean{isIncludeAbreviations}}%
     {%

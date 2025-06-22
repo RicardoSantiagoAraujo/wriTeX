@@ -1,0 +1,238 @@
+%%%% My own references
+\isPortfolio
+{ % FOR PORTFOLIO
+  \loadBibIfExists{../../../articles_common_files/biblatex_files/wrtxArticles_template.bib}
+  \loadBibIfExists{../../../articles_common_files/biblatex_files/wrtxArticles.bib}
+}
+{
+  \isArticle{%%% make sure it really is an article, and not e.g. a standalone file
+    % FOR SINGLE ARTICLES
+    \loadBibIfExists{../../articles_common_files/biblatex_files/wrtxArticles_template.bib}
+    \loadBibIfExists{../../articles_common_files/biblatex_files/wrtxArticles.bib}
+  }{}
+}
+
+
+
+
+\usepackage{filecontents}
+
+\begin{filecontents}{wrtxdatamodels.dbx}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%
+  % CREATE DATAMODEL ENTRY TYPES (equivalent to the predefined "article", "book", etc)
+  \DeclareDatamodelEntrytypes{wrtxarticle}
+  %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%
+  % CREATE FIELDS OF DIFFERENT TYPES
+  % literal: Used for text fields or data that should be taken as is, without special formatting or further interpretation. Fields of this type are used for plain text, such as names, titles, or descriptions.
+  \DeclareDatamodelFields[type=field, datatype=literal]
+  % Important to add a "%" percent symbol or "," comma after each field
+  {
+    subtitle,
+    abstract,
+    targetPublication,
+    audienceLevel,
+    wordMin,
+    wordMax,
+    charMin,
+    charMax,
+    copyright,
+    mainSourceKey,
+  }
+  %
+  % name: Designed specifically for names, like authors, editors, and translators. biblatex applies specific formatting rules (e.g., for initials, ordering) to these fields, which can be lists of names.
+  \DeclareDatamodelFields[type=list,datatype=name]
+  % Important to add a "%" percent symbol or "," comma after each field
+  {
+    illustrator,
+    reviewer,
+    translator,
+    thank,
+    discipline,
+    % Finish every line with a comma
+  }
+  %
+  % date: Used for fields containing dates, which enables biblatex to format them according to the bibliography style and locale. Dates are parsed, and users can specify exact or approximate dates (e.g., 2001, 2022-03-15).
+  \DeclareDatamodelFields[type=field, datatype=date, skipout]
+  % Important to add a "%" percent symbol or "," comma after each field
+  {
+    % Finish every line with a comma
+  }
+  %
+  % verbatim: Used for data that should be reproduced exactly as written without additional formatting or escaping of special characters. This is helpful for URLs, DOIs, or other technical strings that must remain unchanged. "literal" is for text needing minimal but some formatting, while "verbatim" is for data that must remain entirely unchanged.
+  \DeclareDatamodelFields[type=field, datatype=verbatim]
+  % Important to add a "%" percent symbol or "," comma after each field
+  {
+    % Finish every line with a comma
+  }
+  %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%
+  % ADD RELEVANT FIELDS HERE FROM DECLARATIONS ABOVE
+  \DeclareDatamodelEntryfields[wrtxarticle]
+    % Important to add a "%" percent symbol or "," comma after each field
+  {
+    title,
+    subtitle,
+    illustrator,
+    translator,
+    reviewer,
+    thank,
+    abstract,
+    targetPublication,
+    audienceLevel,
+    wordMin,
+    wordMax,
+    charMin,
+    charMax,
+    keywords,
+    discipline,
+    copyright,
+    mainSourceKey,
+    % Finish every line with a comma
+    }
+\end{filecontents}
+
+
+%%% get around this formatting by using citefield directly
+\DeclareFieldFormat[wrtxarticle]{title}{%
+    % \textcolor{wrtxColorSecondary}{
+        % \mkbibquote{% Surround in quotes
+          #1\isdot
+        % }%
+    % }
+}
+
+\DeclareFieldFormat[wrtxarticle]{illustrator}{
+    \printtext{illustrator}
+    \textcolor{red}{
+        \mkbibquote{#1\isdot}
+    }
+}
+
+
+
+\newbibmacro*{wrtxArticleBibMacro}{%
+  \printfield{title}%
+  %
+  % \newunit\newblock %  Creates a new unit ensuring that what's printed next starts in a new logical block.
+  \ifnameundef{author}
+  {}
+  {
+    \newunit\newblock %
+    \printtext{Written by}
+    \printnames{author}%
+    \setunit{\addcomma\space}%
+  }
+  %
+  %
+  %
+  \newunit\newblock %
+  \ifnameundef{illustrator}
+  {}
+  {
+    \printtext{Illustrated by}
+    \printnames{illustrator}%
+    \setunit{\addcomma\space}%
+  }
+  %
+  %
+  %
+  \newunit\newblock %
+  \ifnameundef{reviewer}
+  {}
+  {
+    \printtext{Reviewed by}
+    \printnames{reviewer}%
+    \setunit{\addcomma\space}%
+  }
+  %
+  %
+  %
+  \newunit\newblock %
+  \iffieldundef{targetPublication}
+  {}
+  {
+    \printtext{To be published in}
+    \printfield{targetPublication}%
+    \setunit{\addcomma\space}%
+  }
+  \newunitpunct\addperiod % Adds a period at the end
+}
+
+
+% Define a custom bibliography style
+\DeclareBibliographyDriver{wrtxarticle}{%
+  \usebibmacro{bibindex}% Prints the bibliography index if indexing is enabled
+  \usebibmacro{begentry}% Marks the beginning of the bibliography entry, setting up any required formatting
+  \usebibmacro{wrtxArticleBibMacro}%
+  \usebibmacro{finentry}% Marks the end of the bibliography entry, completing any required formatting or spacing.
+}
+
+
+\newcommand{\setSurnameCommaN}{%%% Surname N.
+  \namepartfamily\addcomma\addspace \namepartgiveni\addcomma\isdot%
+}
+\newcommand{\setNameSpaceSurname}{%%% Name Surname
+  \namepartgiven\addspace\namepartfamily\isdot%
+}
+
+% CHOOSE NAME FORMAT HERE
+\newcommand{\chooseNameFormat}{%
+      %%% Surname, N.
+      % \setSurnameCommaN%
+      %%% Name Surname
+      \setNameSpaceSurname%
+}
+
+\newboolean{wrtxHighlight}
+\newcommand{\setMyHighlight}[1]{%
+  \begingroup%
+      % \mkbibbold{%
+      % \color{wrtxColorSecondary}%
+      #1%
+      % }%
+  \endgroup%
+}%
+
+\newcommand{\highlightName}[2]{%
+  \DeclareNameFormat{#2}{%
+  \setboolean{wrtxHighlight}{false}%
+    \renewcommand{\do}[1]{\expandafter\ifstrequal\expandafter{\namepartfamily}{####1}{\setboolean{wrtxHighlight}{true}}{}}%
+    \docsvlist{#1}%
+    %%%%%········· FIRST ENTRY
+    \ifthenelse{\value{listcount}=1}
+    {%
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+        %%% ENTRY
+        \chooseNameFormat%
+        }}{%
+        %%% ENTRY
+        \chooseNameFormat%
+      }}%
+      %%%%%········· MIDDLE ENTRIES
+    }{\ifnumless{\value{listcount}}{\value{liststop}}
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{\setMyHighlight{%
+        %%% ENTRY
+        \addcomma\addspace\chooseNameFormat%
+        }}{%
+        %%% ENTRY
+        \addcomma\addspace\chooseNameFormat%
+      }}%
+      %%%%%········· LAST ENTRY
+      {\expandafter\ifthenelse{\boolean{wrtxHighlight}}{and\addspace
+      \setMyHighlight{%
+        %%% ENTRY
+        \chooseNameFormat%
+      }}{%
+        %%% ENTRY
+        and\addspace\chooseNameFormat%
+        }}%
+      }
+    \ifthenelse{\value{listcount}<\value{liststop}}
+    {\addcomma\space}{}
+  }
+}
+
+\highlightName{Surname, Name}{author}
+\highlightName{Surname, Name}{illustrator}
+\highlightName{Surname, Name}{reviewer}

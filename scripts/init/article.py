@@ -6,12 +6,12 @@ import scripts.utils.style_console_text as sty
 from scripts.enums.ThingType import ThingType
 
 # CONSTANTS
-article_template_string = "article_template"  # change here if the name of the template changes
+wrtx_article_template_string = "wrtx_article_template"  # change here if the name of the template changes
 articles_directory = "./../../articles/"  # relative to script location
 biblatex_filepath = (
-    "../../articles_common_files/biblatex_files/myArticles.bib"  # change here if the name of the template changes
+    "../../articles_common_files/biblatex_files/wrtxArticles.bib"  # change here if the name of the template changes
 )
-# biblatex entries: update if the myarticle type is updated in settings
+# biblatex entries: update if the wrtxarticle type is updated in settings
 biblatex_fields = [
     "title",
     "shorttitle",
@@ -59,11 +59,11 @@ def main():
 
     #### Creating new article folder/files:
     # create article unless user quits
-    new_folder = create_new_folder_with_files(new_article_name, article_template_string, dir_path)
+    new_folder = create_new_folder_with_files(new_article_name, wrtx_article_template_string, dir_path)
 
     #### Cleaning up files in folder:
     # Rename template latex file with new filename
-    rename_file(new_folder, article_template_string, new_article_name)
+    rename_file(new_folder, wrtx_article_template_string, new_article_name)
     print_progress_msg(f"Renamed files inside new folder as {sty.bold+sty.green}{new_article_name}{sty.reset}")
 
     # Remove template build folder and files
@@ -79,22 +79,22 @@ def main():
     print_progress_msg(f"Removed old {sty.bold+sty.green}expanded{sty.reset} file from new article ")
 
     # Replace template article name
-    replace_string_in_tex_file(new_folder, "document.tex", article_template_string, new_article_name)
+    replace_string_in_tex_file(new_folder, "document.tex", wrtx_article_template_string, new_article_name)
     replace_string_in_tex_file(
         new_folder,
         f"{new_article_name}.tex",
-        article_template_string,
+        wrtx_article_template_string,
         new_article_name,
     )
     print_progress_msg(
-        f"Replaced old string {sty.bold+sty.green}{article_template_string}{sty.reset} with {sty.bold+sty.green}{new_article_name}{sty.reset} "
+        f"Replaced old string {sty.bold+sty.green}{wrtx_article_template_string}{sty.reset} with {sty.bold+sty.green}{new_article_name}{sty.reset} "
     )
 
     print("\n🙂 New article folder and files successfully generated 🙂")
 
     ###########################################################################
     # Give user option to generate new bib entry
-    create_new_bib_entry(new_article_name, article_template_string, new_folder)
+    create_new_bib_entry(new_article_name, wrtx_article_template_string, new_folder)
 
     # Print success message
     final_message(ThingType("Article").value, new_article_name)
@@ -119,7 +119,7 @@ def update_biblatex_file(new_article_name: str) -> None:
     rel_path = os.path.join(base_dir, biblatex_filepath)  # path relative to script folder
     with open(rel_path, "a", encoding="utf-8") as file:
         new_entry = f"""
-        \n\n@myarticle{{myarticle:{new_article_name}:en,"""
+        \n\n@wrtxarticle{{wrtxarticle:{new_article_name}:en,"""
         for i, field in enumerate(biblatex_fields):
             # print current index
             print(f"{i+1} out of {len(biblatex_fields)}")

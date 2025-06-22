@@ -1,0 +1,126 @@
+\documentclass[
+  a4paper,
+  10pt,
+  % draft% "draft" compiles much faster than "final"./!\ do not use final in custom draftmode
+  ]{book}
+% \documentclass[a4paper,12pt,twoside,openright]{article}
+
+\makeatletter
+%%% Set path(s) for input file(s) similarly to graphicspath
+\def\input@path{{./}{../}}
+%or: \def\input@path{{/path/to/folder/}{/path/to/other/folder/}}
+\makeatother
+
+% INITIAL IMPORTS: VARIABLES, CONSTANTS, ETC...
+\input{../../../articles_common_files/document/initial_inputs.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% INPUT AND REDIFINE PORTFOLIO CONSTANTS
+\input{./../../portfolio_only_files/portfolio_constants/portfolio_constants.tex}
+\usepackage{xifthen}
+\renewcommand{\wrtxLanguagePortfolio}{en}% select languague to be used in portfolio
+\renewcommand{\portfolioMainTitle}{Portfolio Main Title}
+\renewcommand{\portfolioSubTitle}{Portfolio Subtitle}
+\renewcommand{\portfolioAuthorName}{Author Name}
+\renewcommand{\portfolioInstituteShort}{Your Institute Short Name Here}
+\renewcommand{\portfolioInstituteLong}{Your Institute Long Name Here}
+\renewcommand{\portfolioUniversityShort}{Your University Short Name Here}
+\renewcommand{\portfolioUniversityLong}{Your University Long Name Here}
+\renewcommand{\portfolioDateContractStart}{Contract Start Date Here}
+\renewcommand{\portfolioDateContractEnd}{Contract End Date Here}
+\renewcommand{\portfolioDateManuscript}{Manuscript Submission Date Here}
+\renewcommand{\portfolioDateDefense}{Defense Date Here}
+\renewcommand{\portfolioCity}{City Here}
+\renewcommand{\portfolioCountry}{Country Here}
+\renewcommand{\portfolioTitleImg}{../../../articles/wrtx_article_template/assets/figures/example-image.jpg}
+\ifthenelse{\equal{\wrtxLanguage}{fr}}
+{
+    \renewcommand{\portfolioMainTitle}{Titre du Portfolio}
+    \renewcommand{\portfolioSubTitle}{Sutitre du Portfolio}
+}
+{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Define your list of articles to be imported into portfolio
+% TO SPLIT CHAPTERS INTO PARTS, USE "PART:<part title>" in between articles
+\newcommand{\articleList}{% DO NOT REPEAT ENTRIES.
+PART:Article Collection,
+wrtx_article_template,% article template that you can use as a base for yours
+wrtx_article_tutorial,% example article for demonstration
+}%
+
+%%% Whether to include certain blocks of portfolio
+\newcommand{\includeFilePaths}{
+  elements/portfolio_meta_data/portfolio_meta_data,%
+  elements/portfolio_title_page/portfolio_title_page,%
+  elements/info_page/info_page,%
+  elements/preface/preface,%
+  elements/acknowledgements/acknowledgements,%
+  elements/dedication/dedication,%
+  elements/quotation/quotation,%
+  % elements/postface/postface%
+}
+
+
+%%% choose which appendix entries to include
+\newcommand{\appendixList}
+{% leave no spaces to be able to detect when list is empty
+  ../../../../../articles/wrtx_article_template/elements/appendix/appendix_a,%
+  mock_certificate,%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% GENERAL SWITCHES:
+\setbool{isMinimal}{false} % overwrites most booleans below
+\setbool{isDraft}{false} % true or false
+\setbool{isPrintVersion}{false} % true or false
+\setbool{isDrawRibbons}{true} % true or false
+\setbool{isIncludeMeta}{true} % true or false
+\setbool{isIncludeArticleCover}{true} % true or false
+\setbool{isIncludeToC}{true} % true or false
+\setbool{isIncludeLoF}{true} % true or false
+\setbool{isIncludeLoT}{true} % true or false
+\setbool{isIncludeLoTB}{true} % true or false
+\setbool{isIncludeBiblio}{true} % true or false
+\setbool{isIncludeGlossary}{true} % true or false
+\setbool{isIncludeAbreviations}{true} % true or false
+\setbool{isPrintUnusedGlossary}{true} % true or false
+\setbool{isPrintUnusedAbreviations}{true} % true or false
+\setbool{isHighlightGlossaryAndAbreviations}{true}  % true or false
+\setbool{isIncludeMissingBibEntries}{false} % true or false
+\setbool{isIncludeFootnotes}{true} % true or false
+\setbool{isIncludeCitations}{true} % true or false
+\setbool{isIncludeCitationsInFootnotes}{true} % true or false
+\setbool{isIncludeTextBoxes}{true} % true or false
+\setbool{isSplitInTwoColumns}{false} % true or false
+\setbool{isLandscapeMode}{false} % true or false
+\setbool{isIncludeAppendix}{true}  % true or false
+\setbool{isPrintLogs}{true} % true or false
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% PORTOFOLIO SPECIFIC:
+\setbool{isDivideArticlesIntoParts}{true} % true or false
+\setbool{isIncludePerArticleToC}{true} % true or false
+\setbool{isIncludePerArticleLoF}{true} % true or false
+\setbool{isIncludePerArticleLoT}{true} % true or false
+\setbool{isIncludePerArticleSubstance}{true} % true or false
+\setbool{isSplitBibliographyByChapter}{false}  % true or false
+
+%%% To toggle out part(s) of the article with a switch:
+% change true/false here to control behavior
+\setbool{hidecontentswitch}{false} %true (exclude) or false (include)
+\setbool{revealhiddenswitch}{true} %true (color) or false (no color) - (hidecontentswitch must be ¨false¨)
+% pick version to print, more is included as the number goes up:
+\newcommand\version{0}
+% levels:
+% empty = 999 <- exclude all
+% version 0 <- exlude all excpect hide's with a param 0
+% version 1 <- exlude all except hide's with param 0 or 1
+% version 2 <- exlude all except hide with param 1, 2
+% version n <- exlude all except hide with param 1, 2, ..., n
+
+
+\input{../../portfolio_only_files/portfolio_structure.tex}

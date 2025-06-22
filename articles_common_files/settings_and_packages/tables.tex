@@ -5,17 +5,17 @@
 
 
 \makeatletter
-\newcommand\myTabCaption{% my caption style, linking to the TOF
-  \stepcounter{totalTablesInArticle:\myarticleKeyCore}% increment counter and ref it%
+\newcommand\wrtxTabCaption{% wrtx caption style, linking to the TOF
+  \stepcounter{totalTablesInArticle:\wrtxarticleKeyCore}% increment counter and ref it%
   \stepcounter{totalTablesAltogether}%
-  \@dblarg\@myTabCaption}
-  \newcommand\myTabCaptionLinker{table:\myarticleKeyCore:\the\value{totalTablesInArticle:\myarticleKeyCore}}% key to identify individual tables
-\def\@myTabCaption[#1]#2{%
-  \caption[\protect\hypertarget{\myTabCaptionLinker}{#1}]%
+  \@dblarg\@wrtxTabCaption}
+  \newcommand\wrtxTabCaptionLinker{table:\wrtxarticleKeyCore:\the\value{totalTablesInArticle:\wrtxarticleKeyCore}}% key to identify individual tables
+\def\@wrtxTabCaption[#1]#2{%
+  \caption[\protect\hypertarget{\wrtxTabCaptionLinker}{#1}]%
     {
       \ifthenelse{\boolean{isIncludeLoT}}
       {% as hyperlink
-        \hyperlink{\myTabCaptionLinker}{#2}
+        \hyperlink{\wrtxTabCaptionLinker}{#2}
       }%
       {% as simple text
         #2
@@ -31,7 +31,7 @@
 }
 
 % My Table Environment
-\NewDocumentEnvironment{articleTableEnv}
+\NewDocumentEnvironment{wrtxArticleTableEnv}
 {
 m % #1: Table caption
 m % #2: table caption extra
@@ -41,8 +41,8 @@ O{} % #3: table key
     \begin{table}
         \centering
         %%% Caption:
-        \myTabCaption[#1]{%
-            \textcolor{myGrayMed}{\textbf{Table\ \the\value{totalTablesInArticle:\myarticleKeyCore}:\ }}% Table number label
+        \wrtxTabCaption[#1]{%
+            \textcolor{wrtxGrayMed}{\textbf{Table\ \the\value{totalTablesInArticle:\wrtxarticleKeyCore}:\ }}% Table number label
             \textbf{#1.} #2% Table caption
             \isDraftDebugger{\\ Ref key: \tabLabel{#3}}{}%% Print reference key in draft mode
         }
@@ -53,18 +53,18 @@ O{} % #3: table key
     \end{table}
 }
 
-\NewDocumentCommand{\myTabRef}
+\NewDocumentCommand{\wrtxTabRef}
 {
     m % reference key
     O{Table} % reference prefix
 }{%
   \begingroup%
   \ifthenelse{\boolean{isDraft}}{%
-    \color{myColorWarning}%
+    \color{wrtxColorWarning}%
     {\texttt{(\tabLabel{#1})}}%
   }%
   {%
-    \color{myGrayMed}%
+    \color{wrtxGrayMed}%
   }
   #2\ \ref{\tabLabel{#1}}%
   \endgroup%

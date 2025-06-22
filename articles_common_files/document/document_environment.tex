@@ -19,7 +19,7 @@
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------
 %%%%%%%%%%%%
 %%%%%%%%% SUBSTANCE
-\updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Substance}{SUBSTANCE}
+\updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Substance}{SUBSTANCE}
 \begin{substanceEnvironment}[\onlyfiles]
 \addContent{substance}
 \end{substanceEnvironment}
@@ -59,8 +59,8 @@
 %%%%%%%%% ARTICLE BODY
 \pagenumbering{arabic}
 \begin{bodyEnvironment}
-   \addContent{body}[\myLanguage]%
-   \noindent\myFloatBarrier% constraint floats
+   \addContent{body}[\wrtxLanguage]%
+   \noindent\wrtxFloatBarrier% constraint floats
 \end{bodyEnvironment}
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------
 %%%%%%%%%%%%
@@ -69,6 +69,6 @@
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------
 %%%%%%%%%%%%
 %%%%%%%%% APPENDIX
-\myAppendix
+\wrtxAppendix
 
 \end{document}

@@ -2,35 +2,35 @@
 
 
 %%%%%%% DESIGN OF TITLE PAGE
-\newcommand{\myTitlePage}{%
+\newcommand{\wrtxTitlePage}{%
     \begin{titlepage}
         \atBeginTitlePage% Important set important functionalities
-        \pagecolor{myGrayLight}
+        \pagecolor{wrtxGrayLight}
         \centering
-        % \myVfills{2}
+        % \wrtxVfills{2}
         %
-        \begin{myTitlesBox}
+        \begin{wrtxTitlesBox}
             %
             %%%%%%%%%%%%%%%%%%%%%%%% TITLE
             {%
-                \color{myColorSecondary}% Color
+                \color{wrtxColorSecondary}% Color
                 \setTitleFont% Font family
                 \HUGE% Font size
                 \bfseries% Bold
                 \scshape% Small caps
                 \lsstyle% letter spacing
                 % \itshape% Italics
-                \myCiteEntry{\myarticleKey}{title}%
+                \wrtxCiteEntry{\wrtxarticleKey}{title}%
             }%
             % \tcblower%%% adds separator in colorbox between upper and lower half
             %
             %%%%%%%%%%%%%%%%%%%%%%%% SUBTITLE
             {%
-                \color{myGrayDark}\large \myCiteEntry{\myarticleKey}{subtitle}
+                \color{wrtxGrayDark}\large \wrtxCiteEntry{\wrtxarticleKey}{subtitle}
                 [\\\vspace{0.35cm}]
                 [\vspace{0.35cm}]
             }%
-        \end{myTitlesBox}
+        \end{wrtxTitlesBox}
         %
         \titlePageItem
         {0}% space units before
@@ -62,17 +62,17 @@
         %
         % Institution
         % {\normalsize Institution Name}
-        % \myVfills{1}
+        % \wrtxVfills{1}
         %
         % Optional: cover image
-        \addCoverImg{\myMainImg}
-        \myVfills{1}
+        \addCoverImg{\wrtxMainImg}
+        \wrtxVfills{1}
         % Optional: logo
         % \includegraphics[width=0.2\textwidth]{icons/placeholder.png}
         %
         % Date
-        {\color{myGrayDark}\normalsize \today}
-        \myVfills{1}
+        {\color{wrtxGrayDark}\normalsize \today}
+        \wrtxVfills{1}
         %
     \end{titlepage}
 }
@@ -84,11 +84,11 @@
 \newcommand{\addCover}{%
     \ifthenelse{\boolean{isIncludeArticleCover}}%
     {%
-        \updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Cover}{COVER}
+        \updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Cover}{COVER}
         \setcounter{titlepagenumber}{\value{page}}% recover page number
         % Create the cover page
         \begin{samepage}
-            \myTitlePage%
+            \wrtxTitlePage%
         \end{samepage}
         % revert bg color
         \isDraft{%
@@ -115,7 +115,7 @@
     \begin{tcolorbox}
         [
         center,
-        colframe=myColorPrimary,
+        colframe=wrtxColorPrimary,
         % colback=orange!50,
         boxsep=0px,
         left=0pt,right=0pt,top=0pt,bottom=0pt,
@@ -138,25 +138,25 @@
     \setcounter{page}{\thetitlepagenumber}%
     %%% reference to cover
     \isPortfolio{}{\hypertarget{start}{}}% generic reference to cover, used by ribbon link
-    \newcommand{\articleCoverRef}{\myarticleKeyCore:cover}%
+    \newcommand{\articleCoverRef}{\wrtxarticleKeyCore:cover}%
     \isPortfolio{}{\hypertarget{\articleCoverRef}{}} % reference to this specific cover
     \isDraftDebugger{specific reference: \articleCoverRef; generic reference: start}{}%
     \phantomsection % ensures linking with hyperref to exact page
-    \hypertarget{\myarticleKeyCore:cover}{}%
-    \label{\myarticleKeyCore:cover} % Add label here
+    \hypertarget{\wrtxarticleKeyCore:cover}{}%
+    \label{\wrtxarticleKeyCore:cover} % Add label here
     % ADD TO TOC WITHOUT NUMBER PAGE
     \isPortfolio
     {%
         \addcontentsline{toc}{section}{%
             \noindent%
-            \protect\hyperref[\myarticleKeyCore:cover]{\textbf{\TEXTcover}}%
+            \protect\hyperref[\wrtxarticleKeyCore:cover]{\textbf{\TEXTcover}}%
         }%
     }
     {%
         \addtocontents{toc}{%
-            \protect\myContentsTextFont% change font
+            \protect\wrtxContentsTextFont% change font
             \noindent%
-            \hyperref[\myarticleKeyCore:cover]{\textbf{\TEXTcover}}%
+            \hyperref[\wrtxarticleKeyCore:cover]{\textbf{\TEXTcover}}%
             \par% this paragraph can cause issues, use \par, not \\
         }%
     }%
@@ -164,7 +164,7 @@
 
 
 % Macro add vertical space in proportion
-\NewDocumentCommand{\myVfills}
+\NewDocumentCommand{\wrtxVfills}
 {%
     m% how many
 }
@@ -176,14 +176,14 @@
             \vfill%
             \isDraftDebugger%
             {%
-                \textcolor{myColorWarning}{\tiny\n}%
+                \textcolor{wrtxColorWarning}{\tiny\n}%
                 \vfill%
             }{}%
         }%
     }%
     {%
         \isDraftDebugger
-        {\textcolor{myColorDanger}{\tiny DO NOT ADD SPACE}}%
+        {\textcolor{wrtxColorDanger}{\tiny DO NOT ADD SPACE}}%
         {}%
     }% if 0, do add anything
 }
@@ -200,25 +200,25 @@
 {%
     {%
         % Styling entry
-        \normalsize\color{myGrayDark}%
+        \normalsize\color{wrtxGrayDark}%
         %
-        \myCiteEntry{\myarticleKey}{#3}%
+        \wrtxCiteEntry{\wrtxarticleKey}{#3}%
         %%% Prenote
         [{%
-            \myVfills{#1}% SPACE
-            \normalsize\color{myGrayMed}% STYLE
+            \wrtxVfills{#1}% SPACE
+            \normalsize\color{wrtxGrayMed}% STYLE
             #2% CONTENT
         }]%
         %%% Postnote
         [{%
-            \normalsize\color{myGrayMed}% STYLE
+            \normalsize\color{wrtxGrayMed}% STYLE
             #4% CONTENT
-            \myVfills{#5}% SPACE
+            \wrtxVfills{#5}% SPACE
         }]%%%adding space if present
     }%
 }
 
-\newtcolorbox{myTitlesBox}
+\newtcolorbox{wrtxTitlesBox}
 {
     % draft,% to see measurements
     enhanced,
@@ -238,7 +238,7 @@
     arc is angular,% box shape
     arc=1mm,
     outer arc=0mm,
-    colback=myColorPrimary!3!white,colframe=myColorPrimary!95!black,
+    colback=wrtxColorPrimary!3!white,colframe=wrtxColorPrimary!95!black,
     % TITLE OF TEXTBOX
     title={Mediation Article},
     fonttitle=\Large,
@@ -257,18 +257,18 @@
 \NewDocumentCommand{\horizontalDeco}
 {m}{%
     \tikzset{
-    myline/.style={
+    wrtxline/.style={
         line width=0.1ex,
         line cap=round,
-        myColorPrimary
+        wrtxColorPrimary
     }
     }
     \noindent\tikz{%
         %%% CONTENT
         \path (0,0) -- node[inner xsep=1em] (content) {#1} ++ (\linewidth,0);
         % LEFT LINE
-        \draw[myline]  (0,0) -- (content);
+        \draw[wrtxline]  (0,0) -- (content);
         % RIGHT LINE
-        \draw[myline]  (content) -- (\linewidth,0);
+        \draw[wrtxline]  (content) -- (\linewidth,0);
     }%
 }

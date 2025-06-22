@@ -10,28 +10,28 @@
 \fancypagestyle{styleDigital}{
   \fancyhf{}% Clear header/footer
   % O = odd; E = even; L/R/C = left/right/center
-  \fancyhead[RO, RE]{\myArticleTitle}
-  \fancyhead[LO, LE]{\myPrintOrDigitalMarker}
+  \fancyhead[RO, RE]{\wrtxArticleTitle}
+  \fancyhead[LO, LE]{\wrtxPrintOrDigitalMarker}
   \fancyhead[CO, CE]{
     % \verticalCenterIcon{\includegraphics[scale=0.05]{../../articles_common_files/assets/icons/placeholder.png}}
   }
-  % \fancyhead[CO, CE]{\textcolor{myColorPrimary}{\hyperlink{toc}{\leftmark}}}
+  % \fancyhead[CO, CE]{\textcolor{wrtxColorPrimary}{\hyperlink{toc}{\leftmark}}}
   \fancyfoot[RO, RE]{
-    \textcolor{myColorPrimary}{
-      % \hyperlink{title}{\myCiteEntry{\myarticleKey}{author}}
+    \textcolor{wrtxColorPrimary}{
+      % \hyperlink{title}{\wrtxCiteEntry{\wrtxarticleKey}{author}}
     }
-    \myAbsolutePagination
+    \wrtxAbsolutePagination
   }
   \fancyfoot[CE, CO]{
-    \myRelativePagination
+    \wrtxRelativePagination
   }
 }
 
 %%% DEFINE ANOTHER STYLE BASED ON THIS ONE
 \fancypagestyle{styleDigital-NoPage}[styleDigital]{
 \fancyfoot[]{} % empty footer
-\fancyfoot[RO, RE]{\myAbsolutePagination}
-\fancyfoot[LO, LE]{\isDraft{\color{myColorWarning}page without pagination in final v.}{}}
+\fancyfoot[RO, RE]{\wrtxAbsolutePagination}
+\fancyfoot[LO, LE]{\isDraft{\color{wrtxColorWarning}page without pagination in final v.}{}}
 }
 
 
@@ -40,32 +40,32 @@
   \fancyhf{}% Clear header/footer
   % O = odd; E = even; L/R/C = left/right/center
   % HEAD
-  \fancyhead[RO, LE]{\myArticleTitle}
-  % \fancyhead[LO, RE]{\textcolor{myColorPrimary}{\hyperlink{toc}{\leftmark}}}
+  \fancyhead[RO, LE]{\wrtxArticleTitle}
+  % \fancyhead[LO, RE]{\textcolor{wrtxColorPrimary}{\hyperlink{toc}{\leftmark}}}
 
   % FOOT
   \fancyfoot[LO, RE]{
-    % \textcolor{myColorPrimary}{\hyperlink{title}{\myCiteEntry{\myarticleKey}{author}}}
-    \myAbsolutePagination
+    % \textcolor{wrtxColorPrimary}{\hyperlink{title}{\wrtxCiteEntry{\wrtxarticleKey}{author}}}
+    \wrtxAbsolutePagination
      }
   \fancyfoot[RO, LE]{
-    \textcolor{myColorPrimary}{\myRelativePagination}
+    \textcolor{wrtxColorPrimary}{\wrtxRelativePagination}
     }
   \fancyfoot[CO]{
     % \verticalCenterIcon{\includegraphics[scale=0.05]{../../articles_common_files/assets/icons/placeholder.png}}
-    \isDraft{\textcolor{myColorWarning}{ODD (RIGHT)}{}}
+    \isDraft{\textcolor{wrtxColorWarning}{ODD (RIGHT)}{}}
   }
   \fancyfoot[CE]{
     % \verticalCenterIcon{\includegraphics[scale=0.05]{../../articles_common_files/assets/icons/placeholder.png}}
-    \isDraft{\textcolor{myColorWarning}{EVEN (LEFT)}{}}
+    \isDraft{\textcolor{wrtxColorWarning}{EVEN (LEFT)}{}}
   }
 }
 
 %%% DEFINE ANOTHER STYLE BASED ON THIS ONE
 \fancypagestyle{stylePrint-NoPage}[stylePrint]{
   \fancyfoot[LO,RE, RO, LE]{} % empty footer
-  \fancyfoot[LO, RE]{\myAbsolutePagination}
-  \fancyfoot[RO, LE]{\isDraft{\color{myColorWarning}page without pagination in final v.}{}}
+  \fancyfoot[LO, RE]{\wrtxAbsolutePagination}
+  \fancyfoot[RO, LE]{\isDraft{\color{wrtxColorWarning}page without pagination in final v.}{}}
 }
 
 
@@ -78,28 +78,28 @@
 }
 
 %%% Relative pagination (within article)
-\newcommand{\myRelativePagination}{%
+\newcommand{\wrtxRelativePagination}{%
   \isDraft
-  {\hyperlink{toc}{\textcolor{myGrayMed}{\thepage}} \textcolor{myColorPrimary}{out of\totalPagesInArticleBody}}%
+  {\hyperlink{toc}{\textcolor{wrtxGrayMed}{\thepage}} \textcolor{wrtxColorPrimary}{out of\totalPagesInArticleBody}}%
   {
-    \textcolor{myColorPrimary}{\hyperlink{toc}{\thepage}}%
+    \textcolor{wrtxColorPrimary}{\hyperlink{toc}{\thepage}}%
   }
 }
 
 %%% Absolute pagination (whole document)
-\newcommand{\myAbsolutePagination}{%
-  \isDraft{\textcolor{myColorPrimary}{Absolute page: \textcolor{myGrayMed}{\abspagenumber}/\ztotpages}}{}%
+\newcommand{\wrtxAbsolutePagination}{%
+  \isDraft{\textcolor{wrtxColorPrimary}{Absolute page: \textcolor{wrtxGrayMed}{\abspagenumber}/\ztotpages}}{}%
 }
 
 %%% Article title
-\newcommand{\myArticleTitle}{%
-  \hyperlink{\myarticleKey}{\textcolor{myColorPrimary}{\setTitleFont\citefield{\myarticleKey}{title}}}%
+\newcommand{\wrtxArticleTitle}{%
+  \hyperlink{\wrtxarticleKey}{\textcolor{wrtxColorPrimary}{\setTitleFont\citefield{\wrtxarticleKey}{title}}}%
 }
 
 %%% Print/Digital marker
-\newcommand{\myPrintOrDigitalMarker}{%
+\newcommand{\wrtxPrintOrDigitalMarker}{%
   \isDraft{%
-  \color{myColorWarning}\isPrint{PRINT VERSION}{DIGITAL VERSION}
+  \color{wrtxColorWarning}\isPrint{PRINT VERSION}{DIGITAL VERSION}
   }{}
 }
 
@@ -109,8 +109,8 @@
 % \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{#1}}{}} %remove \makeuppercase{} to keep it normal case
 
 % change ruler style and color
-\renewcommand{\headrule}{\hbox to\headwidth{\color{myColorPrimary}\leaders\hrule height \headrulewidth\hfill}}
-\renewcommand{\footrule}{\hbox to\headwidth{\color{myColorPrimary}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{wrtxColorPrimary}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{wrtxColorPrimary}\leaders\hrule height \headrulewidth\hfill}}
 
 % set ruler dimensions
 \renewcommand{\headrulewidth}{0pt}

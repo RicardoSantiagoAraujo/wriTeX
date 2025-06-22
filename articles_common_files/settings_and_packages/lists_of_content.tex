@@ -1,7 +1,7 @@
 
 \usepackage{titletoc} % to create partial tables of contents.
 
-\newcommand{\myContentsTextFont}{\setTitleFont}
+\newcommand{\wrtxContentsTextFont}{\setTitleFont}
 
 %Add dots for Sections in TOC
 \usepackage{tocloft}
@@ -14,13 +14,13 @@
 \renewcommand{\cftsubsubsecindent}{4.7em}
 \renewcommand{\cftsubsubsecnumwidth}{4.7cm}
 % TOC text style
-\renewcommand{\cftpartfont}{\LARGE\bfseries\color{black}\myContentsTextFont}
-\isPortfolio{\renewcommand{\cftchapfont}{\large\color{black}\myContentsTextFont\bfseries}}{}
-\renewcommand{\cftsecfont}{\color{black}\myContentsTextFont}
-\renewcommand{\cftsubsecfont}{\color{myGrayDark}\myContentsTextFont}
-\renewcommand{\cftsubsubsecfont}{\color{myGrayDark!95}\myContentsTextFont}
-\renewcommand{\cftparafont}{\color{myGrayDark!90}\myContentsTextFont}
-\renewcommand{\cftsubparafont}{\color{myGrayDark!85}\myContentsTextFont}
+\renewcommand{\cftpartfont}{\LARGE\bfseries\color{black}\wrtxContentsTextFont}
+\isPortfolio{\renewcommand{\cftchapfont}{\large\color{black}\wrtxContentsTextFont\bfseries}}{}
+\renewcommand{\cftsecfont}{\color{black}\wrtxContentsTextFont}
+\renewcommand{\cftsubsecfont}{\color{wrtxGrayDark}\wrtxContentsTextFont}
+\renewcommand{\cftsubsubsecfont}{\color{wrtxGrayDark!95}\wrtxContentsTextFont}
+\renewcommand{\cftparafont}{\color{wrtxGrayDark!90}\wrtxContentsTextFont}
+\renewcommand{\cftsubparafont}{\color{wrtxGrayDark!85}\wrtxContentsTextFont}
 % TOC numbering style
 % \renewcommand{\cftpartpagefont}{\setMainFont}
 \isPortfolio{\renewcommand{\cftchappagefont}{\setMainFont}}{}
@@ -30,15 +30,15 @@
 \renewcommand{\cftparapagefont}{\setMainFont}
 \renewcommand{\cftsubparapagefont}{\setMainFont}
 % LOF text style
-\renewcommand{\cftfigfont}{\color{black}\myContentsTextFont}
+\renewcommand{\cftfigfont}{\color{black}\wrtxContentsTextFont}
 % LOF numbering style
 \renewcommand{\cftfigpagefont}{\setMainFont}
 % LOT text style
-\renewcommand{\cfttabfont}{\color{black}\myContentsTextFont}
+\renewcommand{\cfttabfont}{\color{black}\wrtxContentsTextFont}
 % LOT numbering style
 \renewcommand{\cfttabpagefont}{\setMainFont}
 % LOTB text style
-% \renewcommand{\cfttextboxfont}{\color{red}\myContentsTextFont}% not working as expected, changes done direcly in addcontentsline command
+% \renewcommand{\cfttextboxfont}{\color{red}\wrtxContentsTextFont}% not working as expected, changes done direcly in addcontentsline command
 % LOTB numbering style
 % \renewcommand{\cfttextboxpagefont}{\setMainFont}% not working as expected, changes done direcly in addcontentsline command
 
@@ -49,7 +49,7 @@
 \newcommand{\listFirstLine}{%
 % \hfill\null\\%
 \null\hfill\textmd{%
-    \color{myGrayMed}{Page}%
+    \color{wrtxGrayMed}{Page}%
     }%
 }
 %%% TOC
@@ -100,8 +100,8 @@
         \setcounter{tocdepth}{5}
         \begingroup % start a TeX group
             % these apply to all, they more targeted  changes are done elsewhere with the \cft commands
-            % \myContentsTextFont
-            % \color{myGrayDark}% or whatever color you wish to use
+            % \wrtxContentsTextFont
+            % \color{wrtxGrayDark}% or whatever color you wish to use
             \tableofcontents%
         \endgroup   % end of TeX group
     }{}
@@ -111,13 +111,13 @@
 
 \newcommand{\addLoF}{
     \isPortfolio{%
-        \newcommand{\myFigCounter}{1} %%% Print in ANY case since 1<>0
+        \newcommand{\wrtxFigCounter}{1} %%% Print in ANY case since 1<>0
     }
     {
-        \newcommand{\myFigCounter}{%
-            \totvalue{totalFiguresInArticle:\myarticleKeyCore}}
+        \newcommand{\wrtxFigCounter}{%
+            \totvalue{totalFiguresInArticle:\wrtxarticleKeyCore}}
     }
-    \ifthenelse{\myFigCounter=0}{ %%% Include only if there are figures
+    \ifthenelse{\wrtxFigCounter=0}{ %%% Include only if there are figures
         % No figures to display.
     }{
         \ifthenelse{\boolean{isIncludeLoF}}{
@@ -130,7 +130,7 @@
             % change TOC depth
             % \setcounter{tocdepth}{2}
             \listoffigures
-            % Total number of figures in this document: \total{myFigCounter}
+            % Total number of figures in this document: \total{wrtxFigCounter}
         }{}
     }
 
@@ -140,13 +140,13 @@
 
 \newcommand{\addLoT}{
     \isPortfolio{%
-        \newcommand{\myTabCounter}{1} %%% Print in ANY case since 1<>0
+        \newcommand{\wrtxTabCounter}{1} %%% Print in ANY case since 1<>0
     }
     {
-        \newcommand{\myTabCounter}{%
-            \totvalue{totalTablesInArticle:\myarticleKeyCore}}
+        \newcommand{\wrtxTabCounter}{%
+            \totvalue{totalTablesInArticle:\wrtxarticleKeyCore}}
     }
-    \ifthenelse{\myTabCounter=0}{ %%% Include only if there are tables
+    \ifthenelse{\wrtxTabCounter=0}{ %%% Include only if there are tables
         % No tables to display.
     }{
     \ifthenelse{\boolean{isIncludeLoT}}{
@@ -156,7 +156,7 @@
         \renewcommand{\listtablename}{\vspace*{-40pt}} % remove title of LoT
         \section*{\listTitleStyle\TEXTlot}
         \listoftables
-        % Total number of figures in this document: \total{totalTablesInArticle:\myarticleKeyCore}
+        % Total number of figures in this document: \total{totalTablesInArticle:\wrtxarticleKeyCore}
     }{}
     }
 }
@@ -164,13 +164,13 @@
 
 \newcommand{\addLoTextBoxes}{
     \isPortfolio{%
-        \newcommand{\myTextboxCounter}{1} %%% Print in ANY case since 1<>0
+        \newcommand{\wrtxTextboxCounter}{1} %%% Print in ANY case since 1<>0
     }
     {
-        \newcommand{\myTextboxCounter}{%
-            \totvalue{totalTextboxesInArticle:\myarticleKeyCore}}
+        \newcommand{\wrtxTextboxCounter}{%
+            \totvalue{totalTextboxesInArticle:\wrtxarticleKeyCore}}
     }
-    \ifthenelse{\myTextboxCounter=0}{ %%% Include only if there are textboxes
+    \ifthenelse{\wrtxTextboxCounter=0}{ %%% Include only if there are textboxes
         % No tables to display.
     }{
     \ifthenelse{\boolean{isIncludeLoTB}}{
@@ -181,16 +181,16 @@
         \section*{\listTitleStyle\TEXTlotb}
         \begingroup % start a TeX group
         % these apply to all elements so targeted adjustments should be done elsewhere
-            %\myContentsTextFont
+            %\wrtxContentsTextFont
             % \color{red}% or whatever color you wish to use
             \listoftextbox%
         \endgroup   % end of TeX group
-        % Total number of figures in this document: \total{totalTablesInArticle:\myarticleKeyCore}
+        % Total number of figures in this document: \total{totalTablesInArticle:\wrtxarticleKeyCore}
     }{}
     }
 }
 
 % styling toc/lof/loc/lotb titles
 \newcommand{\listTitleStyle}{%
-    \color{myColorPrimary}\myContentsTextFont
+    \color{wrtxColorPrimary}\wrtxContentsTextFont
 }

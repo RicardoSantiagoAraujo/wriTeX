@@ -1,32 +1,32 @@
 \updateRibbons{\textbf{Portfolio meta-info}}{}
 \metaInfoSettings{
-    \section*{\textcolor{myGrayMed}{ARTICLE PORTFOLIO METADATA}}
+    \section*{\textcolor{wrtxGrayMed}{ARTICLE PORTFOLIO METADATA}}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%% ABOUT
     \subsection*{About}
-    \begin{myListMeta}[
+    \begin{wrtxListMeta}[
         % leftmargin=0pt,
         % labelsep=0pt
         ]
         %
-        \item[\myListLabelStyle{Ownership:}] \portfolioAuthorName
+        \item[\wrtxListLabelStyle{Ownership:}] \portfolioAuthorName
         %
-        \item[\myListLabelStyle{Language:}] \myLanguage\ (\myLanguageLong)
+        \item[\wrtxListLabelStyle{Language:}] \wrtxLanguage\ (\wrtxLanguageLong)
         %
-        \item[\myListLabelStyle{Compilation date:}] \today
+        \item[\wrtxListLabelStyle{Compilation date:}] \today
         %
-        \item[\myListLabelStyle{Compilation time:}] \DTMcurrenttime
+        \item[\wrtxListLabelStyle{Compilation time:}] \DTMcurrenttime
         %
-        \item[\myListLabelStyle{Compilation duration:}] \elapsedInt.\elapsedFrac\ seconds (previous single run)
+        \item[\wrtxListLabelStyle{Compilation duration:}] \elapsedInt.\elapsedFrac\ seconds (previous single run)
         %
-        \item[\myListLabelStyle{Lua\TeX\ version:}] \myLuatexMessage
+        \item[\wrtxListLabelStyle{Lua\TeX\ version:}] \wrtxLuatexMessage
         %
-        \item[\myListLabelStyle{Geometry:}] \myGeometrySettingsInfo
+        \item[\wrtxListLabelStyle{Geometry:}] \wrtxGeometrySettingsInfo
         %
-    \end{myListMeta}
+    \end{wrtxListMeta}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,20 +36,20 @@
 
     \newcommand{\portfolioOptionsItem}[1]{%
     % \isPortfolio{}{%
-        \item[\myListLabelStyle{#1}]\ \ifthenelse{\boolean{#1}}{\textcolor{myColorSuccess}{true}}{\textcolor{myColorDanger}{false}}%
+        \item[\wrtxListLabelStyle{#1}]\ \ifthenelse{\boolean{#1}}{\textcolor{wrtxColorSuccess}{true}}{\textcolor{wrtxColorDanger}{false}}%
     % }%
 }%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% FIRST COLUMN
     \begin{minipage}[t]{0.40\textwidth} % Adjust width as needed
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=100pt,
             labelsep=0pt
             ]
             %%% START WITH EMPTY ITEM
             \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
             %
-            \item[\myListLabelStyle{Language}]\ \myLanguageLong (\myLanguage)
+            \item[\wrtxListLabelStyle{Language}]\ \wrtxLanguageLong (\wrtxLanguage)
             \item[] % empty gap
             \item[---] \textbf{Portfolio only:}
             \portfolioOptionsItem{isIncludePerArticleToC}
@@ -75,13 +75,13 @@
             %
             \portfolioOptionsItem{isSplitInTwoColumns}
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
     % \hfill % This adds space between the minipages
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% SECOND COLUMN
     \begin{minipage}[t]{0.30\textwidth}
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=40pt,
             labelsep=0pt
             ]
@@ -114,12 +114,12 @@
             %
             \portfolioOptionsItem{isHighlightGlossaryAndAbreviations}
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% THIRD COLUMN
     \begin{minipage}[t]{0.30\textwidth}
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=40pt,
             labelsep=0pt
             ]
@@ -148,8 +148,8 @@
             %
             \portfolioOptionsItem{revealhiddenswitch}
             %
-            \item[\myListLabelStyle{Contents version}]\ \version
-        \end{myListMeta}
+            \item[\wrtxListLabelStyle{Contents version}]\ \version
+        \end{wrtxListMeta}
     \end{minipage}
 
 
@@ -159,7 +159,7 @@
     %%% ARTICLES INCLUDED
     \subsection*{Articles included}
     % \expandafter\detokenize\expandafter{\articleList}\\ % all in line
-    \begin{myListMeta}
+    \begin{wrtxListMeta}
         %%% START WITH EMPTY ITEM
         \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
         \newcounter{localPartCount}
@@ -171,8 +171,8 @@
                 \checkIsPart{\article}
                 {%is part
                     \stepcounter{localPartCount}
-                    \item[{\myListLabelStyle{\textbullet\ PART\ \thelocalPartCount}[myColorPrimary]}]%
-                    \textcolor{myColorPrimary}
+                    \item[{\wrtxListLabelStyle{\textbullet\ PART\ \thelocalPartCount}[wrtxColorPrimary]}]%
+                    \textcolor{wrtxColorPrimary}
                     {%
                         \hyperlink{part:\thelocalPartCount}
                         {%
@@ -183,16 +183,16 @@
                 }
                 {% is article
                     \stepcounter{localArtCount}
-                    \renewcommand{\myarticleKeyCore}{\article}
-                    \item[\myListLabelStyle{Chapter\ \thelocalArtCount}] \hyperlink{myarticle:\article:\myLanguage:articleHeader}{
+                    \renewcommand{\wrtxarticleKeyCore}{\article}
+                    \item[\wrtxListLabelStyle{Chapter\ \thelocalArtCount}] \hyperlink{wrtxarticle:\article:\wrtxLanguage:articleHeader}{
                         \expandafter\detokenize\expandafter{\article}\ :%
-                        \expandafter\myCiteEntry\expandafter{myarticle:\article:\myLanguage}{title}
+                        \expandafter\wrtxCiteEntry\expandafter{wrtxarticle:\article:\wrtxLanguage}{title}
                     }
                 }
             }
         }
-    \end{myListMeta}%
-    \ifthenelse{\equal{\articleList}{}}{\textcolor{myColorDanger}{No components included}}{}%
+    \end{wrtxListMeta}%
+    \ifthenelse{\equal{\articleList}{}}{\textcolor{wrtxColorDanger}{No components included}}{}%
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -200,28 +200,28 @@
     %%% PORTFOLIO INCLUDED COMPONENTS
     \subsection*{Components included}
 
-    \begin{myListMeta}
+    \begin{wrtxListMeta}
         \foreach \path in \includeFilePaths {
             \item \expandafter\detokenize\expandafter{\path}%
         }
-    \end{myListMeta}
+    \end{wrtxListMeta}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%% PORTFOLIO APPENDIX ITEMS
     \subsection*{Appendix entries %
-    \ifthenelse{\boolean{isIncludeAppendix}}{}{\textsuperscript{\textcolor{myColorDanger}{\tiny APPENDIX EXCLUDED}}}%
+    \ifthenelse{\boolean{isIncludeAppendix}}{}{\textsuperscript{\textcolor{wrtxColorDanger}{\tiny APPENDIX EXCLUDED}}}%
     }
-    \begin{myListMeta}
+    \begin{wrtxListMeta}
         \foreach \entry [count=\n] in \appendixList {
             \ifthenelse{\equal{\entry}{}}{}
             {%
-                \item[\myListLabelStyle{\makeAlph{\n}}] %
+                \item[\wrtxListLabelStyle{\makeAlph{\n}}] %
                 \hyperlink{appendix:target:\n}{\expandafter\detokenize\expandafter{\entry}}%
             }%
         }%
-    \end{myListMeta}
+    \end{wrtxListMeta}
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -229,48 +229,48 @@
     %%% PORTFOLIO COUNTERS
     \subsection*{Portfolio counters}
     \begin{minipage}[t]{1\textwidth}
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             % leftmargin=0pt,
             % labelsep=0pt
             ]
-            \item[\myTotalCount{totalPortfolioPartsAltogether}]\ Part(s).
+            \item[\wrtxTotalCount{totalPortfolioPartsAltogether}]\ Part(s).
             %
-            \item[\myTotalCount{totalArticlesAltogether}]\ Articles(s).
+            \item[\wrtxTotalCount{totalArticlesAltogether}]\ Articles(s).
             %
-            \item[\myListLabelStyle{\ztotpages}]\ Total Page(s).
+            \item[\wrtxListLabelStyle{\ztotpages}]\ Total Page(s).
             %
-            \item[\myTotalCount{totalCitationsAltogether}]\ Citation(s).
+            \item[\wrtxTotalCount{totalCitationsAltogether}]\ Citation(s).
             %
-            \item[\myTotalCount{totalGlossaryEntriesAltogether}]\ Glossary Entrie(s).
+            \item[\wrtxTotalCount{totalGlossaryEntriesAltogether}]\ Glossary Entrie(s).
             %
-            \item[\myTotalCount{totalAbreviationsAltogether}]\ Abreviation(s).
+            \item[\wrtxTotalCount{totalAbreviationsAltogether}]\ Abreviation(s).
             %
-            \item[\myTotalCount{totalArticleSectionsAltogether}]\ Section(s).
+            \item[\wrtxTotalCount{totalArticleSectionsAltogether}]\ Section(s).
             %
-            \item[\myTotalCount{totalArticleSubsectionsAltogether}]\ Subsection(s).
+            \item[\wrtxTotalCount{totalArticleSubsectionsAltogether}]\ Subsection(s).
             %
-            \item[\myTotalCount{totalArticleSubsubsectionsAltogether}]\ Subsubsection(s).
+            \item[\wrtxTotalCount{totalArticleSubsubsectionsAltogether}]\ Subsubsection(s).
             %
-            \item[\myTotalCount{totalFiguresAltogether}]\ Counted Figure(s).% Fig or Wrapfig envs.
+            \item[\wrtxTotalCount{totalFiguresAltogether}]\ Counted Figure(s).% Fig or Wrapfig envs.
             %
-            \item[\myTotalCount{totalFigureEnvsAltogether}]\ Figure Environment(s).
+            \item[\wrtxTotalCount{totalFigureEnvsAltogether}]\ Figure Environment(s).
             %
-            \item[\myTotalCount{totalWrapfigureEnvsAltogether}]\ Wrapfigure Environment(s).
+            \item[\wrtxTotalCount{totalWrapfigureEnvsAltogether}]\ Wrapfigure Environment(s).
             %
-            \item[\myTotalCount{totalSubfiguresAltogether}]\ Subfigure(s).
+            \item[\wrtxTotalCount{totalSubfiguresAltogether}]\ Subfigure(s).
             %
-            \item[\myTotalCount{totalGraphicsAltogether}]\ Gaphic input(s).
+            \item[\wrtxTotalCount{totalGraphicsAltogether}]\ Gaphic input(s).
             %
-            \item[\myTotalCount{totalTikZPicturesAltogether}]\ TikZ picture(s).
+            \item[\wrtxTotalCount{totalTikZPicturesAltogether}]\ TikZ picture(s).
             %
-            \item[\myTotalCount{totalTablesAltogether}]\ Table(s).
+            \item[\wrtxTotalCount{totalTablesAltogether}]\ Table(s).
             %
-            \item[\myTotalCount{totalTextboxesAltogether}]\ Textbox(es).
+            \item[\wrtxTotalCount{totalTextboxesAltogether}]\ Textbox(es).
             %
-            \item[\myTotalCount{totalFootnotesAltogether}]\ Footnote(s).
+            \item[\wrtxTotalCount{totalFootnotesAltogether}]\ Footnote(s).
             %
-            \item[\myTotalCount{totalAppendixItemsAltogether}]\ Appendix item(s).
+            \item[\wrtxTotalCount{totalAppendixItemsAltogether}]\ Appendix item(s).
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
 }

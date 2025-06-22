@@ -10,11 +10,11 @@
 
 % Define default box style
 \tcbset{
-  myTcbBaseStyle/.style={
+  wrtxTcbBaseStyle/.style={
     center, % enlarges bounding box on both sides to fill he line completely
-    colback=myGrayLight!50, % Background color
-    colframe=myGrayMed, % Outline color
-    coltitle=myGrayLight, % Title background color
+    colback=wrtxGrayLight!50, % Background color
+    colframe=wrtxGrayMed, % Outline color
+    coltitle=wrtxGrayLight, % Title background color
     sharp corners=south, % Square bottom corners
     rounded corners=north, % Rounded top corners
     boxrule=1pt, % Outline thickness
@@ -31,15 +31,15 @@
     breakable, % Allow breaking across pages
     enhanced, % Enable advanced TikZ features
     titlerule=0mm, % Optional title line
-    % title={\strut}, % Dummy title; replace with actual text
+    % title={\strut}, % Dumwrtx title; replace with actual text
   },
 }
 
-\newtcolorbox[]{myTextBoxBase}[2][]{%
-myTcbBaseStyle,
+\newtcolorbox[]{wrtxTextBoxBase}[2][]{%
+wrtxTcbBaseStyle,
 % float, % allow to float ("nofloat" also possible)
 % floatplacement=tbp, % default positioning: "{t}op", "{b}ottom", "{p}age" or "{h}ere"
-drop fuzzy shadow southeast=myGrayDark,
+drop fuzzy shadow southeast=wrtxGrayDark,
 title after break={#2 -- cont.}, % repeat title after each page break
 title={#2},
 #1% optional arguments
@@ -50,8 +50,8 @@ title={#2},
 \newlistof{textbox}{loTB}{\listtextboxname}
 
 %%% Textboxes command
-\newcommand\myTBLinker{textbox:\the\value{totalTextboxesInArticle:\myarticleKeyCore}}% key to identify individual textboxes
-\NewDocumentCommand{\myTextBox}
+\newcommand\wrtxTBLinker{textbox:\the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}}% key to identify individual textboxes
+\NewDocumentCommand{\wrtxTextBox}
 {
   O{}%optional arguments
   m% title
@@ -88,12 +88,12 @@ title={#2},
     %%%% PORTFOLIO
     \addcontentsline{loTB}{textbox}
     {%
-      \protect\myContentsTextFont% change font
+      \protect\wrtxContentsTextFont% change font
       \protect%
-      \hypertarget{\myTBLinker}%
+      \hypertarget{\wrtxTBLinker}%
       {\indent\protect\numberline{%
         \thechapter.% Add chapter nb
-        \the\value{totalTextboxesInArticle:\myarticleKeyCore}}%
+        \the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}}%
         \ \ \ #1}%
     }
   }
@@ -101,11 +101,11 @@ title={#2},
     %%%% SINGLE ARTICLE
     \addcontentsline{loTB}{textbox}
     {%
-      \protect\myContentsTextFont% change font
+      \protect\wrtxContentsTextFont% change font
       \protect%
-      \hypertarget{\myTBLinker}%
+      \hypertarget{\wrtxTBLinker}%
       {\indent\protect\numberline{%
-        \the\value{totalTextboxesInArticle:\myarticleKeyCore}}%
+        \the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}}%
         \ \ \ #1}%
     }
   }%
@@ -113,7 +113,7 @@ title={#2},
 }
 
 \newcommand{\textboxTitle}[1]{%
-  \textcolor{myGrayDark}{\TEXTtextbox\ \the\value{totalTextboxesInArticle:\myarticleKeyCore}:} \detokenize{#1}%
+  \textcolor{wrtxGrayDark}{\TEXTtextbox\ \the\value{totalTextboxesInArticle:\wrtxarticleKeyCore}:} \detokenize{#1}%
 }
 
 \NewDocumentCommand{\textboxFrame}
@@ -124,13 +124,13 @@ title={#2},
 }
 {
   \stepcounter{totalTextboxesAltogether}%
-  \refstepcounter{totalTextboxesInArticle:\myarticleKeyCore}%
-  \begin{myTextBoxBase}[#3]
+  \refstepcounter{totalTextboxesInArticle:\wrtxarticleKeyCore}%
+  \begin{wrtxTextBoxBase}[#3]
     {% TEXTBOX TITLE
         {\phantomsection%
         \ifthenelse{\boolean{isIncludeLoTB}}
         {% as hyperlink
-          \hyperlink{\myTBLinker}{%
+          \hyperlink{\wrtxTBLinker}{%
             \textboxTitle{#1}%
           }%
         }%
@@ -139,27 +139,27 @@ title={#2},
         }%
         }
     }%
-    \label{\myTBLinker}% increment counter and ref it
-    \isDraftDebugger{Ref key: \myTBLinker\\}{}%% Print reference key in draft mode
+    \label{\wrtxTBLinker}% increment counter and ref it
+    \isDraftDebugger{Ref key: \wrtxTBLinker\\}{}%% Print reference key in draft mode
     % TEXTBOX CONTENTS
     % \onehalfspacing
     #2
-  \end{myTextBoxBase}
+  \end{wrtxTextBoxBase}
 }
 
 
-\NewDocumentCommand{\myTextboxRef}
+\NewDocumentCommand{\wrtxTextboxRef}
 {
     m % reference key
     O{\TEXTtextbox} % reference prefix
 }{%
   \begingroup%
   \ifthenelse{\boolean{isDraft}}{%
-    \color{myColorWarning}%
+    \color{wrtxColorWarning}%
     \texttt{(textbox:#1)}%print ref for debugging
   }
   {%
-    \color{myGrayMed}%
+    \color{wrtxGrayMed}%
   }
   %Print ref
   #2\ \ref{textbox:#1}%

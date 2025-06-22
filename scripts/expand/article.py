@@ -235,7 +235,7 @@ def add_appendix_contents(thing_dir: str, extended_thing_path: str) -> None:
             contents = file.read()
 
         # Place the appendix items in the chosen location
-        target_location = "\\NewDocumentCommand{\\myAppendix}"
+        target_location = "\\NewDocumentCommand{\\wrtxAppendix}"
         replace_content_in_file(
             extended_thing_path,
             target_location,

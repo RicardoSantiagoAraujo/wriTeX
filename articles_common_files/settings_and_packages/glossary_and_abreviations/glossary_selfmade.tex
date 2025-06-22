@@ -1,11 +1,11 @@
 \usepackage{datatool}% http://ctan.org/pkg/datatool
 
-\newcommand{\myGlossaryBullet}{\bullet}
-\newcommand{\myGlossaryKeyColor}{myColorPrimary}
+\newcommand{\wrtxGlossaryBullet}{\bullet}
+\newcommand{\wrtxGlossaryKeyColor}{wrtxColorPrimary}
 
 % Glossary counter
-\newtotcounter{myGlossCounterAlt}
-\setcounter{myGlossCounterAlt}{0} % change counter value to a starting specific value
+\newtotcounter{wrtxGlossCounterAlt}
+\setcounter{wrtxGlossCounterAlt}{0} % change counter value to a starting specific value
 
 %%% SORTING ALPHABETICALLY
 %%% Source: https://tex.stackexchange.com/questions/121489/alphabetically-display-the-items-in-itemize/121492#121492
@@ -26,25 +26,25 @@
 }{%
   \DTLsort*{sortlabel}{list}%  Sort list (replace the \DTLsort command by \DTLsort* for case-insensitive comparison)
   %
-  \begin{itemize}[label=\myGlossaryBullet]%
+  \begin{itemize}[label=\wrtxGlossaryBullet]%
     \DTLforeach*{list}{\theDesc=description}{%
       \item \theDesc}% Print each item
   \end{itemize}%
 }
 
 
-\newcommand{\myGlossary}[1]{
-    % \total{myGlossCounterAlt}
-    \ifthenelse{\totvalue{myGlossCounterAlt}=0}{ %%% Include only if there are glossary items
-      % No glossary items in \myLanguage
+\newcommand{\wrtxGlossary}[1]{
+    % \total{wrtxGlossCounterAlt}
+    \ifthenelse{\totvalue{wrtxGlossCounterAlt}=0}{ %%% Include only if there are glossary items
+      % No glossary items in \wrtxLanguage
     }
     {
       \newpage
-      \mySectionTitle{Glossary}
+      \wrtxSectionTitle{Glossary}
       \begin{sortedlist} % order items alphabetically
           \input{#1}
       \end{sortedlist}
-      % Total number of glossary items in this document: \total{myGlossCounterAlt}
+      % Total number of glossary items in this document: \total{wrtxGlossCounterAlt}
     }
 }
 
@@ -52,10 +52,10 @@
 
 \NewDocumentCommand{\glossaryItemAlt}{O{en} m m}{
     \glossaryItemAltDebug{#1} % line to check if matches are ok
-    \ifthenelse{\equal{\myLanguage}{#1}}{
-        \stepcounter{myGlossCounterAlt} % increment counter
+    \ifthenelse{\equal{\wrtxLanguage}{#1}}{
+        \stepcounter{wrtxGlossCounterAlt} % increment counter
         \sortitem[#2]{
-            \normalsize\textcolor{\myGlossaryKeyColor}{#2}: #3
+            \normalsize\textcolor{\wrtxGlossaryKeyColor}{#2}: #3
             }
     }{}
 }
@@ -68,8 +68,8 @@
       \tiny%
       \mbox{
         \noindent%
-        \nobreak\themyGlossCounterAlt: \myLanguage\ = #1 >\ %
-        \ifthenelse{\equal{\myLanguage}{#1}}{\textcolor{myColorSuccess}{T}}{\textcolor{myColorWarning}{F}}%
+        \nobreak\thewrtxGlossCounterAlt: \wrtxLanguage\ = #1 >\ %
+        \ifthenelse{\equal{\wrtxLanguage}{#1}}{\textcolor{wrtxColorSuccess}{T}}{\textcolor{wrtxColorWarning}{F}}%
       }%
     % }
     }

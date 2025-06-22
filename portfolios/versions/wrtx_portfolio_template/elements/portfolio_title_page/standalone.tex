@@ -1,0 +1,84 @@
+%%%%%%
+% FILE TO TEST THE PORTFOLIO COVER IN ISOLATION FOR COMPILATION SPEED
+\documentclass[
+    % 12pt, % set in settings with fontsize package
+    % landscape % set with geometry package
+    % twoside % set with geometry package
+    % draft % "draft" compiles much faster than "final" /!\ do not use final in custom draftmode
+]{scrartcl}
+
+
+
+% define relative paths to common files/settings from article to be used by \input command; multiple such paths can be added akin to \graphicspath
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{%
+    % existing paths have the advantage of being clickable
+    {./../../}
+}% append to already existing default paths, so as not to remove them
+\makeatother
+%
+%
+%
+% INITIAL INPUTS
+\input{../../../../../articles_common_files/document/initial_inputs.tex}
+\input{../../../../../articles/wrtx_article_template/wrtx_article_template}
+\input{../../../../portfolio_only_files/portfolio_constants/portfolio_constants.tex}
+%
+%
+%
+%
+\renewcommand{\wrtxLanguagePortfolio}{fr}% select languague to be used in portfolio
+\renewcommand{\wrtxLanguage}{\wrtxLanguagePortfolio}
+%
+%
+%
+%
+% SET BOOLEANS
+\setbool{isMinimal}{false} % overwrites most booleans below
+\setbool{isDraft}{false} % true or false
+\setbool{isPrintVersion}{false} % true or false
+\setbool{isDrawRibbons}{false} % true or false
+%
+%
+%
+%
+\newcommand{\includeFilePaths}{%
+  elements/portfolio_title_page/portfolio_title_page%
+}
+%
+%
+%
+%
+% LOAD ALL SETTINGS FROM ARTICLE
+\input{../../../../../articles_common_files/settings_and_packages/article_settings.tex}
+% LOAD ALL SETTINGS FROM PORTFOLIO
+\input{../../../../portfolio_only_files/portfolio_settings/portfolio_settings.tex}
+%
+%
+%
+%
+% LOAD NECESSARY BIB FILES
+% \loadBibIfExists{./../../../../../biblatex_files/bibliography_template.bib}
+% \loadBibIfExists{./../../../../../biblatex_files/wrtxArticles_template.bib}
+% \loadBibIfExists{./../../../../../biblatex_files/bibliography.bib}
+% \loadBibIfExists{./../../../../../biblatex_files/wrtxArticles.bib}
+%
+%
+%
+%
+% %SET CORRECT GRAPHICS PATH
+\graphicspath{%
+{./../../}%
+}
+%
+%
+%
+%
+\begin{document}
+    %%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % TITLEPAGE
+    \input{elements/portfolio_title_page/portfolio_title_page}
+\end{document}

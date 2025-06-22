@@ -16,7 +16,7 @@
   \newbool{#1}\setbool{#1}{#2}
 }
 
-\newcommand{\myLanguage}{en}
+\newcommand{\wrtxLanguage}{en}
 % Language options: en, fr
 
 % Whether PDF should be in draft or final style
@@ -112,7 +112,7 @@
 
 
     % Update ribbons
-    \updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Section : \textbf{#1}}{#2}
+    \updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Section : \textbf{#1}}{#2}
 
     \IfSubStr{\onlyfiles}{#1}{ %%% only if it is part of \addonlyfiles list
       \InputIfFileExists{\fileAddress}
@@ -122,7 +122,7 @@
         }%
         {%
     %     % else
-        \textcolor{myColorDanger}{\Huge #1 #2: CONTENT DOES NOT EXIST}
+        \textcolor{wrtxColorDanger}{\Huge #1 #2: CONTENT DOES NOT EXIST}
     %     % ...
         }%
     }
@@ -208,7 +208,7 @@
 }%
 
 %%%% Shorthand to check if article (yes) or portfolio (no) document
-\newcommand{\isArticle}[2]{% /!\ need to address the expanded version too 
+\newcommand{\isArticle}[2]{% /!\ need to address the expanded version too
   \ifthenelse{\equal{\jobname}{\detokenize{document}}}
   {#1}
   {#2}

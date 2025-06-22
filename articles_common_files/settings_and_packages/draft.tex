@@ -17,7 +17,7 @@
 \usepackage{draftwatermark}
 \DraftwatermarkOptions{stamp=false} % watermark off
 
-\newcommand{\myWatermark}{
+\newcommand{\wrtxWatermark}{
     \DraftwatermarkOptions{stamp=true} % watermark on
     \isPortfolio{ % IF PORTFOLIO
         \SetWatermarkText{PORTFOLIO DRAFT} % use text as watermark
@@ -40,7 +40,7 @@
     \onehalfspacing % or
     \doublespacing %
     %%%% Watermark draft
-    \myWatermark
+    \wrtxWatermark
     %%% TWO OPTIONS TO HIGHLIGHT LABELS:showkeys and showlabels
     % \usepackage[
     %     % notref,
@@ -51,14 +51,14 @@
         inline % marginal [default]—put notes in the margin
         ]
     {showlabels}% already part of showkeys
-    \renewcommand{\showlabelfont}{\slshape\color{myColorSuccess}\tiny}
+    \renewcommand{\showlabelfont}{\slshape\color{wrtxColorSuccess}\tiny}
 
     %%%% Show structural frame
     \isMinimal
     {}
     {%
         \usepackage{showframe}
-        \renewcommand*\ShowFrameColor{\color{myColorSecondary}}
+        \renewcommand*\ShowFrameColor{\color{wrtxColorSecondary}}
         \renewcommand*\ShowFrameLinethickness{1pt}
         \usepackage{layout} %%% TO GET LAYOUT INFOMATION
         \AtEndDocument{\newpage\updateRibbons{LAYOUT}{}\layout}
@@ -72,7 +72,7 @@
 {
     m
     m
-    O{myColorWarning}
+    O{wrtxColorWarning}
 }{%
     \textcolor{#3}{%
         %
@@ -85,10 +85,10 @@
 }
 
 
-\NewDocumentCommand{\myBreakMessage}
+\NewDocumentCommand{\wrtxBreakMessage}
 {
-    O{myColorWarning}% #1 decoration color
-    O{myColorSuccess}% #2 text color
+    O{wrtxColorWarning}% #1 decoration color
+    O{wrtxColorSuccess}% #2 text color
     m% #3 mandatory message
 }
 {%

@@ -8,7 +8,7 @@ from scripts.classes.tags.Tag_h2 import Tag_h2
 
 # get the directory of the current script
 base_dir = os.path.dirname(os.path.realpath(__file__))  # dir of current file
-body_path = "./../../articles/article_tutorial/elements/body/body_en.tex"
+body_path = "./../../articles/wrtx_article_tutorial/elements/body/body_en.tex"
 destination_path = "scripts/convert/test.html"
 
 def main():

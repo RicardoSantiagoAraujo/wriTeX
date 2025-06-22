@@ -1,8 +1,8 @@
 
 \newcommand{\colorsubsection}[1]{%
-\colorbox{myColorSecondary!30}{\parbox{\dimexpr\textwidth-2\fboxsep}{\hspace{0.5em}#1}}}
+\colorbox{wrtxColorSecondary!30}{\parbox{\dimexpr\textwidth-2\fboxsep}{\hspace{0.5em}#1}}}
 \newcommand{\colorsubsubsection}[1]{%
-\colorbox{myColorSecondary!10}{\parbox{\dimexpr\textwidth-2\fboxsep}{\hspace{0.5em}#1}}}
+\colorbox{wrtxColorSecondary!10}{\parbox{\dimexpr\textwidth-2\fboxsep}{\hspace{0.5em}#1}}}
 
 
 \newcommand{\metaInfoSettings}[1]{
@@ -21,7 +21,7 @@
     %%% Subsection
     \titlespacing*{\subsection}{0pt}{0pt}{5pt}
     \titleformat{\subsection}
-    {\vbox{\rule{1\textwidth}{1pt}\vspace{-1.5ex}}\normalsize\color{myGrayMed}\bfseries}
+    {\vbox{\rule{1\textwidth}{1pt}\vspace{-1.5ex}}\normalsize\color{wrtxGrayMed}\bfseries}
     {\thesubsection}
     {0.1em}
     {\colorsubsection}
@@ -31,7 +31,7 @@
     %%% Subsubsection
     \titlespacing*{\subsubsection}{0pt}{0pt}{5pt}
     \titleformat{\subsubsection}
-    {\vbox{\rule{1\textwidth}{0.1pt}\vspace{-1.4ex}}\small\color{myGrayMed}}
+    {\vbox{\rule{1\textwidth}{0.1pt}\vspace{-1.4ex}}\small\color{wrtxGrayMed}}
     {\thesubsubsection}
     {0.1em}
     {\colorsubsubsection} % change subsubsection style
@@ -50,101 +50,101 @@
     \subsection*{Main source of information}
 
 
-        \begin{myListMeta}
+        \begin{wrtxListMeta}
         %%% START WITH EMPTY ITEM
             \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
         %%% KEY
-            \item[\myListLabelStyle{Main source key}]\ \expandafter\detokenize\expandafter{\mainSourceKey}
+            \item[\wrtxListLabelStyle{Main source key}]\ \expandafter\detokenize\expandafter{\mainSourceKey}
         %%% TITLE
-            \myCiteEntryWithLabel{\mainSourceKey}{title}[][]%
-            \myCite{\mainSourceKey}% Include citation
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{title}[][]%
+            \wrtxCite{\mainSourceKey}% Include citation
         %%% DOI
-            \myCiteEntryWithLabel{\mainSourceKey}{doi}[DOI][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{doi}[DOI][]%
         %%% ISSN
-            \myCiteEntryWithLabel{\mainSourceKey}{issn}[ISSN][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{issn}[ISSN][]%
         %%% url
-            \myCiteEntryWithLabel{\mainSourceKey}{url}[URL][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{url}[URL][]%
         %%% Language
-            \myCiteEntryWithLabel{\mainSourceKey}{language}[][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{language}[][]%
         %%% Publication date
-            \myCiteEntryWithLabel{\mainSourceKey}{year}[][]%
-            \myCiteEntryWithLabel{\mainSourceKey}{month}[][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{year}[][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{month}[][]%
         %%% authors(s)
-            \myCiteEntryWithLabel{\mainSourceKey}{author}[][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{author}[][]%
         %%% Journal
-            \myCiteEntryWithLabel{\mainSourceKey}{journaltitle}[Journal:][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{journaltitle}[Journal:][]%
         %%% Volume
-            \myCiteEntryWithLabel{\mainSourceKey}{volume}[][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{volume}[][]%
         %%% Pages
-            \myCiteEntryWithLabel{\mainSourceKey}{pages}[][]%
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{pages}[][]%
         %%% Abstract
-            \myCiteEntryWithLabel{\mainSourceKey}{abstract}[][]%
-        \end{myListMeta}
+            \wrtxCiteEntryWithLabel{\mainSourceKey}{abstract}[][]%
+        \end{wrtxListMeta}
 }
 
 
-\newcommand{\myArticleMetadata}{
+\newcommand{\wrtxArticleMetadata}{
     \subsection*{Mediation paper}
 
     \begin{addmargin}
         [1em] % LEFT
         {1em} % RIGHT
-        To cite: \fullcite{\myarticleKey}
+        To cite: \fullcite{\wrtxarticleKey}
         \\
     \end{addmargin}
 
-    \begin{myListMeta}
+    \begin{wrtxListMeta}
         %%% START WITH EMPTY ITEM
         \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
         %%% TITLE
-        \myCiteEntryWithLabel{\myarticleKey}{title}[][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{title}[][]%
         %%% SUBTITLE
-        \myCiteEntryWithLabel{\myarticleKey}{subtitle}[][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{subtitle}[][]%
         %%% DISCIPLINE(S)
-        \myCiteEntryWithLabel{\myarticleKey}{discipline}[Disciplines:][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{discipline}[Disciplines:][]%
         %%% ABSTRACT
-        \myCiteEntryWithLabel{\myarticleKey}{abstract}[Summary:][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{abstract}[Summary:][]%
         %%% KEYWORD(S)
-        \myCiteEntryWithLabel{\myarticleKey}{keywords}[][]%
-    \end{myListMeta}
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{keywords}[][]%
+    \end{wrtxListMeta}
 
     %%%%% MEDIATION CONTRIBUTOR(S):
     \subsubsection*{Credits  \& Contributions}
-    \begin{myListMeta}
+    \begin{wrtxListMeta}
         %%% START WITH EMPTY ITEM
         \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
         %%% AUTHOR(S)
-        \myCiteEntryWithLabel{\myarticleKey}{author}[][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{author}[][]%
         %%% ILLUSTRATOR(S)
-        \myCiteEntryWithLabel{\myarticleKey}{illustrator}[][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{illustrator}[][]%
         %%% REVIEWER(S)
-        \myCiteEntryWithLabel{\myarticleKey}{reviewer}[][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{reviewer}[][]%
         %%% THANKS
-        \myCiteEntryWithLabel{\myarticleKey}{thank}[][]%
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{thank}[][]%
         %%% COPYRIGHT
-        \myCiteEntryWithLabel{\myarticleKey}{copyright}[][]%
-    \end{myListMeta}
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{copyright}[][]%
+    \end{wrtxListMeta}
     %%%%% TARGET:
     \subsubsection*{Target specifications}
-    \begin{myListMeta}
+    \begin{wrtxListMeta}
         %%% START WITH EMPTY ITEM
         \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
         %%% TARGET PUBLICATION:
-        \myCiteEntryWithLabel{\myarticleKey}{targetPublication}[Target publication: ][]
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{targetPublication}[Target publication: ][]
         %%% AUDIENCE LEVEL:
-        \myCiteEntryWithLabel{\myarticleKey}{audienceLevel}[Audience level: ][]
+        \wrtxCiteEntryWithLabel{\wrtxarticleKey}{audienceLevel}[Audience level: ][]
         % environment where entries are always shown:
         \begin{alwaysShowMeta}
             %%% WORD LIMITS:
-            \myCiteEntryWithLabel{\myarticleKey}{wordMin}[World limits: ][]
+            \wrtxCiteEntryWithLabel{\wrtxarticleKey}{wordMin}[World limits: ][]
             ---
-            \myCiteEntry{\myarticleKey}{wordMax}
+            \wrtxCiteEntry{\wrtxarticleKey}{wordMax}
             %%% CHARACTER LIMITS:
-            \myCiteEntryWithLabel{\myarticleKey}{charMin}[Character limits: ][]
+            \wrtxCiteEntryWithLabel{\wrtxarticleKey}{charMin}[Character limits: ][]
             ---
-            \myCiteEntry{\myarticleKey}{charMax}
+            \wrtxCiteEntry{\wrtxarticleKey}{charMax}
         \end{alwaysShowMeta}
-    \end{myListMeta}
+    \end{wrtxListMeta}
 }
 
 %%% Environment where metadata is always shown, regardless of settings
@@ -157,35 +157,35 @@
 }%
 
 
-\newcommand{\myLuatexMessage}{
+\newcommand{\wrtxLuatexMessage}{
     \ifluatex \directlua{tex.print(status.banner)}
-    \else \textcolor{myColorWarning}{This document was not compiled with \textbf{Lua\TeX}}
+    \else \textcolor{wrtxColorWarning}{This document was not compiled with \textbf{Lua\TeX}}
     \fi
 }
 
 \newcommand{\technicalMetadata}{
     \subsection*{Technical data}
-    \begin{myListMeta}
+    \begin{wrtxListMeta}
         %
-        \item[\myListLabelStyle{Compilation date:}]\ \today
+        \item[\wrtxListLabelStyle{Compilation date:}]\ \today
         %
-        \item[\myListLabelStyle{Compilation time:}]\ \DTMcurrenttime
+        \item[\wrtxListLabelStyle{Compilation time:}]\ \DTMcurrenttime
         %
-        \item[\myListLabelStyle{Compilation duration:}] \elapsedInt.\elapsedFrac\ seconds (previous single run)
+        \item[\wrtxListLabelStyle{Compilation duration:}] \elapsedInt.\elapsedFrac\ seconds (previous single run)
         %
-        \item[\myListLabelStyle{Lua\TeX\ version:}] \myLuatexMessage
+        \item[\wrtxListLabelStyle{Lua\TeX\ version:}] \wrtxLuatexMessage
         %
-        \item[\myListLabelStyle{Paper format:}] \csname Gm@paper\endcsname
+        \item[\wrtxListLabelStyle{Paper format:}] \csname Gm@paper\endcsname
         %
-        \item[\myListLabelStyle{Geometry:}] \myGeometrySettingsInfo
+        \item[\wrtxListLabelStyle{Geometry:}] \wrtxGeometrySettingsInfo
         %
-    \end{myListMeta}
+    \end{wrtxListMeta}
 }
 
 
 \newcommand{\docOptionsItem}[1]{%
     \isPortfolio{}{%
-        \item[\myListLabelStyle{#1}]\ \ifthenelse{\boolean{#1}}{\textcolor{myColorSuccess}{true}}{\textcolor{myColorDanger}{false}}%
+        \item[\wrtxListLabelStyle{#1}]\ \ifthenelse{\boolean{#1}}{\textcolor{wrtxColorSuccess}{true}}{\textcolor{wrtxColorDanger}{false}}%
     }%
 }%
 
@@ -194,16 +194,16 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% FIRST COLUMN
     \begin{minipage}[t]{0.40\textwidth} % Adjust width as needed
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=70pt,
             labelsep=0pt
             ]
             %%% START WITH EMPTY ITEM
             \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
             %
-            \item[\myListLabelStyle{Article key (core)}]\ \myarticleKeyCore
-            \item[\myListLabelStyle{Article key (full)}]\ myarticle:\myarticleKeyCore:\myLanguage
-            \item[\myListLabelStyle{Language}]\ \myLanguageLong (\myLanguage)
+            \item[\wrtxListLabelStyle{Article key (core)}]\ \wrtxarticleKeyCore
+            \item[\wrtxListLabelStyle{Article key (full)}]\ wrtxarticle:\wrtxarticleKeyCore:\wrtxLanguage
+            \item[\wrtxListLabelStyle{Language}]\ \wrtxLanguageLong (\wrtxLanguage)
             \item[] % empty gap
             %
             \docOptionsItem{isMinimal}
@@ -222,13 +222,13 @@
             %
             \docOptionsItem{isIncludeArticleCover}
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
     % \hfill % This adds space between the minipages
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% SECOND COLUMN
     \begin{minipage}[t]{0.30\textwidth}
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=40pt,
             labelsep=0pt
             ]
@@ -257,12 +257,12 @@
             %
             \docOptionsItem{isIncludeMissingBibEntries}
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% THIRD COLUMN
     \begin{minipage}[t]{0.30\textwidth}
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=40pt,
             labelsep=0pt
             ]
@@ -289,8 +289,8 @@
             %
             \docOptionsItem{revealhiddenswitch}
             %
-            \isPortfolio{}{\item[\myListLabelStyle{Contents version}]\ \version}
-        \end{myListMeta}
+            \isPortfolio{}{\item[\wrtxListLabelStyle{Contents version}]\ \version}
+        \end{wrtxListMeta}
     \end{minipage}
 
 
@@ -300,30 +300,30 @@
         %%% INCLUDED SECTIONS
         \subsubsection*{Components included}
         %
-        \begin{myListMeta}
+        \begin{wrtxListMeta}
             %%% START WITH EMPTY ITEM
             \hiddenitem % EMPTY ITEM NECESSARY TO AVOID ERROR
             \foreach \file in \filesToAdd {
                 \item             \expandafter\detokenize\expandafter{\file}%
             }%
-        \end{myListMeta}%
-        \ifthenelse{\equal{\filesToAdd}{}}{\textcolor{myColorDanger}{No components included}}{}%
+        \end{wrtxListMeta}%
+        \ifthenelse{\equal{\filesToAdd}{}}{\textcolor{wrtxColorDanger}{No components included}}{}%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%% PORTFOLIO APPENDIX ITEMS
         \subsubsection*{Appendix entries\ %
-        \ifthenelse{\boolean{isIncludeAppendix}}{}{\textsuperscript{\textcolor{myColorDanger}{\tiny APPENDIX EXCLUDED}}}
+        \ifthenelse{\boolean{isIncludeAppendix}}{}{\textsuperscript{\textcolor{wrtxColorDanger}{\tiny APPENDIX EXCLUDED}}}
         }
         \ifthenelse{\not\equal{\appendixList}{}}% if appendix is empty, return false}
         {%
-            \begin{myListMeta}
+            \begin{wrtxListMeta}
                 \foreach \entries [count=\n] in \appendixList {
-                    \item[\myListLabelStyle{\makeAlph{\n}}] %
+                    \item[\wrtxListLabelStyle{\makeAlph{\n}}] %
                     \hyperlink{appendix:target:\n}{\expandafter\detokenize\expandafter{\entries}}%
                 }
-            \end{myListMeta}
+            \end{wrtxListMeta}
         }
         {%
-            \hspace{1cm}\textcolor{myColorDanger}{No appendix entries selected}
+            \hspace{1cm}\textcolor{wrtxColorDanger}{No appendix entries selected}
         }
     }
 }
@@ -332,10 +332,10 @@
 \newcommand{\addMetadata}{
     \ifthenelse{\boolean{isIncludeMeta}}%
     {%
-    \updateRibbons{Article: \textbf{\myCiteEntry{\myarticleKey}{title}}\ribbonSpacer Meta-information}{META-INFORMATION}
+    \updateRibbons{Article: \textbf{\wrtxCiteEntry{\wrtxarticleKey}{title}}\ribbonSpacer Meta-information}{META-INFORMATION}
         \metaInfoSettings{
             {
-                \mySectionTitle{Meta-info}
+                \wrtxSectionTitle{Meta-info}
 
                 %%%%%%
                 %%%%%% TECHNICAL:
@@ -348,7 +348,7 @@
                 \mainSourceMetadata
                 %%%%%%
                 %%%%%% MEDIATION PAPER:
-                \myArticleMetadata
+                \wrtxArticleMetadata
                 %%%%%%
                 %%%%%% COUNTERS:
                 \countersList

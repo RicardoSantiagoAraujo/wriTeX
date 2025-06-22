@@ -1,0 +1,88 @@
+
+
+
+\cleardoublepage
+\updateRibbons{\textbf{Information page}}{}
+\thispagestyle{empty}
+% \pagecolor{colBg}\afterpage{\nopagecolor}
+
+%%%%%%% TITLE/SUBTITLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+    {%%% TITLE
+        \Large\scshape\bfseries\setTitleFont\color{wrtxColorPrimary}\portfolioMainTitle\\
+    }%
+    \vspace{0.1cm}
+    {%%% SUBTITLE
+        \normalsize\setTitleFont\color{wrtxColorPrimary}\portfolioSubTitle\\
+    }%
+    \vspace{0.1cm}
+    {%%% AUTHOR
+    \TEXTby\ \portfolioAuthorName%
+    }%
+\end{center}
+%
+\vspace*{0.5cm}
+%
+%%%%%%% PAGE CONTENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{flushleft}
+    %\normalsize
+    \small
+    \singlespace
+
+    \vfill
+
+    Thesis jury:\\
+    \smallskip
+    \hspace{4mm}\textbf{Alexandre ROBERT}, Professeur, CESCO (MNHN) -  Président / Rapporteur \\
+    \hspace{4mm}\textbf{Aurélie COULON}, Maître de conférence, CESCO (MNHN) \& CEFE - Rapporteur \\
+    \hspace{4mm}\textbf{Arnaud LYET}, Lead specialist wildlife conservation, WWF - Examinateur\\
+    \hspace{4mm}\textbf{Francesco FICETOLA}, Professeur, Université de Milan - Examinateur\\
+    \hspace{4mm}\textbf{Audrey TROCHET}, Responsable scientifique, SHF - Membre invitée\\
+
+    \vfill
+
+    Other affiliations:\\
+    \smallskip
+    \hspace{4mm}\textbf{\portfolioInstituteShort} - \portfolioInstituteLong\\
+    \hspace{4mm}\textbf{\portfolioUniversityShort} - \portfolioUniversityLong\\
+
+
+    \vfill
+    Contract: \textbf{
+        \portfolioDateContractStart\ - \portfolioDateContractEnd
+        }\\
+    Submission date: \textbf{\portfolioDateManuscript}\\
+    Defense date: \textbf{\portfolioDateDefense}
+    \vfill
+\end{flushleft}%
+
+%%%%% DISPLAY INCLUDED ARTICLES
+\iftrue
+\begin{flushleft}%
+    Articles included:%
+    \AtNextBibliography{\small\singlespacing}%
+    \printbibliography[%
+                heading=none, % "bibintoc" adds the title to the table of contents. "none" to exclude.
+                % title={My bibliography title} % Add title above bibliography
+                % type=report,
+                category=wrtxMediationArticles
+                ]%
+\end{flushleft}%
+\fi
+
+\begin{center}%
+    \isPrint{%
+    \isDraft{Draft}{Final}\ version in \wrtxLanguageLong\ for print.%
+    }%
+    {%
+    \isDraft{Draft}{Final}\ version in \wrtxLanguageLong\ for digital distribution.%
+    }%
+\end{center}%
+
+
+
+\begin{center}%
+    \portfolioInstituteShort\ \portfolioCity\\%
+    \portfolioCountry, %Country\\
+    \portfolioDateManuscript% Date
+\end{center}%

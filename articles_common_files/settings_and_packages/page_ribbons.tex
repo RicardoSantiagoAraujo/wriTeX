@@ -18,9 +18,9 @@
 \usetikzlibrary{shapes.arrows,positioning}
 
 \tikzset{
-    myarrow/.style={
-        draw=myGrayDark,
-        fill=myGrayLight,
+    wrtxarrow/.style={
+        draw=wrtxGrayDark,
+        fill=wrtxGrayLight,
         single arrow,
         rotate=90,
         minimum height=10mm,
@@ -59,12 +59,12 @@
                   {\normalfont\textcolor{ribbonTextColor}{\ribbonTextRight}};
                   %%%% LINK TO portfolio cover
                   \node (leftLink) at ($(leftNode)+(0, 0.45\pageheight)$)
-                  {\hyperlink{start}{\textbf{\textcolor{myColorSecondary}{start}}}};
-                  \node[myarrow] at ([yshift=5mm]leftLink.north) {};
+                  {\hyperlink{start}{\textbf{\textcolor{wrtxColorSecondary}{start}}}};
+                  \node[wrtxarrow] at ([yshift=5mm]leftLink.north) {};
                   %%%% LINK TO TOC
                   \node (rightLink) at ($(rightNode)+(0, 0.45\pageheight)$)
-                  {\hyperlink{toc}{\textbf{\textcolor{myColorSecondary}{TOC}}}};
-                  \node[myarrow] at ([yshift=5mm]rightLink.north) {};
+                  {\hyperlink{toc}{\textbf{\textcolor{wrtxColorSecondary}{TOC}}}};
+                  \node[wrtxarrow] at ([yshift=5mm]rightLink.north) {};
             \end{tikzpicture}%
       }{}
 }}

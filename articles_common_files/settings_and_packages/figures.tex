@@ -11,7 +11,7 @@
 \subcaptionsetup[figure]{labelformat=empty} % remove label numbering from figure subcaptions
 
 \newcommand{\stepGeneralFigureCounter}{%%% Use this macro as the general counter to increment the counter whenever a figure is added
-  \stepcounter{totalFiguresInArticle:\myarticleKeyCore}%
+  \stepcounter{totalFiguresInArticle:\wrtxarticleKeyCore}%
   \stepcounter{totalFiguresAltogether}%
 }
 
@@ -21,15 +21,15 @@
 }
 
 \makeatletter
-\newcommand\myFigCaption{% my caption style, linking to the TOF
-  \@dblarg\@myFigCaption}
-  \newcommand\myFigCaptionLinker{image:\myarticleKeyCore:\the\value{totalFiguresInArticle:\myarticleKeyCore}}% key to identify individual figures
-\def\@myFigCaption[#1]#2{%
-  \caption[\protect\hypertarget{\myFigCaptionLinker}{#1}]%
+\newcommand\wrtxFigCaption{% wrtx caption style, linking to the TOF
+  \@dblarg\@wrtxFigCaption}
+  \newcommand\wrtxFigCaptionLinker{image:\wrtxarticleKeyCore:\the\value{totalFiguresInArticle:\wrtxarticleKeyCore}}% key to identify individual figures
+\def\@wrtxFigCaption[#1]#2{%
+  \caption[\protect\hypertarget{\wrtxFigCaptionLinker}{#1}]%
       {%
         \ifthenelse{\boolean{isIncludeLoF}}
         {% as hyperlink
-          \hyperlink{\myFigCaptionLinker}{#2}
+          \hyperlink{\wrtxFigCaptionLinker}{#2}
         }%
         {% as simple text
           #2%
@@ -47,18 +47,18 @@
 }
 
 
-\NewDocumentCommand{\myFigRef}
+\NewDocumentCommand{\wrtxFigRef}
 {
     m % reference key
     O{Figure} % reference prefix
 }{%
   \begingroup%
   \ifthenelse{\boolean{isDraft}}{%
-    \color{myColorWarning}%
+    \color{wrtxColorWarning}%
     {\texttt{(\figLabel{#1})}}%
   }%
   {%
-    \color{myGrayMed}%
+    \color{wrtxGrayMed}%
   }
   #2\ \ref{\figLabel{#1}}%
   \endgroup%
@@ -66,7 +66,7 @@
 
 
 %%%% THE GENERAL FIGURE ENVIRONMENT WHERE INDIVIDUAL FIGURES WILL BE PLACED
-\NewDocumentEnvironment{myFigEnv}
+\NewDocumentEnvironment{wrtxFigEnv}
 {
   O{}% #1: h(ere approx.), b(ottom), t(op), p(age alone), H(ERE PRECISELY). Leaving it empty lets latex choose
   O{width=0.475\linewidth} % #2: default figure size
@@ -77,29 +77,29 @@
 {%%% START ENVIRONMENT
   \begin{figure}[#1]%
     \stepGeneralFigureCounter
-    \stepcounter{totalFigureEnvsInArticle:\myarticleKeyCore}%
+    \stepcounter{totalFigureEnvsInArticle:\wrtxarticleKeyCore}%
     \stepcounter{totalFigureEnvsAltogether}%
     \centering%
-    \isDraftDebugger{\myBreakMessage{START FIGURE ENVIRONMENT}}{}%
+    \isDraftDebugger{\wrtxBreakMessage{START FIGURE ENVIRONMENT}}{}%
 }
 {%%%% END ENVIRONMENT
     %%% Caption:
     \captionsetup{#2}% Caption settings
-    \myFigCaption[#3]{%
-    \textcolor{myGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\myarticleKeyCore}:\ }}% Figure number label
+    \wrtxFigCaption[#3]{%
+    \textcolor{wrtxGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\wrtxarticleKeyCore}:\ }}% Figure number label
     \textbf{#3.} #4% Figure caption
     }%
-    \isDraftDebugger{\myBreakMessage{END FIGURE ENVIRONMENT}}{}%
+    \isDraftDebugger{\wrtxBreakMessage{END FIGURE ENVIRONMENT}}{}%
     \label{fig:env:#5} %optional label for environment
   \end{figure}
 }
 
 %%%% THE GENERAL WRAPFIGURE ENVIRONMENT WHERE INDIVIDUAL WRAP FIGURES WILL BE PLACED
-\NewDocumentEnvironment{myWrapFigEnv}
+\NewDocumentEnvironment{wrtxWrapFigEnv}
 {
   O{10}% #1: How many lines to wrap
   O{R}% #2: r(ight), l(eft), i(nside edge), o(utside edge). If uppercase, figure is a float. Lowercase means exactly here.
-  O{0.33\textwidth} % #3: default wrapfigure width. Here "width=" cannot be included in contrast to myFigEnv
+  O{0.33\textwidth} % #3: default wrapfigure width. Here "width=" cannot be included in contrast to wrtxFigEnv
   m % #4: figure caption.
   m % #5: figure caption extra.
   O{} % #6: optional argument to add a custom label for the figure environment
@@ -107,7 +107,7 @@
 {%%% START ENVIRONMENT
   \wrapfigure[#1]{#2}{#3}%%% Start wrapfigure
     \stepGeneralFigureCounter%
-    \stepcounter{totalWrapfigureEnvsInArticle:\myarticleKeyCore}%
+    \stepcounter{totalWrapfigureEnvsInArticle:\wrtxarticleKeyCore}%
     \stepcounter{totalWrapfigureEnvsAltogether}%
     \centering%
     \isDraftDebugger{%
@@ -120,8 +120,8 @@
 }
 {%%%% END ENVIRONMENT
     %%% Caption:
-    \myFigCaption[#4]{%
-    \textcolor{myGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\myarticleKeyCore}:\ }}% Figure number label
+    \wrtxFigCaption[#4]{%
+    \textcolor{wrtxGrayMed}{\textbf{Figure\ \the\value{totalFiguresInArticle:\wrtxarticleKeyCore}:\ }}% Figure number label
     \textbf{#4.} #5% Figure caption
     }%
     % \isDraftDebugger{END WRAPFIGURE ENVIRONMENT\\}{}%
@@ -132,7 +132,7 @@
 
 \renewcommand\thesubfigure{\alph{subfigure}}% customize type of subfigure (e.g. arabic, alpha) counter display
 %%%% COMMAND FOR SUBFIGURES (using subfloat, which is more up to date than subfigure)
-\NewDocumentCommand{\mySubfig}
+\NewDocumentCommand{\wrtxSubfig}
 {%
   O{width=1\linewidth}% automatically adjusts to width of figure
   m % #2: figure caption.
@@ -141,15 +141,15 @@
   O{}% #5: Optional label (cannot set it through the contents for unkown reason)
 }%
 {%
-  \stepcounter{totalSubfiguresInArticle:\myarticleKeyCore}%
+  \stepcounter{totalSubfiguresInArticle:\wrtxarticleKeyCore}%
   \stepcounter{totalSubfiguresAltogether}%
   \captionsetup[subfigure]{#1}%
   \subfloat%
   [\ifstrempty{#2}{\isDraftDebugger{Captionless subfigure}{}}{#2}]%%% LOT ENTRY (if empty, pass an empty space so that is is still included in LOT)
   [%%% CAPTION OF SUBFLOAT
-    \textcolor{myGrayMed}{\textbf{%
+    \textcolor{wrtxGrayMed}{\textbf{%
       Subfigure\ % custom text before counter
-      \the\numexpr\value{totalFiguresInArticle:\myarticleKeyCore}+0\relax% Figure number label (if needed, add 1 so it matches correctly before the actual Figure counter is incremented)
+      \the\numexpr\value{totalFiguresInArticle:\wrtxarticleKeyCore}+0\relax% Figure number label (if needed, add 1 so it matches correctly before the actual Figure counter is incremented)
       \thesubfigure% subfigure counter
     \ifstrempty{#2}{}{:\ }% add colon if caption is not empty
     }}%
@@ -166,21 +166,21 @@
 
 
 %%%% MACRO TO INCLUDE A RASTER IMAGE
-\NewDocumentCommand{\myFigGraphics}
+\NewDocumentCommand{\wrtxFigGraphics}
 {
   O{width=1\linewidth} % #1: default figure size attribute. Can be overwritten
   O{%
     {./}%
     {./assets/figures/}% lone article
     {./../../articles_common_files/assets/}% lone article
-    {../../../articles/\myarticleKeyCore/assets/figures/}%portfolio
+    {../../../articles/\wrtxarticleKeyCore/assets/figures/}%portfolio
     {./../../../articles_common_files/assets/}% portfolio
   } % #2: default filepath(s). Can be overwritten
   m % #3: file name
   O{jpg} % #4: default extension. Can be overwritten
 }
 {%
-    \stepcounter{totalGraphicsInArticle:\myarticleKeyCore}%
+    \stepcounter{totalGraphicsInArticle:\wrtxarticleKeyCore}%
     \stepcounter{totalGraphicsAltogether}%
     \refcounterWithoutIncrementing{totalFiguresAltogether}
     %%% Figure path: is it really needed ?
@@ -193,7 +193,7 @@
           % minimum width=5cm,
           % minimum height=5cm,
           %%% Add border frame around pictures
-          % draw=myColorPrimary, % border color
+          % draw=wrtxColorPrimary, % border color
           % line width=2mm, % border width
           %%% Different ways to add shadows
           % drop shadow={opacity=1, shadow scale=1, shadow xshift=.7ex, shadow yshift=-.7ex, fill=red, path fading={circle with fuzzy edge 15 percent}},
@@ -205,7 +205,7 @@
           %
           };
         % Rectangle
-        % \node [draw, thick, shape=rectangle, minimum width=1\linewidth, minimum height=1cm, anchor=center, fill=myColorPrimary, fill opacity=0.9] at (0,0) {rectangular overlay};
+        % \node [draw, thick, shape=rectangle, minimum width=1\linewidth, minimum height=1cm, anchor=center, fill=wrtxColorPrimary, fill opacity=0.9] at (0,0) {rectangular overlay};
         % Data over image
         \isDraftDebugger{
           % Figure label
@@ -225,24 +225,24 @@
       %%% Label:
       \label{\figLabel{#3}}% fig:filename
       % Figure label: \figLabel{#3}
-      % Figure counter: \the\value{totalFiguresInArticle:\myarticleKeyCore}
+      % Figure counter: \the\value{totalFiguresInArticle:\wrtxarticleKeyCore}
 }
 
 %%%% MACRO TO INCLUDE A TIKZ IMAGE
-\NewDocumentCommand{\myFigTikz}
+\NewDocumentCommand{\wrtxFigTikz}
 {
   O{scale=1} % #1: default figure scale attribute (fraction). Can be overwritten, probably necessary to adjust manually on a per img basis.
   O{%
   {./}%
   {./assets/figures/}% lone article
   {./../../articles_common_files/assets/}% lone article
-  {../../../articles/\myarticleKeyCore/assets/figures/}% portfolio
+  {../../../articles/\wrtxarticleKeyCore/assets/figures/}% portfolio
   {./../../../articles_common_files/assets/}% portfolio
   } % #2: default filepath(s). Can be overwritten
   m % #3: file name
 }
 {%
-    \stepcounter{totalTikZPicturesInArticle:\myarticleKeyCore}%
+    \stepcounter{totalTikZPicturesInArticle:\wrtxarticleKeyCore}%
     \stepcounter{totalTikZPicturesAltogether}%
     \refcounterWithoutIncrementing{totalFiguresAltogether}
     %%% Figure path:
@@ -252,14 +252,14 @@
       background grid/.style={
           % thick,
           thin,
-          draw=myGrayLight,
+          draw=wrtxGrayLight,
           step=.5cm
         },
       background rectangle/.style={
           % rounded corners,
           % double, % for double border
           ultra thick,
-          draw=myGrayDark,
+          draw=wrtxGrayDark,
           fill=white,
           % top color=blue,
           % bottom color= pink
@@ -270,7 +270,7 @@
     {%%% Load stored PDF to be faster
       \isPortfolio
       {%
-        \includegraphics[#1]{../../../articles/\myarticleKeyCore/assets/tikz/#3/auxiliary_files/standalone.pdf}%
+        \includegraphics[#1]{../../../articles/\wrtxarticleKeyCore/assets/tikz/#3/auxiliary_files/standalone.pdf}%
       }
       {%
         \includegraphics[#1]{assets/tikz/#3/auxiliary_files/standalone.pdf}%
@@ -293,7 +293,7 @@
 
         \isPortfolio
         {% Relative address for portfolio
-          \expandafter\input\expandafter{../../../articles/\myarticleKeyCore/assets/tikz/#3/content.tex}%
+          \expandafter\input\expandafter{../../../articles/\wrtxarticleKeyCore/assets/tikz/#3/content.tex}%
         }{% Relative address for article
         \expandafter\input\expandafter{assets/tikz/#3/content.tex}%
         }%
@@ -306,5 +306,5 @@
     %%% Label:
     \label{\figLabel{#3}}% fig:filename
     % Figure label: \figLabel{#3}
-    % Figure counter: \the\value{totalFiguresInArticle:\myarticleKeyCore}
+    % Figure counter: \the\value{totalFiguresInArticle:\wrtxarticleKeyCore}
 }

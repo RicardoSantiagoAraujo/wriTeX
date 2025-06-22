@@ -1,0 +1,71 @@
+\updateRibbons{\textbf{Portfolio titlepage}}{}
+\begin{titlepage}
+    \pagecolor{wrtxColorPrimary!15}
+    \hypertarget{start}{}
+    \begin{samepage}
+    \begin{center}
+        \onehalfspacing
+        \vspace*{1cm}
+
+
+        {
+            %
+            \setTitleFont%
+            \HUGE%
+            \color{wrtxColorSecondary}%
+            \bfseries% bold
+            % \scshape% small caps
+            \textls{%
+                \MakeUppercase{% all uppercase
+                    \portfolioMainTitle%
+                }%
+            }%
+            \par% increases spacing between huge letters: The canonical solution, already suggested by barbara beeton, is to insert a \par instruction before the scope of \huge ends. That way, the interline spacing that's applied is what's appropriate for \huge material.
+        }
+
+        \vspace{1cm}
+        {%
+            \LARGE
+            \setTitleFont%
+            \color{wrtxGrayDark}%
+            \portfolioSubTitle
+        }
+
+        \vfill
+
+        {%
+            \Large
+            \setMainFont%
+            \color{wrtxGrayDark}%
+            \TEXTby\ \portfolioAuthorName%
+        }
+        \vfill
+
+        \begin{tcolorbox}
+            [
+            center,
+            colframe=wrtxColorSecondary,
+            % colback=orange!50,
+            boxsep=0px,
+            left=0pt,right=0pt,top=0pt,bottom=0pt,
+            boxrule=12px,
+            arc=0px,
+            outer arc=0px,
+            hbox
+            ]
+            \includegraphics[width=0.75\textwidth]{\portfolioTitleImg}
+        \end{tcolorbox}
+
+        \vfill
+
+        {%
+            \large%
+            \setMainFont%
+            \color{wrtxGrayDark}%
+            \titlecap{\wrtxLanguageLong}\ edition from \today%
+        }
+
+    \end{center}
+    \end{samepage}
+ \end{titlepage}
+ \pagecolor{bgColor}

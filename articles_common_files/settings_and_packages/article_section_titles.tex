@@ -2,19 +2,19 @@
 \sectionfont{\centering} % center section titles
 
 % Used in all indivual article sections except the article title
-\newcommand{\mySectionTitleLinker}{}
-\newcommand*{\mySectionTitle}[1]{
-    \renewcommand{\mySectionTitleLinker}{%
-        \myarticleKeyCore:\detokenize{#1}%
+\newcommand{\wrtxSectionTitleLinker}{}
+\newcommand*{\wrtxSectionTitle}[1]{
+    \renewcommand{\wrtxSectionTitleLinker}{%
+        \wrtxarticleKeyCore:\detokenize{#1}%
     }
     \phantomsection % ensures linking with hyperref to exact page
-    \hypertarget{\mySectionTitleLinker}{}
+    \hypertarget{\wrtxSectionTitleLinker}{}
     % Create the inline heading
     \section*{%
         \hyperlink{toc}{%
-            \setTitleFont\textcolor{myColorPrimary}{#1}%
+            \setTitleFont\textcolor{wrtxColorPrimary}{#1}%
             }%
-        }\label{\mySectionTitleLinker}%
+        }\label{\wrtxSectionTitleLinker}%
     % Set the mark (for headers/footers)
     \markboth{\uppercase{#1}}{}
     % ADD SPACE ABOVE LINE
@@ -23,6 +23,6 @@
     % \cftaddtitleline{toc}{section}{Alternative strategy}{}
     % ADD TO TOC WITH NUMBER PAGE
     \addcontentsline{toc}{section}{\noindent%
-                        \hyperref[\mySectionTitleLinker]{\textbf{#1}}%
+                        \hyperref[\wrtxSectionTitleLinker]{\textbf{#1}}%
                         }
 }

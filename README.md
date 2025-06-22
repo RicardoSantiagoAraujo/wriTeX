@@ -39,7 +39,7 @@ git pull {name of remote} {branch to pull from} [--allow-unrelated-histories]
 git pull wriTeX main
 ```
 
-Ideally, you wouldn't touch any of the existing files... instead, you should add new articles as needed based on the **article_template**, as well as a create a new version of the portfolio based on the **portfolio_template**.
+Ideally, you wouldn't touch any of the existing files... instead, you should add new articles as needed based on the **wrtx_article_template**, as well as a create a new version of the portfolio based on the **wrtx_portfolio_template**.
 
 ### Troubleshooting compilation
 

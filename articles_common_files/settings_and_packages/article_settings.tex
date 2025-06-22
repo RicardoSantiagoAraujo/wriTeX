@@ -37,7 +37,7 @@
 
 
 \usepackage{dashrule} % for dashed hrules (hdashrule)
-\newcommand*{\mydashrule}{
+\newcommand*{\wrtxdashrule}{
 \smallskip
 {\color{gray}\hdashrule{\linewidth}{1pt}{1pt}}
 \medskip
@@ -52,7 +52,7 @@
   {./../../articles_common_files/assets/}% Article
   % Article files
   {./assets/} % single articles
-  {../../../articles/\myarticleKeyCore/assets/} % portfolio
+  {../../../articles/\wrtxarticleKeyCore/assets/} % portfolio
 }
 
 \usepackage{verbatim} %\begin{comment} and end to comment out long sections
@@ -78,11 +78,11 @@
 \usepackage{float} % for custom floats (to behave like figures and tables). RUN BEFORE ALL FIGURES AND OTHER FLOATS PACKAGES
 \restylefloat{figure}%FIXES CAPTION IN WRAPFIGURE BUG %https://tex.stackexchange.com/questions/128643/cannot-use-caption-in-wrap-figure
 
-\newcommand{\myFloatBarrier}{%
+\newcommand{\wrtxFloatBarrier}{%
   \ifthenelse{\boolean{isConstrainFloats}}
   {%
   \isDraftDebugger{%
-    \noindent\myBreakMessage[yellow][blue]{FLOAT BARRIER}%
+    \noindent\wrtxBreakMessage[yellow][blue]{FLOAT BARRIER}%
   }{}% visually mark float barrier in pdf
   \FloatBarrier%
   }%

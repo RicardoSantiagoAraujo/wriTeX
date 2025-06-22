@@ -45,7 +45,7 @@
 %%%%%% CREATING COUNTERS
 \AfterPreamble{
     \isPortfolio{}{ %%% if individual article
-        \newcommand{\articleList}{\myarticleKeyCore}
+        \newcommand{\articleList}{\wrtxarticleKeyCore}
     }
     %%% GENERATE KEYS
     \foreach \article in \articleList {
@@ -75,10 +75,10 @@
 %%% command to convert a number to an roman character
 \newcommand*\makeAlph[1]{\symbol{\numexpr64+#1}}% 96 for lowercase alpha, 64 for uppercase
 
-\NewDocumentCommand{\myListLabelStyle}
+\NewDocumentCommand{\wrtxListLabelStyle}
     {
         m
-        O{myColorSecondary}
+        O{wrtxColorSecondary}
     }
     {%
         \textcolor{#2}%
@@ -89,17 +89,17 @@
         }%
     }%
 
-\newcommand{\myTotalCount}[1]{%
+\newcommand{\wrtxTotalCount}[1]{%
     % \textcolor{green}{\total{#1}}% TEST
     \ifthenelse{\totvalue{#1}=0}{%
     %%% IF VALUE IS 0
-        \myListLabelStyle{%
+        \wrtxListLabelStyle{%
             \total{#1}%
         }%
-        [myColorPrimary!50]%
+        [wrtxColorPrimary!50]%
     }%
     {%%%% IF VALUE IS NOT 0
-        \myListLabelStyle{%
+        \wrtxListLabelStyle{%
             \total{#1}%
         }%
     }%
@@ -113,77 +113,77 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% FIRST COLUMN
     \begin{minipage}[t]{0.40\textwidth} % Adjust width as needed
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             % leftmargin=120pt,
             labelsep=0pt
             ]
-            \item[\myTotalCount{totalFiguresInArticle:\myarticleKeyCore}]\ Figure(s).% simple, wrapped or with subfigures (each group of subfigures counts as 1 here)
+            \item[\wrtxTotalCount{totalFiguresInArticle:\wrtxarticleKeyCore}]\ Figure(s).% simple, wrapped or with subfigures (each group of subfigures counts as 1 here)
             %
-            \item[\myTotalCount{totalFigureEnvsInArticle:\myarticleKeyCore}]\ Figure Environment(s).% Figure environments
+            \item[\wrtxTotalCount{totalFigureEnvsInArticle:\wrtxarticleKeyCore}]\ Figure Environment(s).% Figure environments
             %
-            \item[\myTotalCount{totalWrapfigureEnvsInArticle:\myarticleKeyCore}]\ Wrapfigure Environment(s).% Wrapfigure environments
+            \item[\wrtxTotalCount{totalWrapfigureEnvsInArticle:\wrtxarticleKeyCore}]\ Wrapfigure Environment(s).% Wrapfigure environments
             %
-            \item[\myTotalCount{totalSubfiguresInArticle:\myarticleKeyCore}]\ Subfigure(s).% subfigures inside figures
+            \item[\wrtxTotalCount{totalSubfiguresInArticle:\wrtxarticleKeyCore}]\ Subfigure(s).% subfigures inside figures
             %
-            \item[\myTotalCount{totalGraphicsInArticle:\myarticleKeyCore}]\ Graphic input(s).% through \myFigGraphics macro
+            \item[\wrtxTotalCount{totalGraphicsInArticle:\wrtxarticleKeyCore}]\ Graphic input(s).% through \wrtxFigGraphics macro
             %
-            \item[\myTotalCount{totalTikZPicturesInArticle:\myarticleKeyCore}]\ TiKz picture(s).% throught \myFigTikZ macro
+            \item[\wrtxTotalCount{totalTikZPicturesInArticle:\wrtxarticleKeyCore}]\ TiKz picture(s).% throught \wrtxFigTikZ macro
             %
-            \item[\myTotalCount{totalTablesInArticle:\myarticleKeyCore}]\ Table(s).
+            \item[\wrtxTotalCount{totalTablesInArticle:\wrtxarticleKeyCore}]\ Table(s).
             %
-            \item[\myTotalCount{totalTextboxesInArticle:\myarticleKeyCore}]\ Textbox(es).
+            \item[\wrtxTotalCount{totalTextboxesInArticle:\wrtxarticleKeyCore}]\ Textbox(es).
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
     % \hfill % This adds space between the minipages
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% SECOND COLUMN
     \begin{minipage}[t]{0.23\textwidth}
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=0pt,
             labelsep=0pt
             ]
-            % \item[\myTotalCount{myGlossCounterAlt}]\ Glossary Entri(es).
+            % \item[\wrtxTotalCount{wrtxGlossCounterAlt}]\ Glossary Entri(es).
             %
-            \item[\myTotalCount{totalGlossaryEntriesInArticle:\myarticleKeyCore}]\ Glossary Entry calls.
+            \item[\wrtxTotalCount{totalGlossaryEntriesInArticle:\wrtxarticleKeyCore}]\ Glossary Entry calls.
             %
-            \isPortfolio{}{\item[\myTotalCount{totalGlossaryEntriesAltogether}]\ Glossary Entri(es) (unique).}
+            \isPortfolio{}{\item[\wrtxTotalCount{totalGlossaryEntriesAltogether}]\ Glossary Entri(es) (unique).}
             %
-            \item[\myTotalCount{totalAbreviationsInArticle:\myarticleKeyCore}]\ Abreviation calls.
+            \item[\wrtxTotalCount{totalAbreviationsInArticle:\wrtxarticleKeyCore}]\ Abreviation calls.
             %
-            \isPortfolio{}{\item[\myTotalCount{totalAbreviationsAltogether}]\ Abreviation(s) (unique).}
+            \isPortfolio{}{\item[\wrtxTotalCount{totalAbreviationsAltogether}]\ Abreviation(s) (unique).}
             %
-            \item[\myTotalCount{totalCitationsInArticle:\myarticleKeyCore}]\ Citation(s) (repeats included).
+            \item[\wrtxTotalCount{totalCitationsInArticle:\wrtxarticleKeyCore}]\ Citation(s) (repeats included).
             %
-            \item[\myTotalCount{totalFootnotesInArticle:\myarticleKeyCore}]\ Non-citation Footnote(s).
+            \item[\wrtxTotalCount{totalFootnotesInArticle:\wrtxarticleKeyCore}]\ Non-citation Footnote(s).
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%% THIRD COLUMN
     \begin{minipage}[t]{0.33\textwidth}
-        \begin{myListMeta}[
+        \begin{wrtxListMeta}[
             leftmargin=0pt,
             labelsep=0pt
             ]
-            \isPortfolio{}{\item[\myListLabelStyle{\ztotpages}]\ total page(s) (body + extras).}
+            \isPortfolio{}{\item[\wrtxListLabelStyle{\ztotpages}]\ total page(s) (body + extras).}
             %
-            \item[\myTotalCount{lastPageInArticle:\myarticleKeyCore}]\ is the last page in the article.
+            \item[\wrtxTotalCount{lastPageInArticle:\wrtxarticleKeyCore}]\ is the last page in the article.
             %
             \item[%
-            \myListLabelStyle{%
+            \wrtxListLabelStyle{%
             \totalPagesInArticleBody
             }]\ total pages in article.
             %
-            \item[\myTotalCount{totalSectionsInArticle:\myarticleKeyCore}]\ Article Section(s).
+            \item[\wrtxTotalCount{totalSectionsInArticle:\wrtxarticleKeyCore}]\ Article Section(s).
             %
-            \item[\myTotalCount{totalSubsectionsInArticle:\myarticleKeyCore}]\ Article Subsection(s).
+            \item[\wrtxTotalCount{totalSubsectionsInArticle:\wrtxarticleKeyCore}]\ Article Subsection(s).
             %
-            \item[\myTotalCount{totalSubsubsectionsInArticle:\myarticleKeyCore}]\ Article Subsubsection(s).
+            \item[\wrtxTotalCount{totalSubsubsectionsInArticle:\wrtxarticleKeyCore}]\ Article Subsubsection(s).
             %
-            \isPortfolio{}{\item[\myTotalCount{totalAppendixItemsAltogether}]\ Appendix Entri(es).}
+            \isPortfolio{}{\item[\wrtxTotalCount{totalAppendixItemsAltogether}]\ Appendix Entri(es).}
             %
-        \end{myListMeta}
+        \end{wrtxListMeta}
     \end{minipage}
 }
 
@@ -194,8 +194,8 @@
 
 \newcommand{\totalPagesInArticleBody}{
     \pagedifference%
-    {\totvalue{lastPageInArticle:\myarticleKeyCore}}% Last page in article
-    {\getpagerefnumber{\myarticleKey:article_header}}% title page in article
+    {\totvalue{lastPageInArticle:\wrtxarticleKeyCore}}% Last page in article
+    {\getpagerefnumber{\wrtxarticleKey:article_header}}% title page in article
 }
 
 \newcommand{\subtactOne}[1]

@@ -1,7 +1,7 @@
 from scripts.classes.tags.GenericTag import GenericTag
 
 class Tag_h1(GenericTag):
-    latex_pttrn = r"\\myArticleSection\{(.*?)\}"
+    latex_pttrn = r"\\wrtxArticleSection\{(.*?)\}"
     html_pttrn = [r"<h1>", r"(.*?)", r"</h1>"]
 
     def __init__(self, innerHTML, id, HTMLClass, customAttribute):
@@ -15,4 +15,3 @@ class Tag_h1(GenericTag):
         print(
             f'Custom Tag with ID "{self.id}" has a custom attribute: {self.customAttribute}'
         )
-
