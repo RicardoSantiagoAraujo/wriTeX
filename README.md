@@ -39,10 +39,10 @@ git pull {name of remote} {branch to pull from} [--allow-unrelated-histories]
 git pull writex main
 ```
 
-- Alternatively, pull **writex** contents into target subfolder;
+- Alternatively, pull **writex** contents into target subfolder (replace "pull" with "add" the very first time if folder does not yet exist). The optional flag avoids copying the whole commit history;
 ```
-git subtree pull --prefix=<subfolder-path> <chosen-name> main
-git subtree pull --prefix=writex writex main
+git subtree pull [--squash] --prefix=<subfolder-path> <chosen-name> main
+git subtree pull --squash --prefix=writex writex main
 ```
  
  Ideally, you wouldn't touch any of the existing files... instead, you should add new articles as needed based on the **wrtx_article_template**, as well as a create a new version of the portfolio based on the **wrtx_portfolio_template**.
