@@ -45,7 +45,7 @@ git subtree pull --prefix=<subfolder-path> <chosen-name> main
 git subtree pull --prefix=writex writex main
 ```
  
- ldn't touch any of the existing files... instead, you should add new articles as needed based on the **wrtx_article_template**, as well as a create a new version of the portfolio based on the **wrtx_portfolio_template**.
+ Ideally, you wouldn't touch any of the existing files... instead, you should add new articles as needed based on the **wrtx_article_template**, as well as a create a new version of the portfolio based on the **wrtx_portfolio_template**.
 
 ### Troubleshooting compilation
 
