@@ -29,17 +29,23 @@ You can pull the contents of this repository to the root one of your as follows:
 
 ```
 git remote add {desired name of remote}  {address of remote}
-git remote add wriTeX  https://github.com/RicardoSantiagoAraujo/wriTeX.git
+git remote add writex  https://github.com/RicardoSantiagoAraujo/wriTeX.git
 ```
 
-- You can then simply pull from it by specifying the remote. Use the option flag if you get an unrelated histories error.
+- You can then simply pull from **writex** by specifying the remote. Use the option flag if you get an unrelated histories error.
 
 ```
 git pull {name of remote} {branch to pull from} [--allow-unrelated-histories]
-git pull wriTeX main
+git pull writex main
 ```
 
-Ideally, you wouldn't touch any of the existing files... instead, you should add new articles as needed based on the **wrtx_article_template**, as well as a create a new version of the portfolio based on the **wrtx_portfolio_template**.
+- Alternatively, pull **writex** contents into target subfolder;
+```
+git subtree pull --prefix=<subfolder-path> <chosen-name> main
+git subtree pull --prefix=writex writex main
+```
+ 
+ ldn't touch any of the existing files... instead, you should add new articles as needed based on the **wrtx_article_template**, as well as a create a new version of the portfolio based on the **wrtx_portfolio_template**.
 
 ### Troubleshooting compilation
 
